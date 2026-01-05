@@ -74,8 +74,6 @@ Salin kode
 Akses melalui browser:
 http://localhost/5140
 
-yaml
-Salin kode
 
 ---
 
