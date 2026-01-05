@@ -96,9 +96,8 @@ Dibuat untuk keperluan:
 
 ---
 
-## 📄 Lisensi
-
-Project ini digunakan untuk **pembelajaran dan pengembangan**.
+## 📄Link Youtube
+https://youtu.be/Pemograman-Visual-Desktop-cappunabara
 
 ---
 
