@@ -79,7 +79,6 @@ Salin kode
 
 ## 📸 Tampilan Website
 > Tampilan web dirancang sederhana, modern, dan cocok untuk website kedai kopi / cafe digital.
-
 ---
 
 ## 👨‍💻 Pengembang
