@@ -1,51 +1,120 @@
-# Cappunabara
+## 🚀 Fitur Utama
 
-Cappunabara merupakan aplikasi website restoran yang dikembangkan sebagai bagian dari **Ujian Akhir Semester (UAS)**. Aplikasi ini bertujuan untuk membantu proses pengelolaan pemesanan dan pembayaran restoran secara digital agar lebih terstruktur dan efisien.
-
----
-
-## Tujuan Aplikasi
-
-- Menerapkan konsep pengembangan web berbasis server
-- Mengelola data pemesanan dan pembayaran restoran
-- Mengimplementasikan fitur CRUD dalam aplikasi web
-- Mensimulasikan sistem manajemen restoran sederhana
+- 🏠 **Halaman Home Interaktif**
+- ☕ **Tampilan Produk / Menu Kopi**
+- 🛒 **Halaman Order / Pemesanan**
+- 📧 **Manajemen Email & Template**
+- 🎨 **UI Modern & Responsive**
+- ⚙️ **Konfigurasi Web Terpisah & Rapi**
+- 🔐 **Struktur Siap Produksi (Production Ready)**
 
 ---
 
-## Fitur Utama
+## 🛠️ Teknologi yang Digunakan
 
-- Pemesanan makanan dan minuman
-- Pencatatan data pembayaran
-- Riwayat pesanan pelanggan
-- Dashboard admin untuk monitoring data
-
----
-
-## Teknologi yang Digunakan
-
-- **Backend** : ASP.NET Core (Razor Pages)
-- **Frontend** : HTML, CSS, JavaScript
-- **Database** : SQL Server
-- **Web Server** : IIS
+| Teknologi | Keterangan |
+|---------|------------|
+| ASP.NET | Backend Web Application |
+| HTML5 | Struktur Halaman |
+| CSS3 | Styling & Layout |
+| JavaScript | Interaksi & Dinamis |
+| IIS | Web Server |
+| SQL Server | Database |
+| Visual Studio | Development Tools |
 
 ---
 
-## Peran Pengguna
+## 📂 Struktur Folder
 
-- **Admin / Manager**
-  - Mengelola data pesanan dan pembayaran
-  - Melihat riwayat transaksi
+cappunabara/
+├── assets/ # CSS, JS, Image
+├── Views/ # Halaman View ASP.NET
+├── templates/ # Template Email
+├── home/ # Halaman Home
+├── bin/ # File hasil build
+├── Web.config # Konfigurasi utama
+├── Global.asax # Lifecycle aplikasi
+├── connections.config # Konfigurasi database
+├── appsettings.config # Pengaturan aplikasi
+├── favicon.ico # Icon website
+└── order.html # Halaman pemesanan
 
-- **Pelanggan**
-  - Melakukan pemesanan menu
+yaml
+Salin kode
 
 ---
 
-## Kesimpulan
+## ⚙️ Cara Menjalankan Project
 
-Aplikasi Cappunabara berhasil dibuat sebagai sistem website restoran sederhana yang mampu mengelola data pemesanan dan pembayaran. Aplikasi ini dapat menjadi solusi dasar dalam mendukung operasional restoran secara digital serta memenuhi tujuan pembelajaran pada mata kuliah terkait.
+### 1️⃣ Persiapan
+- Windows OS
+- Visual Studio
+- IIS (Internet Information Services)
+- SQL Server
 
 ---
 
-*Project ini dibuat untuk keperluan akademik (UAS).*
+### 2️⃣ Import Project
+1. Ekstrak file ZIP `cappunabara`
+2. Buka **Visual Studio**
+3. Pilih **Open → Website / Project**
+4. Arahkan ke folder `cappunabara`
+
+---
+
+### 3️⃣ Konfigurasi Database
+- Edit file:
+connections.config
+
+yaml
+Salin kode
+- Sesuaikan:
+- Server
+- Database
+- User & Password
+
+---
+
+### 4️⃣ Jalankan Aplikasi
+- Tekan **F5** di Visual Studio  
+atau  
+- Jalankan melalui **IIS**
+
+Akses di browser:
+http://localhost/
+
+yaml
+Salin kode
+
+---
+
+## 🧩 Catatan Penting
+
+- Pastikan **IIS sudah aktif**
+- Pastikan **.NET Framework sesuai**
+- Folder `bin` jangan dihapus
+- Gunakan browser modern (Chrome / Edge)
+
+---
+
+## 📸 Tampilan Website
+> Tampilan web dirancang sederhana, modern, dan cocok untuk website kedai kopi / cafe digital.
+
+---
+
+## 👨‍💻 Pengembang
+
+**Cappunabara Web Project**  
+Dibuat untuk kebutuhan:
+- Tugas akademik
+- Presentasi sistem
+- Prototype website bisnis kopi
+
+---
+
+## 📄 Lisensi
+Project ini digunakan untuk **pembelajaran & pengembangan**.
+
+---
+
+☕ *Ngopi sambil ngoding, Cappunabara solusinya!*
