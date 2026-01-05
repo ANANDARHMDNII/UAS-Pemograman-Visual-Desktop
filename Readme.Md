@@ -24,26 +24,6 @@
 
 ---
 
-## 📂 Struktur Folder
-
-cappunabara/
-├── assets/ # CSS, JS, Image
-├── Views/ # Halaman View ASP.NET
-├── templates/ # Template Email
-├── home/ # Halaman Home
-├── bin/ # File hasil build
-├── Web.config # Konfigurasi utama
-├── Global.asax # Lifecycle aplikasi
-├── connections.config # Konfigurasi database
-├── appsettings.config # Pengaturan aplikasi
-├── favicon.ico # Icon website
-└── order.html # Halaman pemesanan
-
-yaml
-Salin kode
-
----
-
 ## ⚙️ Cara Menjalankan Project
 
 ### 1️⃣ Persiapan
