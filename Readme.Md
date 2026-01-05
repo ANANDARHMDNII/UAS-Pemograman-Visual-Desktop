@@ -6,102 +6,102 @@
 | *Kelas* | TI.23.A.5 |
 | *Mata Kuliah* | Pemograman-Visual-Desktop |
 
+# ☕ Cappunabara Web Application
+
+Cappunabara adalah aplikasi web berbasis **ASP.NET** yang dirancang sebagai website kedai kopi (coffee shop) dengan tampilan modern, responsif, dan mudah digunakan.  
+Aplikasi ini menampilkan informasi menu kopi, halaman pemesanan, serta struktur web yang rapi dan siap dikembangkan.
+
+---
+
+## 🎯 Tujuan Project
+
+- Menyediakan website kedai kopi berbasis web
+- Menampilkan menu dan informasi produk kopi
+- Menyediakan halaman pemesanan (order)
+- Sebagai project pembelajaran dan tugas akademik
+
+---
+
 ## 🚀 Fitur Utama
 
-- 🏠 **Halaman Home Interaktif**
-- ☕ **Tampilan Produk / Menu Kopi**
-- 🛒 **Halaman Order / Pemesanan**
-- 📧 **Manajemen Email & Template**
-- 🎨 **UI Modern & Responsive**
-- ⚙️ **Konfigurasi Web Terpisah & Rapi**
-- 🔐 **Struktur Siap Produksi (Production Ready)**
+- 🏠 Halaman Home interaktif
+- ☕ Tampilan menu kopi
+- 🛒 Halaman pemesanan (order)
+- 📧 Template email notifikasi
+- 🎨 Desain UI modern & responsive
+- ⚙️ Konfigurasi web terstruktur
+- 🔐 Siap dijalankan di IIS
 
 ---
 
 ## 🛠️ Teknologi yang Digunakan
 
-| Teknologi | Keterangan |
-|---------|------------|
-| ASP.NET | Backend Web Application |
-| HTML5 | Struktur Halaman |
-| CSS3 | Styling & Layout |
-| JavaScript | Interaksi & Dinamis |
-| IIS | Web Server |
+| Teknologi | Fungsi |
+|----------|--------|
+| ASP.NET | Backend dan logika aplikasi |
+| HTML5 | Struktur halaman |
+| CSS3 | Desain & layout |
+| JavaScript | Interaksi pengguna |
 | SQL Server | Database |
-| Visual Studio | Development Tools |
+| IIS | Web server |
+| Visual Studio | Alat pengembangan |
 
 ---
 
 ## ⚙️ Cara Menjalankan Project
 
 ### 1️⃣ Persiapan
-- Windows OS
+Pastikan sudah terinstall:
 - Visual Studio
 - IIS (Internet Information Services)
 - SQL Server
+-MongoDB
 
 ---
 
-### 2️⃣ Import Project
-1. Ekstrak file ZIP `cappunabara`
+### 2️⃣ Menjalankan Aplikasi
+1. Buka folder `cappunabara`
 2. Buka **Visual Studio**
 3. Pilih **Open → Website / Project**
-4. Arahkan ke folder `cappunabara`
+4. Arahkan ke folder project
 
----
-
-### 3️⃣ Konfigurasi Database
-- Edit file:
-connections.config
-
-yaml
+markdown
 Salin kode
-- Sesuaikan:
-- Server
-- Database
-- User & Password
+6. Jalankan project dengan:
+- **F5** (Visual Studio) atau
+- Melalui **IIS**
 
----
-
-### 4️⃣ Jalankan Aplikasi
-- Tekan **F5** di Visual Studio  
-atau  
-- Jalankan melalui **IIS**
-
-Akses di browser:
-http://localhost/
+Akses melalui browser:
+http://localhost/5140
 
 yaml
 Salin kode
 
 ---
 
-## 🧩 Catatan Penting
+## ⚠️ Catatan Penting
 
-- Pastikan **IIS sudah aktif**
-- Pastikan **.NET Framework sesuai**
-- Folder `bin` jangan dihapus
+- IIS harus dalam kondisi aktif
+- Pastikan versi .NET Framework sesuai
+- Jangan menghapus folder `bin`
 - Gunakan browser modern (Chrome / Edge)
 
----
-
-## 📸 Tampilan Website
-> Tampilan web dirancang sederhana, modern, dan cocok untuk website kedai kopi / cafe digital.
 ---
 
 ## 👨‍💻 Pengembang
 
 **Cappunabara Web Project**  
-Dibuat untuk kebutuhan:
+Dibuat untuk keperluan:
 - Tugas akademik
-- Presentasi sistem
-- Prototype website bisnis kopi
+- Pembelajaran web
+- Prototype website coffee shop
 
 ---
 
 ## 📄 Lisensi
-Project ini digunakan untuk **pembelajaran & pengembangan**.
+
+Project ini digunakan untuk **pembelajaran dan pengembangan**.
 
 ---
 
-☕ *Ngopi sambil ngoding, Cappunabara solusinya!*
+☕ *Ngopi santai, coding jadi lebih berarti bersama Cappunabara.*
