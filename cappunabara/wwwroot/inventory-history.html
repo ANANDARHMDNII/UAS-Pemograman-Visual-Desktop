@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Riwayat Stok - Cappunabara</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8f9fa;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar-brand {
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: background 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        .page-header {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .page-title {
+            font-size: 28px;
+            color: #333;
+        }
+
+        .filter-bar {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .filter-input {
+            padding: 10px 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .filter-input:focus {
+            outline: none;
+            border-color: #D2691E;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            margin: 0 auto 15px;
+        }
+
+        .stat-card:nth-child(1) .stat-icon { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .stat-card:nth-child(2) .stat-icon { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .stat-card:nth-child(3) .stat-icon { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .stat-card:nth-child(4) .stat-icon { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+
+        .stat-number {
+            font-size: 32px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 30px;
+        }
+
+        .main-content {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            height: fit-content;
+        }
+
+        .section-title {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin-bottom: 30px;
+        }
+
+        .history-timeline {
+            position: relative;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 40px;
+            margin-bottom: 25px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .timeline-item:last-child {
+            border-bottom: none;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 0;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #D2691E;
+        }
+
+        .timeline-dot::before {
+            content: '';
+            position: absolute;
+            left: 5px;
+            top: 12px;
+            width: 2px;
+            height: 40px;
+            background: #e1e5e9;
+        }
+
+        .timeline-item:last-child .timeline-dot::before {
+            display: none;
+        }
+
+        .timeline-content {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .timeline-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .timeline-action {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .timeline-item-name {
+            font-size: 14px;
+            color: #D2691E;
+            font-weight: 600;
+        }
+
+        .timeline-time {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .timeline-details {
+            color: #555;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .timeline-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #999;
+        }
+
+        .stock-change {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .stock-increase {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .stock-decrease {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .stock-neutral {
+            background: #e2e3e5;
+            color: #383d41;
+        }
+
+        .quick-filters {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .filter-chip {
+            padding: 6px 12px;
+            border: 2px solid #e1e5e9;
+            background: white;
+            color: #666;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .filter-chip.active {
+            background: #D2691E;
+            color: white;
+            border-color: #D2691E;
+        }
+
+        .filter-chip:hover {
+            border-color: #D2691E;
+        }
+
+        .item-selector {
+            margin-bottom: 20px;
+        }
+
+        .item-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .item-option {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 5px;
+        }
+
+        .item-option:hover {
+            background: #f8f9fa;
+        }
+
+        .item-option.selected {
+            background: #fff5f0;
+            border: 2px solid #D2691E;
+        }
+
+        .item-info {
+            flex: 1;
+        }
+
+        .item-name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 2px;
+        }
+
+        .item-category {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .item-stock {
+            font-size: 14px;
+            font-weight: 600;
+            color: #D2691E;
+        }
+
+        @media (max-width: 1024px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .page-header {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .filter-bar {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .filter-input {
+                width: 100%;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-content">
+            <div class="navbar-brand">
+                <i class="fas fa-history"></i>
+                Cappunabara - Riwayat Stok
+            </div>
+            <div class="nav-links">
+                <a href="inventory.html" class="nav-link">
+                    <i class="fas fa-boxes"></i> Inventori
+                </a>
+                <a href="modern-dashboard.html" class="nav-link">
+                    <i class="fas fa-home"></i> Dashboard
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">Riwayat Perubahan Stok</h1>
+            <div class="filter-bar">
+                <input type="date" class="filter-input" id="start-date">
+                <input type="date" class="filter-input" id="end-date">
+                <button class="btn btn-primary" onclick="applyDateFilter()">
+                    <i class="fas fa-filter"></i> Filter
+                </button>
+                <button class="btn" onclick="exportHistory()" style="background: #28a745; color: white;">
+                    <i class="fas fa-file-excel"></i> Export
+                </button>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-exchange-alt"></i>
+                </div>
+                <div class="stat-number" id="total-transactions">0</div>
+                <div class="stat-label">Total Transaksi</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-arrow-up"></i>
+                </div>
+                <div class="stat-number" id="stock-in">0</div>
+                <div class="stat-label">Stok Masuk</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-arrow-down"></i>
+                </div>
+                <div class="stat-number" id="stock-out">0</div>
+                <div class="stat-label">Stok Keluar</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="stat-number" id="net-change">0</div>
+                <div class="stat-label">Perubahan Bersih</div>
+            </div>
+        </div>
+
+        <div class="content-grid">
+            <div class="main-content">
+                <h3 class="section-title">
+                    <i class="fas fa-chart-area"></i>
+                    Grafik Perubahan Stok
+                </h3>
+                
+                <div class="chart-container">
+                    <canvas id="stockChart"></canvas>
+                </div>
+
+                <div class="quick-filters">
+                    <div class="filter-chip active" onclick="filterByType('all')">Semua</div>
+                    <div class="filter-chip" onclick="filterByType('restock')">Restock</div>
+                    <div class="filter-chip" onclick="filterByType('usage')">Pemakaian</div>
+                    <div class="filter-chip" onclick="filterByType('adjustment')">Penyesuaian</div>
+                    <div class="filter-chip" onclick="filterByType('expired')">Kadaluarsa</div>
+                </div>
+
+                <h3 class="section-title">
+                    <i class="fas fa-timeline"></i>
+                    Timeline Perubahan Stok
+                </h3>
+
+                <div class="history-timeline" id="history-timeline">
+                    <!-- Timeline items will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <h3 class="section-title">
+                    <i class="fas fa-filter"></i>
+                    Filter Item
+                </h3>
+
+                <div class="item-selector">
+                    <input type="text" class="filter-input" placeholder="Cari item..." id="item-search" style="width: 100%; margin-bottom: 15px;">
+                    
+                    <div class="item-list" id="item-list">
+                        <!-- Item options will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="modern-auth.js"></script>
+    <script>
+        // Check authentication
+        if (!isModernLoggedIn()) {
+            window.location.href = 'modern-login.html';
+        }
+
+        let stockHistory = [];
+        let filteredHistory = [];
+        let selectedItems = [];
+        let stockChart = null;
+        let currentTypeFilter = 'all';
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set default date range (last 30 days)
+            const today = new Date();
+            const thirtyDaysAgo = new Date(today);
+            thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+            
+            document.getElementById('start-date').value = thirtyDaysAgo.toISOString().split('T')[0];
+            document.getElementById('end-date').value = today.toISOString().split('T')[0];
+            
+            loadStockHistory();
+            loadInventoryItems();
+            setupSearch();
+        });
+
+        // Load stock history
+        function loadStockHistory() {
+            // Generate sample stock history data
+            stockHistory = generateSampleHistory();
+            filteredHistory = [...stockHistory];
+            
+            updateStatistics();
+            updateChart();
+            renderTimeline();
+        }
+
+        // Generate sample history data
+        function generateSampleHistory() {
+            const history = [];
+            const inventoryData = JSON.parse(localStorage.getItem('inventoryData') || '[]');
+            const actions = ['restock', 'usage', 'adjustment', 'expired'];
+            const actionNames = {
+                'restock': 'Penambahan Stok',
+                'usage': 'Pemakaian Stok',
+                'adjustment': 'Penyesuaian Stok',
+                'expired': 'Stok Kadaluarsa'
+            };
+
+            // Generate history for last 30 days
+            for (let day = 30; day >= 0; day--) {
+                const date = new Date();
+                date.setDate(date.getDate() - day);
+                
+                // Random number of transactions per day
+                const transactionsPerDay = Math.floor(Math.random() * 5) + 1;
+                
+                for (let i = 0; i < transactionsPerDay; i++) {
+                    const item = inventoryData[Math.floor(Math.random() * inventoryData.length)];
+                    if (!item) continue;
+                    
+                    const action = actions[Math.floor(Math.random() * actions.length)];
+                    let quantity = Math.floor(Math.random() * 20) + 1;
+                    
+                    // Adjust quantity based on action
+                    if (action === 'usage' || action === 'expired') {
+                        quantity = -quantity;
+                    }
+                    
+                    const historyItem = {
+                        id: Date.now() + Math.random(),
+                        itemId: item.id,
+                        itemName: item.name,
+                        category: item.category,
+                        action: action,
+                        actionName: actionNames[action],
+                        quantity: quantity,
+                        unit: item.unit,
+                        previousStock: item.stock,
+                        newStock: item.stock + quantity,
+                        reason: getRandomReason(action),
+                        user: getRandomUser(),
+                        timestamp: new Date(date.getTime() + Math.random() * 24 * 60 * 60 * 1000).toISOString()
+                    };
+                    
+                    history.push(historyItem);
+                }
+            }
+            
+            return history.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+        }
+
+        // Get random reason
+        function getRandomReason(action) {
+            const reasons = {
+                'restock': ['Pembelian rutin', 'Stok menipis', 'Pesanan khusus', 'Stok darurat'],
+                'usage': ['Produksi menu', 'Pesanan pelanggan', 'Konsumsi internal', 'Sampel produk'],
+                'adjustment': ['Koreksi stok', 'Audit inventori', 'Penyesuaian sistem', 'Stok opname'],
+                'expired': ['Melewati tanggal kadaluarsa', 'Kualitas menurun', 'Rusak', 'Kontaminasi']
+            };
+            
+            const actionReasons = reasons[action] || ['Tidak ada keterangan'];
+            return actionReasons[Math.floor(Math.random() * actionReasons.length)];
+        }
+
+        // Get random user
+        function getRandomUser() {
+            const users = ['Admin', 'Kasir 1', 'Kasir 2', 'Manager', 'Supervisor'];
+            return users[Math.floor(Math.random() * users.length)];
+        }
+
+        // Load inventory items
+        function loadInventoryItems() {
+            const inventoryData = JSON.parse(localStorage.getItem('inventoryData') || '[]');
+            const itemList = document.getElementById('item-list');
+            
+            itemList.innerHTML = inventoryData.map(item => `
+                <div class="item-option" onclick="toggleItemSelection(${item.id})" data-item-id="${item.id}">
+                    <div class="item-info">
+                        <div class="item-name">${item.name}</div>
+                        <div class="item-category">${item.category}</div>
+                    </div>
+                    <div class="item-stock">${item.stock} ${item.unit}</div>
+                </div>
+            `).join('');
+        }
+
+        // Setup search
+        function setupSearch() {
+            const searchInput = document.getElementById('item-search');
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                const itemOptions = document.querySelectorAll('.item-option');
+                
+                itemOptions.forEach(option => {
+                    const itemName = option.querySelector('.item-name').textContent.toLowerCase();
+                    const itemCategory = option.querySelector('.item-category').textContent.toLowerCase();
+                    
+                    if (itemName.includes(searchTerm) || itemCategory.includes(searchTerm)) {
+                        option.style.display = 'flex';
+                    } else {
+                        option.style.display = 'none';
+                    }
+                });
+            });
+        }
+
+        // Toggle item selection
+        function toggleItemSelection(itemId) {
+            const itemOption = document.querySelector(`[data-item-id="${itemId}"]`);
+            
+            if (selectedItems.includes(itemId)) {
+                selectedItems = selectedItems.filter(id => id !== itemId);
+                itemOption.classList.remove('selected');
+            } else {
+                selectedItems.push(itemId);
+                itemOption.classList.add('selected');
+            }
+            
+            applyFilters();
+        }
+
+        // Filter by type
+        function filterByType(type) {
+            currentTypeFilter = type;
+            
+            // Update active filter chip
+            document.querySelectorAll('.filter-chip').forEach(chip => {
+                chip.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            applyFilters();
+        }
+
+        // Apply filters
+        function applyFilters() {
+            filteredHistory = stockHistory.filter(item => {
+                // Type filter
+                if (currentTypeFilter !== 'all' && item.action !== currentTypeFilter) {
+                    return false;
+                }
+                
+                // Item filter
+                if (selectedItems.length > 0 && !selectedItems.includes(item.itemId)) {
+                    return false;
+                }
+                
+                // Date filter
+                const startDate = new Date(document.getElementById('start-date').value);
+                const endDate = new Date(document.getElementById('end-date').value);
+                const itemDate = new Date(item.timestamp);
+                
+                if (itemDate < startDate || itemDate > endDate) {
+                    return false;
+                }
+                
+                return true;
+            });
+            
+            updateStatistics();
+            updateChart();
+            renderTimeline();
+        }
+
+        // Apply date filter
+        function applyDateFilter() {
+            applyFilters();
+        }
+
+        // Update statistics
+        function updateStatistics() {
+            const totalTransactions = filteredHistory.length;
+            const stockIn = filteredHistory.filter(item => item.quantity > 0).reduce((sum, item) => sum + item.quantity, 0);
+            const stockOut = Math.abs(filteredHistory.filter(item => item.quantity < 0).reduce((sum, item) => sum + item.quantity, 0));
+            const netChange = stockIn - stockOut;
+            
+            document.getElementById('total-transactions').textContent = totalTransactions.toLocaleString('id-ID');
+            document.getElementById('stock-in').textContent = stockIn.toLocaleString('id-ID');
+            document.getElementById('stock-out').textContent = stockOut.toLocaleString('id-ID');
+            document.getElementById('net-change').textContent = netChange.toLocaleString('id-ID');
+        }
+
+        // Update chart
+        function updateChart() {
+            const ctx = document.getElementById('stockChart').getContext('2d');
+            
+            // Group data by date
+            const dailyChanges = {};
+            filteredHistory.forEach(item => {
+                const date = new Date(item.timestamp).toISOString().split('T')[0];
+                if (!dailyChanges[date]) {
+                    dailyChanges[date] = { in: 0, out: 0 };
+                }
+                
+                if (item.quantity > 0) {
+                    dailyChanges[date].in += item.quantity;
+                } else {
+                    dailyChanges[date].out += Math.abs(item.quantity);
+                }
+            });
+            
+            // Sort dates and prepare chart data
+            const sortedDates = Object.keys(dailyChanges).sort();
+            const stockInData = sortedDates.map(date => dailyChanges[date].in);
+            const stockOutData = sortedDates.map(date => dailyChanges[date].out);
+            const chartLabels = sortedDates.map(date => new Date(date).toLocaleDateString('id-ID'));
+            
+            // Destroy existing chart if it exists
+            if (stockChart) {
+                stockChart.destroy();
+            }
+            
+            // Create new chart
+            stockChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: chartLabels,
+                    datasets: [
+                        {
+                            label: 'Stok Masuk',
+                            data: stockInData,
+                            backgroundColor: 'rgba(40, 167, 69, 0.8)',
+                            borderColor: '#28a745',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Stok Keluar',
+                            data: stockOutData,
+                            backgroundColor: 'rgba(220, 53, 69, 0.8)',
+                            borderColor: '#dc3545',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return value.toLocaleString('id-ID');
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Render timeline
+        function renderTimeline() {
+            const timeline = document.getElementById('history-timeline');
+            
+            if (filteredHistory.length === 0) {
+                timeline.innerHTML = `
+                    <div style="text-align: center; padding: 40px; color: #666;">
+                        <i class="fas fa-history" style="font-size: 48px; margin-bottom: 15px; opacity: 0.5;"></i>
+                        <p>Tidak ada riwayat stok ditemukan</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            timeline.innerHTML = filteredHistory.slice(0, 50).map(item => {
+                const changeClass = item.quantity > 0 ? 'stock-increase' : item.quantity < 0 ? 'stock-decrease' : 'stock-neutral';
+                const changeIcon = item.quantity > 0 ? 'fas fa-arrow-up' : item.quantity < 0 ? 'fas fa-arrow-down' : 'fas fa-equals';
+                
+                return `
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-header">
+                                <div>
+                                    <div class="timeline-action">${item.actionName}</div>
+                                    <div class="timeline-item-name">${item.itemName}</div>
+                                </div>
+                                <div class="timeline-time">${new Date(item.timestamp).toLocaleString('id-ID')}</div>
+                            </div>
+                            <div class="timeline-details">${item.reason}</div>
+                            <div class="timeline-meta">
+                                <span>oleh ${item.user}</span>
+                                <span class="stock-change ${changeClass}">
+                                    <i class="${changeIcon}"></i>
+                                    ${Math.abs(item.quantity)} ${item.unit}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Export history
+        function exportHistory() {
+            try {
+                const exportData = filteredHistory.map(item => ({
+                    'Tanggal': new Date(item.timestamp).toLocaleDateString('id-ID'),
+                    'Waktu': new Date(item.timestamp).toLocaleTimeString('id-ID'),
+                    'Item': item.itemName,
+                    'Kategori': item.category,
+                    'Aksi': item.actionName,
+                    'Jumlah': item.quantity,
+                    'Satuan': item.unit,
+                    'Stok Sebelum': item.previousStock,
+                    'Stok Sesudah': item.newStock,
+                    'Alasan': item.reason,
+                    'User': item.user
+                }));
+
+                // Create workbook and worksheet
+                const wb = XLSX.utils.book_new();
+                const ws = XLSX.utils.json_to_sheet(exportData);
+
+                // Set column widths
+                const colWidths = [
+                    { wch: 12 }, // Tanggal
+                    { wch: 10 }, // Waktu
+                    { wch: 20 }, // Item
+                    { wch: 15 }, // Kategori
+                    { wch: 15 }, // Aksi
+                    { wch: 8 },  // Jumlah
+                    { wch: 8 },  // Satuan
+                    { wch: 12 }, // Stok Sebelum
+                    { wch: 12 }, // Stok Sesudah
+                    { wch: 25 }, // Alasan
+                    { wch: 12 }  // User
+                ];
+                ws['!cols'] = colWidths;
+
+                // Add worksheet to workbook
+                XLSX.utils.book_append_sheet(wb, ws, 'Riwayat Stok');
+
+                // Generate filename
+                const startDate = document.getElementById('start-date').value;
+                const endDate = document.getElementById('end-date').value;
+                const filename = `Riwayat_Stok_${startDate}_${endDate}.xlsx`;
+
+                // Save file
+                XLSX.writeFile(wb, filename);
+
+                showNotification(`Riwayat stok berhasil diekspor ke file: ${filename}`, 'success');
+
+            } catch (error) {
+                console.error('Error exporting to Excel:', error);
+                showNotification('Gagal mengekspor riwayat stok ke Excel. Silakan coba lagi.', 'error');
+            }
+        }
+
+        // Show notification
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? '#28a745' : type === 'info' ? '#17a2b8' : type === 'warning' ? '#ffc107' : '#dc3545'};
+                color: ${type === 'warning' ? '#333' : 'white'};
+                padding: 15px 20px;
+                border-radius: 8px;
+                z-index: 1001;
+                animation: slideIn 0.3s ease;
+            `;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

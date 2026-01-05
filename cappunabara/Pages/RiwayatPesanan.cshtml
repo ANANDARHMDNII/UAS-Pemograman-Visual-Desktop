@@ -1,0 +1,199 @@
+@page
+@model RiwayatPesananModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Cappunabara - Riwayat Pesanan Anda">
+    <title>Cappunabara - Riwayat Pesanan</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="~/assets/css/cappunabara_home.css">
+    <link rel="stylesheet" href="~/assets/css/order.css">
+    <link rel="stylesheet" href="~/assets/css/history.css">
+</head>
+
+<body>
+    <!-- Navigation Header -->
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">
+                <span class="logo-emoji">☕</span>
+                <span class="logo-text">Cappunabara</span>
+            </a>
+
+            <nav class="nav-menu">
+                <a href="/Order" class="nav-link">🛒 Order Menu</a>
+                <a href="/RiwayatPesanan" class="nav-link active">📋 Riwayat Pesanan</a>
+                <a href="/DataPesanan" class="nav-link">⚙️ Admin</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Page Header -->
+            <div class="page-header">
+                <div class="header-content">
+                    <h1 class="page-title">📋 Riwayat Pesanan Anda</h1>
+                    <p class="page-subtitle">Lihat semua pesanan yang pernah Anda buat di Cappunabara</p>
+                </div>
+                
+                <div class="header-actions">
+                    <button class="btn-refresh" onclick="loadHistoryData()">
+                        <span>🔄</span> Refresh
+                    </button>
+                    <button class="btn-save" onclick="saveHistoryData()">
+                        <span>💾</span> Simpan Data
+                    </button>
+                    <button class="btn-clear-history" onclick="clearAllHistory()">
+                        <span>🗑️</span> Hapus Semua
+                    </button>
+                    <button class="btn-refresh" onclick="window.cappunabaraHistory.checkLocalStorage()" style="background: #2196F3; border-color: #2196F3;">
+                        <span>🔍</span> Debug
+                    </button>
+                </div>
+            </div>
+
+            <!-- Customer Profile Card -->
+            <div class="customer-profile" id="customerProfile">
+                <!-- Customer profile will be loaded here -->
+            </div>
+
+            <!-- Quick Stats -->
+            <div class="quick-stats">
+                <div class="stat-item">
+                    <div class="stat-icon">📊</div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="totalOrdersCount">0</div>
+                        <div class="stat-label">Total Pesanan</div>
+                    </div>
+                </div>
+                
+                <div class="stat-item">
+                    <div class="stat-icon">💰</div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="totalSpentAmount">Rp 0</div>
+                        <div class="stat-label">Total Pengeluaran</div>
+                    </div>
+                </div>
+                
+                <div class="stat-item">
+                    <div class="stat-icon">☕</div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="favoriteItem">-</div>
+                        <div class="stat-label">Menu Favorit</div>
+                    </div>
+                </div>
+                
+                <div class="stat-item">
+                    <div class="stat-icon">📅</div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="lastOrderDate">-</div>
+                        <div class="stat-label">Pesanan Terakhir</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filter Section -->
+            <div class="filter-section">
+                <div class="filter-tabs">
+                    <button class="filter-tab active" data-filter="all" onclick="setHistoryFilter('all')">
+                        <span class="tab-icon">📋</span>
+                        <span class="tab-text">Semua</span>
+                        <span class="tab-count" id="allCount">0</span>
+                    </button>
+                    <button class="filter-tab" data-filter="today" onclick="setHistoryFilter('today')">
+                        <span class="tab-icon">📅</span>
+                        <span class="tab-text">Hari Ini</span>
+                        <span class="tab-count" id="todayCount">0</span>
+                    </button>
+                    <button class="filter-tab" data-filter="week" onclick="setHistoryFilter('week')">
+                        <span class="tab-icon">📆</span>
+                        <span class="tab-text">Minggu Ini</span>
+                        <span class="tab-count" id="weekCount">0</span>
+                    </button>
+                    <button class="filter-tab" data-filter="month" onclick="setHistoryFilter('month')">
+                        <span class="tab-icon">🗓️</span>
+                        <span class="tab-text">Bulan Ini</span>
+                        <span class="tab-count" id="monthCount">0</span>
+                    </button>
+                </div>
+                
+                <div class="search-section">
+                    <div class="search-box">
+                        <input type="text" id="historySearch" placeholder="Cari berdasarkan nomor pesanan atau menu..." onkeyup="searchHistory()">
+                        <span class="search-icon">🔍</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order History Timeline -->
+            <div class="history-timeline" id="historyTimeline">
+                <!-- Timeline items will be loaded here -->
+            </div>
+
+            <!-- Empty State -->
+            <div class="empty-history-state" id="emptyHistoryState" style="display: none;">
+                <div class="empty-illustration">
+                    <div class="empty-icon">📋</div>
+                    <div class="empty-coffee">☕</div>
+                </div>
+                <h3>Belum Ada Riwayat Pesanan</h3>
+                <p>Anda belum pernah melakukan pesanan di Cappunabara</p>
+                <a href="/Order" class="btn-start-order">
+                    <span>🛒</span> Mulai Pesan Sekarang
+                </a>
+            </div>
+
+            <!-- Load More Button -->
+            <div class="load-more-section" id="loadMoreSection" style="display: none;">
+                <button class="btn-load-more" onclick="loadMoreHistory()">
+                    <span>📄</span> Muat Lebih Banyak
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Order Detail Modal -->
+    <div class="modal" id="orderDetailModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2 class="modal-title">Detail Pesanan</h2>
+                <button class="modal-close" onclick="closeOrderDetailModal()">✕</button>
+            </div>
+            <div class="modal-body" id="orderDetailContent">
+                <!-- Order details will be loaded here -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn-reorder" id="reorderBtn" onclick="reorderItems()">
+                    <span>🔄</span> Pesan Lagi
+                </button>
+                <button class="btn-download-receipt" onclick="downloadReceipt()">
+                    <span>📥</span> Download Struk
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overlay -->
+    <div class="overlay" id="overlay" onclick="closeAllModals()"></div>
+
+    <!-- JavaScript -->
+    <script src="~/working-pdf-download.js"></script>
+    <script src="~/assets/js/history.js"></script>
+</body>
+
+</html>

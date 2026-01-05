@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panduan Status Pelanggan - Cappunabara</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8f9fa;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar-brand {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: background 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        .guide-header {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .guide-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 32px;
+            color: white;
+        }
+
+        .guide-title {
+            font-size: 32px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .guide-subtitle {
+            font-size: 16px;
+            color: #666;
+        }
+
+        .section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-title {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            color: #D2691E;
+        }
+
+        .problem-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+
+        .solution-box {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+
+        .info-box {
+            background: #d1ecf1;
+            border-left: 4px solid #17a2b8;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+
+        .steps-list {
+            list-style: none;
+            counter-reset: step-counter;
+        }
+
+        .steps-list li {
+            counter-increment: step-counter;
+            margin-bottom: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #D2691E;
+            position: relative;
+        }
+
+        .steps-list li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: -15px;
+            top: 15px;
+            background: #D2691E;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .step-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        .step-description {
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .action-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .action-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .action-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 24px;
+            color: white;
+        }
+
+        .action-card:nth-child(1) .action-icon { background: linear-gradient(135deg, #28a745 0%, #20c997 100%); }
+        .action-card:nth-child(2) .action-icon { background: linear-gradient(135deg, #17a2b8 0%, #138496 100%); }
+        .action-card:nth-child(3) .action-icon { background: linear-gradient(135deg, #dc3545 0%, #c82333 100%); }
+
+        .action-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .action-description {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            color: white;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+        }
+
+        .btn-info {
+            background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+            color: white;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+
+        .highlight {
+            background: #fff3cd;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .guide-header {
+                padding: 30px 20px;
+            }
+
+            .guide-title {
+                font-size: 24px;
+            }
+
+            .section {
+                padding: 20px;
+            }
+
+            .quick-actions {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-content">
+            <div class="navbar-brand">
+                <i class="fas fa-book"></i>
+                Panduan Status Pelanggan
+            </div>
+            <div class="nav-links">
+                <a href="customers.html">
+                    <i class="fas fa-users"></i> Data Pelanggan
+                </a>
+                <a href="modern-dashboard.html">
+                    <i class="fas fa-home"></i> Dashboard
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="guide-header">
+            <div class="guide-icon">
+                <i class="fas fa-user-check"></i>
+            </div>
+            <h1 class="guide-title">Panduan Mengatasi Status Pelanggan</h1>
+            <p class="guide-subtitle">Solusi lengkap untuk masalah pelanggan "Tidak Aktif"</p>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">
+                <i class="fas fa-exclamation-triangle"></i>
+                Masalah yang Sering Terjadi
+            </h2>
+            
+            <div class="problem-box">
+                <h3><i class="fas fa-bug"></i> Masalah Utama</h3>
+                <p>Beberapa pelanggan seperti <strong>"bagas"</strong>, <strong>"nara"</strong>, dan <strong>"mala"</strong> menunjukkan status <span class="highlight">"Tidak Aktif"</span> padahal mereka sudah melakukan transaksi.</p>
+            </div>
+
+            <h3>Penyebab Masalah:</h3>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li>Data pelanggan lama yang tersimpan dengan status "inactive"</li>
+                <li>Bug dalam sistem yang tidak mengupdate status otomatis</li>
+                <li>Data yang tidak sinkron antara sistem order dan customer</li>
+                <li>Migrasi data yang tidak sempurna</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">
+                <i class="fas fa-lightbulb"></i>
+                Solusi yang Tersedia
+            </h2>
+
+            <div class="solution-box">
+                <h3><i class="fas fa-magic"></i> Solusi Otomatis</h3>
+                <p>Sistem telah diperbaiki untuk <strong>otomatis mengaktifkan</strong> semua pelanggan saat:</p>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li>Membuka halaman Dashboard</li>
+                    <li>Membuka halaman Data Pelanggan</li>
+                    <li>Membuat pesanan baru</li>
+                    <li>Melakukan transaksi</li>
+                </ul>
+            </div>
+
+            <h3>Langkah-langkah Perbaikan:</h3>
+            <ol class="steps-list">
+                <li>
+                    <div class="step-title">Solusi Cepat (Otomatis)</div>
+                    <div class="step-description">
+                        Cukup buka halaman <strong>Data Pelanggan</strong> atau <strong>Dashboard</strong>. 
+                        Sistem akan otomatis memperbaiki status semua pelanggan menjadi "Aktif".
+                    </div>
+                </li>
+                <li>
+                    <div class="step-title">Gunakan Tool Perbaikan</div>
+                    <div class="step-description">
+                        Klik tombol <strong>"Fix Status"</strong> di halaman Data Pelanggan untuk memperbaiki status secara manual.
+                    </div>
+                </li>
+                <li>
+                    <div class="step-title">Reset Lengkap (Jika Diperlukan)</div>
+                    <div class="step-description">
+                        Gunakan halaman <strong>"Reset Data"</strong> untuk menghapus semua data dan memulai fresh dengan status aktif.
+                    </div>
+                </li>
+            </ol>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">
+                <i class="fas fa-cogs"></i>
+                Cara Kerja Sistem Baru
+            </h2>
+
+            <div class="info-box">
+                <h3><i class="fas fa-info-circle"></i> Fitur Otomatis</h3>
+                <p>Sistem sekarang memiliki fitur <strong>auto-fix</strong> yang berjalan di background:</p>
+            </div>
+
+            <div class="code-block">
+// Fungsi yang berjalan otomatis
+function autoFixInactiveCustomers() {
+    let customers = JSON.parse(localStorage.getItem('customersData') || '[]');
+    customers.forEach(customer => {
+        if (customer.status === 'inactive' || !customer.status) {
+            customer.status = 'active'; // Otomatis diaktifkan
+        }
+    });
+    localStorage.setItem('customersData', JSON.stringify(customers));
+}
+            </div>
+
+            <h3>Kapan Auto-Fix Berjalan:</h3>
+            <ul style="margin-left: 20px; margin-top: 15px;">
+                <li><strong>Saat membuka Dashboard</strong> - Semua pelanggan otomatis aktif</li>
+                <li><strong>Saat membuka Data Pelanggan</strong> - Status diperbaiki otomatis</li>
+                <li><strong>Saat membuat pesanan</strong> - Pelanggan yang order otomatis aktif</li>
+                <li><strong>Saat menambah pelanggan baru</strong> - Default status "aktif"</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">
+                <i class="fas fa-tools"></i>
+                Aksi Cepat
+            </h2>
+
+            <div class="quick-actions">
+                <div class="action-card">
+                    <div class="action-icon">
+                        <i class="fas fa-magic"></i>
+                    </div>
+                    <h3 class="action-title">Perbaikan Otomatis</h3>
+                    <p class="action-description">Buka halaman ini untuk memperbaiki status semua pelanggan secara otomatis</p>
+                    <a href="immediate-fix.html" class="btn btn-success">
+                        <i class="fas fa-bolt"></i> Perbaiki Sekarang
+                    </a>
+                </div>
+
+                <div class="action-card">
+                    <div class="action-icon">
+                        <i class="fas fa-wrench"></i>
+                    </div>
+                    <h3 class="action-title">Tool Perbaikan</h3>
+                    <p class="action-description">Gunakan tool lengkap untuk memeriksa dan memperbaiki status pelanggan</p>
+                    <a href="fix-customers.html" class="btn btn-info">
+                        <i class="fas fa-tools"></i> Buka Tool
+                    </a>
+                </div>
+
+                <div class="action-card">
+                    <div class="action-icon">
+                        <i class="fas fa-sync-alt"></i>
+                    </div>
+                    <h3 class="action-title">Reset Lengkap</h3>
+                    <p class="action-description">Reset semua data pelanggan dan mulai fresh dengan status aktif</p>
+                    <a href="reset-customers.html" class="btn btn-danger">
+                        <i class="fas fa-trash-restore"></i> Reset Data
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">
+                <i class="fas fa-question-circle"></i>
+                FAQ (Pertanyaan Sering Diajukan)
+            </h2>
+
+            <div style="display: grid; gap: 20px;">
+                <div class="info-box">
+                    <h4><strong>Q: Mengapa pelanggan berstatus "Tidak Aktif"?</strong></h4>
+                    <p><strong>A:</strong> Ini terjadi karena data lama yang tersimpan dengan status inactive. Sistem baru sudah memperbaiki masalah ini secara otomatis.</p>
+                </div>
+
+                <div class="info-box">
+                    <h4><strong>Q: Apakah data pelanggan akan hilang jika direset?</strong></h4>
+                    <p><strong>A:</strong> Reset lengkap akan menghapus semua data. Gunakan opsi "Perbaikan Otomatis" untuk mempertahankan data yang ada.</p>
+                </div>
+
+                <div class="info-box">
+                    <h4><strong>Q: Bagaimana mencegah masalah ini terulang?</strong></h4>
+                    <p><strong>A:</strong> Sistem sudah diperbaiki. Semua pelanggan baru otomatis aktif, dan pelanggan lama akan diaktifkan otomatis saat sistem digunakan.</p>
+                </div>
+
+                <div class="info-box">
+                    <h4><strong>Q: Apakah perlu melakukan perbaikan manual setiap hari?</strong></h4>
+                    <p><strong>A:</strong> Tidak. Sistem sekarang otomatis memperbaiki status pelanggan. Cukup gunakan sistem seperti biasa.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" style="text-align: center;">
+            <h2 class="section-title" style="justify-content: center;">
+                <i class="fas fa-heart"></i>
+                Bantuan Lebih Lanjut
+            </h2>
+            <p style="margin-bottom: 20px;">Jika masih mengalami masalah, silakan hubungi administrator sistem atau gunakan tool yang tersedia.</p>
+            
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <a href="customers.html" class="btn btn-primary">
+                    <i class="fas fa-users"></i> Ke Data Pelanggan
+                </a>
+                <a href="modern-dashboard.html" class="btn btn-info">
+                    <i class="fas fa-home"></i> Ke Dashboard
+                </a>
+                <a href="immediate-fix.html" class="btn btn-success">
+                    <i class="fas fa-magic"></i> Perbaiki Sekarang
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

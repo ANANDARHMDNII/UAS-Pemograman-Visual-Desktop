@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Immediate Fix - Cappunabara</title>
+</head>
+<body>
+    <h1>Immediate Customer Status Fix</h1>
+    <p>This page will automatically fix all inactive customers.</p>
+    <div id="result"></div>
+
+    <script>
+        // Immediate fix for all inactive customers
+        function immediateFixCustomers() {
+            let customers = JSON.parse(localStorage.getItem('customersData') || '[]');
+            let fixedCount = 0;
+            
+            console.log('Before fix:', customers);
+            
+            customers.forEach(customer => {
+                if (customer.status === 'inactive' || !customer.status) {
+                    customer.status = 'active';
+                    fixedCount++;
+                    console.log(`Fixed customer: ${customer.name} - ${customer.phone}`);
+                }
+            });
+            
+            if (fixedCount > 0) {
+                localStorage.setItem('customersData', JSON.stringify(customers));
+                console.log('After fix:', customers);
+                
+                document.getElementById('result').innerHTML = `
+                    <h2 style="color: green;">✅ Success!</h2>
+                    <p>Fixed ${fixedCount} inactive customers.</p>
+                    <p>All customers are now active.</p>
+                    <button onclick="window.location.href='customers.html'" style="padding: 10px 20px; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                        Go to Customer Data
+                    </button>
+                `;
+            } else {
+                document.getElementById('result').innerHTML = `
+                    <h2 style="color: blue;">ℹ️ Info</h2>
+                    <p>No inactive customers found. All ${customers.length} customers are already active.</p>
+                    <button onclick="window.location.href='customers.html'" style="padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                        Go to Customer Data
+                    </button>
+                `;
+            }
+        }
+
+        // Run immediately when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            immediateFixCustomers();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reset Data Pelanggan - Cappunabara</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .reset-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            width: 100%;
+            overflow: hidden;
+            animation: slideIn 0.6s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .reset-header {
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .reset-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 24px;
+        }
+
+        .reset-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .reset-subtitle {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .reset-content {
+            padding: 30px;
+        }
+
+        .info-box {
+            background: #f8f9fa;
+            border-left: 4px solid #17a2b8;
+            padding: 20px;
+            margin-bottom: 25px;
+            border-radius: 8px;
+        }
+
+        .info-box h3 {
+            color: #17a2b8;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .info-box p {
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 8px;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 20px;
+            margin-bottom: 25px;
+            border-radius: 8px;
+        }
+
+        .warning-box h3 {
+            color: #856404;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .warning-box p {
+            color: #856404;
+            line-height: 1.5;
+        }
+
+        .status-display {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .status-item:last-child {
+            border-bottom: none;
+        }
+
+        .status-label {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .status-value {
+            font-weight: 700;
+        }
+
+        .status-active {
+            color: #28a745;
+        }
+
+        .status-inactive {
+            color: #dc3545;
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            padding: 15px 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-check {
+            background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+            color: white;
+        }
+
+        .btn-fix {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+        }
+
+        .btn-reset {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            color: white;
+            grid-column: 1 / -1;
+        }
+
+        .btn-back {
+            background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+            color: white;
+            grid-column: 1 / -1;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .result-box {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 600;
+            display: none;
+        }
+
+        .result-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .result-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .customer-list {
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .customer-item {
+            padding: 10px 15px;
+            border-bottom: 1px solid #dee2e6;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .customer-item:last-child {
+            border-bottom: none;
+        }
+
+        .customer-name {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .customer-phone {
+            color: #666;
+            font-size: 12px;
+        }
+
+        .customer-status {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .status-badge-active {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-badge-inactive {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .reset-container {
+                margin: 10px;
+            }
+
+            .action-buttons {
+                grid-template-columns: 1fr;
+            }
+
+            .btn-reset,
+            .btn-back {
+                grid-column: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="reset-container">
+        <div class="reset-header">
+            <div class="reset-icon">
+                <i class="fas fa-sync-alt"></i>
+            </div>
+            <h1 class="reset-title">Reset Data Pelanggan</h1>
+            <p class="reset-subtitle">Perbaiki status pelanggan yang tidak aktif</p>
+        </div>
+
+        <div class="reset-content">
+            <div class="info-box">
+                <h3><i class="fas fa-info-circle"></i> Informasi</h3>
+                <p>Halaman ini membantu Anda memperbaiki masalah status pelanggan yang tidak aktif.</p>
+                <p>Anda dapat memeriksa status saat ini dan memperbaikinya dengan satu klik.</p>
+            </div>
+
+            <div class="warning-box">
+                <h3><i class="fas fa-exclamation-triangle"></i> Peringatan</h3>
+                <p>Reset lengkap akan menghapus semua data pelanggan dan transaksi yang ada. Gunakan dengan hati-hati!</p>
+            </div>
+
+            <div class="status-display" id="status-display">
+                <h3 style="margin-bottom: 15px; color: #333;">
+                    <i class="fas fa-chart-pie"></i> Status Pelanggan Saat Ini
+                </h3>
+                <div class="status-item">
+                    <span class="status-label">Total Pelanggan:</span>
+                    <span class="status-value" id="total-customers">-</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Pelanggan Aktif:</span>
+                    <span class="status-value status-active" id="active-customers">-</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Pelanggan Tidak Aktif:</span>
+                    <span class="status-value status-inactive" id="inactive-customers">-</span>
+                </div>
+            </div>
+
+            <div id="customer-list-container" style="display: none;">
+                <h4 style="color: #333; margin-bottom: 10px;">
+                    <i class="fas fa-users"></i> Daftar Pelanggan Tidak Aktif:
+                </h4>
+                <div class="customer-list" id="customer-list">
+                    <!-- Customer list will be populated here -->
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-check" onclick="checkCustomerStatus()">
+                    <i class="fas fa-search"></i>
+                    Periksa Status
+                </button>
+                <button class="btn btn-fix" onclick="fixInactiveCustomers()" id="fix-btn" disabled>
+                    <i class="fas fa-user-check"></i>
+                    Aktifkan Semua
+                </button>
+                <button class="btn btn-reset" onclick="resetAllData()">
+                    <i class="fas fa-trash-restore"></i>
+                    Reset Lengkap (Hapus Semua Data)
+                </button>
+                <a href="customers.html" class="btn btn-back">
+                    <i class="fas fa-arrow-left"></i>
+                    Kembali ke Data Pelanggan
+                </a>
+            </div>
+
+            <div class="result-box" id="result-box">
+                <!-- Result messages will appear here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let customersData = [];
+
+        // Check customer status
+        function checkCustomerStatus() {
+            const checkBtn = document.querySelector('.btn-check');
+            const originalContent = checkBtn.innerHTML;
+            
+            checkBtn.innerHTML = '<div class="loading"></div> Memeriksa...';
+            checkBtn.disabled = true;
+
+            setTimeout(() => {
+                customersData = JSON.parse(localStorage.getItem('customersData') || '[]');
+                
+                const totalCustomers = customersData.length;
+                const activeCustomers = customersData.filter(c => c.status === 'active').length;
+                const inactiveCustomers = customersData.filter(c => c.status === 'inactive' || !c.status).length;
+
+                // Update status display
+                document.getElementById('total-customers').textContent = totalCustomers;
+                document.getElementById('active-customers').textContent = activeCustomers;
+                document.getElementById('inactive-customers').textContent = inactiveCustomers;
+
+                // Show inactive customers list
+                const inactiveList = customersData.filter(c => c.status === 'inactive' || !c.status);
+                const customerListContainer = document.getElementById('customer-list-container');
+                const customerList = document.getElementById('customer-list');
+
+                if (inactiveList.length > 0) {
+                    customerList.innerHTML = inactiveList.map(customer => `
+                        <div class="customer-item">
+                            <div>
+                                <div class="customer-name">${customer.name}</div>
+                                <div class="customer-phone">${customer.phone}</div>
+                            </div>
+                            <span class="customer-status status-badge-inactive">
+                                ${customer.status || 'Tidak Terdefinisi'}
+                            </span>
+                        </div>
+                    `).join('');
+                    customerListContainer.style.display = 'block';
+                    document.getElementById('fix-btn').disabled = false;
+                } else {
+                    customerListContainer.style.display = 'none';
+                    document.getElementById('fix-btn').disabled = true;
+                }
+
+                // Show result
+                const resultBox = document.getElementById('result-box');
+                if (totalCustomers === 0) {
+                    resultBox.className = 'result-box result-info';
+                    resultBox.innerHTML = `
+                        <i class="fas fa-info-circle"></i>
+                        <strong>Tidak ada data pelanggan</strong><br>
+                        Belum ada pelanggan yang terdaftar dalam sistem.
+                    `;
+                } else if (inactiveCustomers === 0) {
+                    resultBox.className = 'result-box result-success';
+                    resultBox.innerHTML = `
+                        <i class="fas fa-check-circle"></i>
+                        <strong>Semua pelanggan sudah aktif!</strong><br>
+                        ${totalCustomers} pelanggan dalam status aktif.
+                    `;
+                } else {
+                    resultBox.className = 'result-box result-info';
+                    resultBox.innerHTML = `
+                        <i class="fas fa-exclamation-circle"></i>
+                        <strong>Ditemukan ${inactiveCustomers} pelanggan tidak aktif</strong><br>
+                        Klik tombol "Aktifkan Semua" untuk memperbaiki status mereka.
+                    `;
+                }
+                resultBox.style.display = 'block';
+
+                checkBtn.innerHTML = originalContent;
+                checkBtn.disabled = false;
+            }, 1000);
+        }
+
+        // Fix inactive customers
+        function fixInactiveCustomers() {
+            if (customersData.length === 0) {
+                alert('Tidak ada data pelanggan untuk diperbaiki');
+                return;
+            }
+
+            const fixBtn = document.getElementById('fix-btn');
+            const originalContent = fixBtn.innerHTML;
+            
+            fixBtn.innerHTML = '<div class="loading"></div> Memperbaiki...';
+            fixBtn.disabled = true;
+
+            setTimeout(() => {
+                let fixedCount = 0;
+                customersData.forEach(customer => {
+                    if (customer.status === 'inactive' || !customer.status) {
+                        customer.status = 'active';
+                        fixedCount++;
+                    }
+                });
+
+                if (fixedCount > 0) {
+                    localStorage.setItem('customersData', JSON.stringify(customersData));
+                    
+                    const resultBox = document.getElementById('result-box');
+                    resultBox.className = 'result-box result-success';
+                    resultBox.innerHTML = `
+                        <i class="fas fa-check-circle"></i>
+                        <strong>Berhasil!</strong><br>
+                        ${fixedCount} pelanggan telah diaktifkan.<br>
+                        <small>Semua pelanggan sekarang berstatus aktif.</small>
+                    `;
+                    resultBox.style.display = 'block';
+
+                    // Update status display
+                    checkCustomerStatus();
+                    
+                    // Hide customer list
+                    document.getElementById('customer-list-container').style.display = 'none';
+                } else {
+                    alert('Tidak ada pelanggan yang perlu diperbaiki');
+                }
+
+                fixBtn.innerHTML = originalContent;
+                fixBtn.disabled = true;
+            }, 1500);
+        }
+
+        // Reset all data
+        function resetAllData() {
+            const confirmMessage = `
+PERINGATAN: Reset Lengkap Data
+
+Tindakan ini akan:
+• Menghapus SEMUA data pelanggan
+• Menghapus SEMUA riwayat transaksi
+• Menghapus SEMUA data penjualan
+
+Apakah Anda yakin ingin melanjutkan?
+Tindakan ini TIDAK DAPAT DIBATALKAN!
+            `;
+
+            if (confirm(confirmMessage)) {
+                const secondConfirm = confirm('Konfirmasi sekali lagi: Hapus SEMUA data pelanggan dan transaksi?');
+                
+                if (secondConfirm) {
+                    // Clear all localStorage data
+                    localStorage.removeItem('customersData');
+                    localStorage.removeItem('salesData');
+                    localStorage.removeItem('lastOrder');
+                    
+                    // Reset variables
+                    customersData = [];
+                    
+                    // Show success message
+                    const resultBox = document.getElementById('result-box');
+                    resultBox.className = 'result-box result-success';
+                    resultBox.innerHTML = `
+                        <i class="fas fa-check-circle"></i>
+                        <strong>Reset Berhasil!</strong><br>
+                        Semua data pelanggan dan transaksi telah dihapus.<br>
+                        <small>Sistem siap untuk data baru dengan status aktif.</small>
+                    `;
+                    resultBox.style.display = 'block';
+
+                    // Update status display
+                    document.getElementById('total-customers').textContent = '0';
+                    document.getElementById('active-customers').textContent = '0';
+                    document.getElementById('inactive-customers').textContent = '0';
+                    document.getElementById('customer-list-container').style.display = 'none';
+                    document.getElementById('fix-btn').disabled = true;
+
+                    // Show redirect option
+                    setTimeout(() => {
+                        if (confirm('Data berhasil direset!\n\nApakah Anda ingin kembali ke halaman Data Pelanggan?')) {
+                            window.location.href = 'customers.html';
+                        }
+                    }, 2000);
+                }
+            }
+        }
+
+        // Auto-check on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                checkCustomerStatus();
+            }, 500);
+        });
+    </script>
+</body>
+</html>

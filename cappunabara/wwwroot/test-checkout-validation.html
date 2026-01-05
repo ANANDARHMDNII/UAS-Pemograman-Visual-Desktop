@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Checkout Validation - Cappunabara</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #D2691E;
+        }
+
+        .header h1 {
+            color: #8B4513;
+            margin-bottom: 10px;
+        }
+
+        .test-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+        }
+
+        .test-section h3 {
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin: 5px;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            color: white;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+        }
+
+        .btn-info {
+            background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .info-box {
+            background: #f8f9fa;
+            border-left: 4px solid #D2691E;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .checklist {
+            list-style: none;
+            padding: 0;
+        }
+
+        .checklist li {
+            padding: 8px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .checklist li::before {
+            content: '✓';
+            background: #28a745;
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-check-circle"></i> Test Checkout Validation</h1>
+            <p>Halaman untuk menguji validasi tombol "Proses Pesanan"</p>
+        </div>
+
+        <div class="info-box">
+            <h4>Masalah yang Diperbaiki:</h4>
+            <p>Tombol "Proses Pesanan" tidak bisa diklik karena validasi yang tidak sesuai dengan jenis layanan yang dipilih.</p>
+        </div>
+
+        <div class="test-section">
+            <h3><i class="fas fa-utensils"></i> Validasi Dine In</h3>
+            <p>Untuk layanan Dine In, yang diperlukan:</p>
+            <ul class="checklist">
+                <li>Pilih jenis layanan: Dine In</li>
+                <li>Tambah minimal 1 item ke keranjang</li>
+                <li>Isi nomor telepon pelanggan</li>
+                <li>Isi nama pelanggan</li>
+                <li>Pilih nomor meja</li>
+                <li>Pilih metode pembayaran</li>
+            </ul>
+        </div>
+
+        <div class="test-section">
+            <h3><i class="fas fa-shopping-bag"></i> Validasi Take Away</h3>
+            <p>Untuk layanan Take Away, yang diperlukan:</p>
+            <ul class="checklist">
+                <li>Pilih jenis layanan: Take Away</li>
+                <li>Tambah minimal 1 item ke keranjang</li>
+                <li>Isi nomor telepon pelanggan</li>
+                <li>Isi nama pelanggan</li>
+                <li>Pilih nomor antrian (otomatis)</li>
+                <li>Pilih metode pembayaran</li>
+            </ul>
+        </div>
+
+        <div class="test-section">
+            <h3><i class="fas fa-motorcycle"></i> Validasi Delivery</h3>
+            <p>Untuk layanan Delivery, yang diperlukan:</p>
+            <ul class="checklist">
+                <li>Pilih jenis layanan: Delivery</li>
+                <li>Tambah minimal 1 item ke keranjang</li>
+                <li>Isi nomor telepon pelanggan</li>
+                <li>Isi nama pelanggan</li>
+                <li>Isi alamat pengiriman lengkap</li>
+                <li>Pilih metode pembayaran</li>
+            </ul>
+        </div>
+
+        <div class="info-box">
+            <h4>Perbaikan yang Telah Dilakukan:</h4>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li>✅ Validasi disesuaikan dengan jenis layanan</li>
+                <li>✅ Delivery tidak memerlukan nomor meja</li>
+                <li>✅ Dine In dan Take Away memerlukan nomor meja/antrian</li>
+                <li>✅ Event listener ditambahkan untuk semua field</li>
+                <li>✅ Tombol diupdate secara real-time</li>
+            </ul>
+        </div>
+
+        <div style="text-align: center; margin: 30px 0;">
+            <a href="order-system.html" class="btn btn-primary">
+                <i class="fas fa-shopping-cart"></i> Test Order System
+            </a>
+            <a href="test-service-struk.html" class="btn btn-success">
+                <i class="fas fa-receipt"></i> Test Service Struk
+            </a>
+            <a href="modern-dashboard.html" class="btn btn-info">
+                <i class="fas fa-home"></i> Dashboard
+            </a>
+        </div>
+
+        <div class="test-section">
+            <h3><i class="fas fa-bug"></i> Troubleshooting</h3>
+            <p>Jika tombol masih tidak bisa diklik:</p>
+            <ol style="margin-left: 20px; margin-top: 10px;">
+                <li>Pastikan sudah memilih jenis layanan terlebih dahulu</li>
+                <li>Tambahkan minimal 1 item ke keranjang</li>
+                <li>Isi semua field yang diperlukan sesuai jenis layanan</li>
+                <li>Pilih metode pembayaran</li>
+                <li>Refresh halaman jika masih bermasalah</li>
+            </ol>
+        </div>
+    </div>
+</body>
+</html>

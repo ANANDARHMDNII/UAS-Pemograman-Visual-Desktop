@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Inventory Edit - Cappunabara</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+        }
+        .test-section h3 {
+            color: #8B4513;
+            margin-top: 0;
+        }
+        .btn {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .btn-primary { background: #8B4513; color: white; }
+        .btn-info { background: #17a2b8; color: white; }
+        .btn-warning { background: #ffc107; color: #333; }
+        .btn-success { background: #28a745; color: white; }
+        .result {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            background: #f8f9fa;
+            border-left: 4px solid #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Test Inventory Edit Functionality</h1>
+        <p>Halaman ini untuk menguji apakah fungsi edit inventori bekerja dengan baik.</p>
+        
+        <div class="test-section">
+            <h3>Test 1: Event Delegation</h3>
+            <p>Test apakah event delegation bekerja untuk tombol aksi:</p>
+            <div id="test-buttons">
+                <button class="btn btn-info action-view" data-id="1">
+                    <i class="fas fa-eye"></i> View Item 1
+                </button>
+                <button class="btn btn-warning action-edit" data-id="2">
+                    <i class="fas fa-edit"></i> Edit Item 2
+                </button>
+                <button class="btn btn-success action-restock" data-id="3">
+                    <i class="fas fa-plus"></i> Restock Item 3
+                </button>
+            </div>
+            <div id="test1-result" class="result" style="display: none;"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>Test 2: Direct Function Calls</h3>
+            <p>Test apakah fungsi dapat dipanggil langsung:</p>
+            <button class="btn btn-primary" onclick="testDirectCall()">Test Direct Function Call</button>
+            <div id="test2-result" class="result" style="display: none;"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>Test 3: Modal Functionality</h3>
+            <p>Test apakah modal dapat dibuka dan ditutup:</p>
+            <button class="btn btn-warning" onclick="testModalOpen()">Open Edit Modal</button>
+            <button class="btn btn-success" onclick="testModalClose()">Close Edit Modal</button>
+            <div id="test3-result" class="result" style="display: none;"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>Navigation</h3>
+            <a href="inventory.html" class="btn btn-primary">Kembali ke Inventory</a>
+            <a href="modern-dashboard.html" class="btn btn-info">Dashboard</a>
+        </div>
+    </div>
+
+    <script>
+        // Sample inventory data for testing
+        const testInventoryData = [
+            {
+                id: 1,
+                name: 'Beras Premium',
+                category: 'Bahan Pokok',
+                stock: 50,
+                unit: 'kg',
+                price: 15000,
+                minStock: 20,
+                maxStock: 100
+            },
+            {
+                id: 2,
+                name: 'Ayam Segar',
+                category: 'Protein',
+                stock: 15,
+                unit: 'kg',
+                price: 35000,
+                minStock: 10,
+                maxStock: 50
+            },
+            {
+                id: 3,
+                name: 'Daging Sapi',
+                category: 'Protein',
+                stock: 8,
+                unit: 'kg',
+                price: 120000,
+                minStock: 5,
+                maxStock: 25
+            }
+        ];
+
+        // Test functions
+        function viewItemAction(id) {
+            console.log('View item action called with ID:', id);
+            const item = testInventoryData.find(i => i.id === id);
+            if (item) {
+                showResult('test1-result', `✅ View action berhasil untuk item: ${item.name}`);
+            } else {
+                showResult('test1-result', `❌ Item dengan ID ${id} tidak ditemukan`);
+            }
+        }
+
+        function editItemAction(id) {
+            console.log('Edit item action called with ID:', id);
+            const item = testInventoryData.find(i => i.id === id);
+            if (item) {
+                showResult('test1-result', `✅ Edit action berhasil untuk item: ${item.name}`);
+            } else {
+                showResult('test1-result', `❌ Item dengan ID ${id} tidak ditemukan`);
+            }
+        }
+
+        function restockItemAction(id) {
+            console.log('Restock item action called with ID:', id);
+            const item = testInventoryData.find(i => i.id === id);
+            if (item) {
+                showResult('test1-result', `✅ Restock action berhasil untuk item: ${item.name}`);
+            } else {
+                showResult('test1-result', `❌ Item dengan ID ${id} tidak ditemukan`);
+            }
+        }
+
+        function testDirectCall() {
+            try {
+                editItemAction(2);
+                showResult('test2-result', '✅ Direct function call berhasil!');
+            } catch (error) {
+                showResult('test2-result', `❌ Error: ${error.message}`);
+            }
+        }
+
+        function testModalOpen() {
+            try {
+                // Simulate modal opening
+                showResult('test3-result', '✅ Modal berhasil dibuka (simulasi)');
+            } catch (error) {
+                showResult('test3-result', `❌ Error: ${error.message}`);
+            }
+        }
+
+        function testModalClose() {
+            try {
+                // Simulate modal closing
+                showResult('test3-result', '✅ Modal berhasil ditutup (simulasi)');
+            } catch (error) {
+                showResult('test3-result', `❌ Error: ${error.message}`);
+            }
+        }
+
+        function showResult(elementId, message) {
+            const element = document.getElementById(elementId);
+            element.textContent = message;
+            element.style.display = 'block';
+        }
+
+        // Setup event delegation for test buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('test-buttons').addEventListener('click', function(e) {
+                const button = e.target.closest('button');
+                if (!button) return;
+
+                const itemId = parseInt(button.getAttribute('data-id'));
+                console.log('Button clicked, item ID:', itemId);
+
+                if (button.classList.contains('action-view')) {
+                    viewItemAction(itemId);
+                } else if (button.classList.contains('action-edit')) {
+                    editItemAction(itemId);
+                } else if (button.classList.contains('action-restock')) {
+                    restockItemAction(itemId);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

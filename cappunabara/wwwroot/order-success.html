@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pesanan Berhasil - Cappunabara</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .success-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+            overflow: hidden;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .success-header {
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .success-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 36px;
+            animation: bounce 1s ease-in-out;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        .success-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .success-subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .order-details {
+            padding: 30px;
+        }
+
+        .order-info {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-left: 5px solid #D2691E;
+        }
+
+        .order-info h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            color: #666;
+            font-weight: 500;
+        }
+
+        .info-value {
+            color: #333;
+            font-weight: 600;
+        }
+
+        .order-items {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        .order-items h3 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .item-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .item-details {
+            flex: 1;
+        }
+
+        .item-name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .item-price {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .item-quantity {
+            background: #D2691E;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin: 0 15px;
+        }
+
+        .item-total {
+            font-weight: 700;
+            color: #D2691E;
+            font-size: 16px;
+        }
+
+        .order-summary {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .summary-row:last-child {
+            border-bottom: none;
+            font-size: 18px;
+            font-weight: 700;
+            color: #D2691E;
+            padding-top: 15px;
+            border-top: 2px solid #D2691E;
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            padding: 15px 25px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-print {
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            color: white;
+        }
+
+        .btn-download {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+        }
+
+        .btn-order-again {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            color: white;
+        }
+
+        .btn-dashboard {
+            background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+            color: white;
+        }
+
+        .footer-note {
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .footer-note i {
+            color: #D2691E;
+            margin-right: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .success-container {
+                margin: 10px;
+                border-radius: 15px;
+            }
+
+            .success-header {
+                padding: 30px 20px;
+            }
+
+            .success-title {
+                font-size: 24px;
+            }
+
+            .order-details {
+                padding: 20px;
+            }
+
+            .action-buttons {
+                grid-template-columns: 1fr;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Print styles */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+                margin: 0;
+            }
+
+            .success-container {
+                box-shadow: none;
+                border-radius: 0;
+                max-width: none;
+                width: 100%;
+                margin: 0;
+                padding: 0;
+                page-break-inside: avoid;
+            }
+
+            .success-header {
+                background: #8B4513 !important;
+                -webkit-print-color-adjust: exact;
+                color-adjust: exact;
+                padding: 20px !important;
+                margin: 0;
+            }
+
+            .success-title {
+                font-size: 20px !important;
+            }
+
+            .success-subtitle {
+                font-size: 12px !important;
+            }
+
+            .success-icon {
+                width: 50px !important;
+                height: 50px !important;
+                font-size: 20px !important;
+                margin-bottom: 10px !important;
+            }
+
+            .order-details {
+                padding: 15px !important;
+            }
+
+            .order-info,
+            .order-items,
+            .order-summary {
+                padding: 15px !important;
+                margin-bottom: 15px !important;
+                page-break-inside: avoid;
+            }
+
+            .order-info h3,
+            .order-items h3 {
+                font-size: 14px !important;
+                margin-bottom: 10px !important;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr 1fr !important;
+                gap: 8px !important;
+            }
+
+            .info-item {
+                padding: 5px 0 !important;
+                font-size: 12px !important;
+            }
+
+            .order-item {
+                padding: 8px !important;
+                margin-bottom: 8px !important;
+                font-size: 12px !important;
+            }
+
+            .item-name {
+                font-size: 12px !important;
+                margin-bottom: 2px !important;
+            }
+
+            .item-price {
+                font-size: 10px !important;
+            }
+
+            .item-quantity {
+                padding: 2px 6px !important;
+                font-size: 10px !important;
+            }
+
+            .item-total {
+                font-size: 12px !important;
+            }
+
+            .summary-row {
+                padding: 5px 0 !important;
+                font-size: 12px !important;
+            }
+
+            .summary-row:last-child {
+                font-size: 14px !important;
+                padding-top: 8px !important;
+            }
+
+            .action-buttons,
+            .footer-note {
+                display: none !important;
+            }
+
+            /* Force single page */
+            .success-container * {
+                page-break-inside: avoid !important;
+            }
+
+            /* Compact layout for print */
+            .order-details > * {
+                margin-bottom: 8px !important;
+            }
+
+            /* Reduce font sizes for better fit */
+            * {
+                font-size: 10px !important;
+                line-height: 1.1 !important;
+            }
+
+            h1 {
+                font-size: 16px !important;
+                margin: 3px 0 !important;
+            }
+
+            h2, h3 {
+                font-size: 12px !important;
+                margin: 3px 0 !important;
+            }
+
+            .info-value,
+            .item-total,
+            .summary-row {
+                font-weight: 600 !important;
+            }
+
+            /* Ensure everything fits in one page */
+            @page {
+                size: A4;
+                margin: 8mm;
+            }
+
+            .success-container {
+                height: auto !important;
+                max-height: none !important;
+                transform: scale(0.85) !important;
+                transform-origin: top left !important;
+                width: 118% !important;
+            }
+        }
+
+        /* Loading animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="success-container">
+        <div class="success-header">
+            <div class="success-icon">
+                <i class="fas fa-check"></i>
+            </div>
+            <h1 class="success-title">Pesanan Berhasil!</h1>
+            <p class="success-subtitle">Terima kasih telah memesan di Cappunabara</p>
+        </div>
+
+        <div class="order-details">
+            <div class="order-info">
+                <h3>
+                    <i class="fas fa-info-circle"></i>
+                    Informasi Pesanan
+                </h3>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="info-label">No. Pesanan:</span>
+                        <span class="info-value" id="order-id">-</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Tanggal:</span>
+                        <span class="info-value" id="order-date">-</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Jenis Layanan:</span>
+                        <span class="info-value" id="service-type">-</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Pelanggan:</span>
+                        <span class="info-value" id="customer-name">-</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Telepon:</span>
+                        <span class="info-value" id="customer-phone">-</span>
+                    </div>
+                    <div class="info-item" id="table-info">
+                        <span class="info-label">Meja:</span>
+                        <span class="info-value" id="table-number">-</span>
+                    </div>
+                    <div class="info-item" id="delivery-info" style="display: none;">
+                        <span class="info-label">Alamat:</span>
+                        <span class="info-value" id="delivery-address">-</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Pembayaran:</span>
+                        <span class="info-value" id="payment-method">-</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="order-items">
+                <h3>
+                    <i class="fas fa-utensils"></i>
+                    Detail Pesanan
+                </h3>
+                <div class="item-list" id="order-items-list">
+                    <!-- Items will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <div class="order-summary">
+                <div class="summary-row">
+                    <span>Subtotal:</span>
+                    <span id="subtotal">Rp 0</span>
+                </div>
+                <div class="summary-row">
+                    <span>Pajak (10%):</span>
+                    <span id="tax">Rp 0</span>
+                </div>
+                <div class="summary-row">
+                    <span>Total Pembayaran:</span>
+                    <span id="total">Rp 0</span>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-print" onclick="printReceipt()">
+                    <i class="fas fa-print"></i>
+                    Print Struk
+                </button>
+                <button class="btn btn-download" onclick="downloadPDF()">
+                    <i class="fas fa-download"></i>
+                    Download PDF
+                </button>
+                <a href="order-system.html" class="btn btn-order-again">
+                    <i class="fas fa-redo"></i>
+                    Pesan Lagi
+                </a>
+                <a href="modern-dashboard.html" class="btn btn-dashboard">
+                    <i class="fas fa-home"></i>
+                    Dashboard
+                </a>
+                <a href="test-print-layout.html" class="btn" style="background: linear-gradient(135deg, #6f42c1 0%, #5a2d91 100%); color: white;">
+                    <i class="fas fa-print"></i>
+                    Test Print
+                </a>
+            </div>
+
+            <div class="footer-note">
+                <i class="fas fa-heart"></i>
+                Terima kasih telah mempercayai Cappunabara sebagai pilihan kuliner Anda!
+                <br>
+                <small>Struk ini telah disimpan secara otomatis dalam sistem</small>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Get order data from URL parameters or localStorage
+        function getOrderData() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const orderIdParam = urlParams.get('orderId');
+            
+            if (orderIdParam) {
+                // Get from localStorage using order ID
+                const salesData = JSON.parse(localStorage.getItem('salesData') || '[]');
+                const orderItems = salesData.filter(item => item.orderId === orderIdParam);
+                
+                if (orderItems.length > 0) {
+                    const firstItem = orderItems[0];
+                    return {
+                        orderId: orderIdParam,
+                        date: firstItem.date,
+                        customerName: firstItem.customerName,
+                        customerPhone: firstItem.customerPhone,
+                        tableNumber: firstItem.tableNumber,
+                        paymentMethod: firstItem.paymentMethod,
+                        items: orderItems.map(item => ({
+                            name: item.menuName,
+                            price: item.price || item.unitPrice,
+                            quantity: item.quantity,
+                            total: item.totalPrice
+                        })),
+                        subtotal: orderItems.reduce((sum, item) => sum + item.totalPrice, 0),
+                        tax: orderItems.reduce((sum, item) => sum + item.totalPrice, 0) * 0.1,
+                        total: orderItems.reduce((sum, item) => sum + item.totalPrice, 0) * 1.1
+                    };
+                }
+            }
+            
+            // Fallback: get from localStorage (latest order)
+            const lastOrder = localStorage.getItem('lastOrder');
+            if (lastOrder) {
+                return JSON.parse(lastOrder);
+            }
+            
+            // Default data if no order found
+            return {
+                orderId: 'ORD-' + Date.now(),
+                date: new Date().toISOString(),
+                customerName: 'Pelanggan',
+                customerPhone: '081234567890',
+                tableNumber: '1',
+                paymentMethod: 'cash',
+                items: [
+                    { name: 'Nasi Gudeg Special', price: 25000, quantity: 1, total: 25000 }
+                ],
+                subtotal: 25000,
+                tax: 2500,
+                total: 27500
+            };
+        }
+
+        // Display order data
+        function displayOrderData() {
+            const orderData = getOrderData();
+            
+            // Update order information
+            document.getElementById('order-id').textContent = orderData.orderId;
+            document.getElementById('order-date').textContent = new Date(orderData.date).toLocaleString('id-ID');
+            document.getElementById('customer-name').textContent = orderData.customerName;
+            document.getElementById('customer-phone').textContent = orderData.customerPhone;
+            document.getElementById('payment-method').textContent = getPaymentMethodName(orderData.paymentMethod);
+            
+            // Display service type
+            if (orderData.serviceType) {
+                document.getElementById('service-type').textContent = getServiceTypeName(orderData.serviceType);
+            }
+            
+            // Handle different service types
+            const tableInfo = document.getElementById('table-info');
+            const deliveryInfo = document.getElementById('delivery-info');
+            
+            if (orderData.serviceType === 'delivery') {
+                tableInfo.style.display = 'none';
+                deliveryInfo.style.display = 'flex';
+                document.getElementById('delivery-address').textContent = orderData.deliveryAddress || 'Tidak ada alamat';
+            } else if (orderData.serviceType === 'take-away') {
+                document.querySelector('#table-info .info-label').textContent = 'Nomor Antrian:';
+                document.getElementById('table-number').textContent = orderData.tableNumber || 'A001';
+            } else {
+                document.getElementById('table-number').textContent = `Meja ${orderData.tableNumber || '1'}`;
+            }
+            
+            // Update order items
+            const itemsList = document.getElementById('order-items-list');
+            itemsList.innerHTML = orderData.items.map(item => `
+                <div class="order-item">
+                    <div class="item-details">
+                        <div class="item-name">${item.name}</div>
+                        <div class="item-price">Rp ${item.price.toLocaleString('id-ID')} per item</div>
+                    </div>
+                    <div class="item-quantity">${item.quantity}x</div>
+                    <div class="item-total">Rp ${item.total.toLocaleString('id-ID')}</div>
+                </div>
+            `).join('');
+            
+            // Update summary with delivery fee if applicable
+            let summaryHTML = `
+                <div class="summary-row">
+                    <span>Subtotal:</span>
+                    <span>Rp ${orderData.subtotal.toLocaleString('id-ID')}</span>
+                </div>
+                <div class="summary-row">
+                    <span>Pajak (10%):</span>
+                    <span>Rp ${Math.round(orderData.tax).toLocaleString('id-ID')}</span>
+                </div>
+            `;
+
+            if (orderData.deliveryFee && orderData.deliveryFee > 0) {
+                summaryHTML += `
+                    <div class="summary-row">
+                        <span>Biaya Pengiriman:</span>
+                        <span>Rp ${orderData.deliveryFee.toLocaleString('id-ID')}</span>
+                    </div>
+                `;
+            }
+
+            summaryHTML += `
+                <div class="summary-row final">
+                    <span>Total:</span>
+                    <span>Rp ${Math.round(orderData.total || orderData.totalPrice).toLocaleString('id-ID')}</span>
+                </div>
+            `;
+
+            document.querySelector('.order-summary').innerHTML = summaryHTML;
+            
+            // Store for printing/downloading
+            window.currentOrder = orderData;
+        }
+
+        // Get service type name
+        function getServiceTypeName(serviceType) {
+            const serviceTypes = {
+                'dine-in': 'Dine In (Makan di Tempat)',
+                'take-away': 'Take Away (Dibawa Pulang)',
+                'delivery': 'Delivery Order (Diantar)'
+            };
+            return serviceTypes[serviceType] || serviceType;
+        }
+
+        // Get payment method name
+        function getPaymentMethodName(method) {
+            const paymentMethods = {
+                'cash': 'Tunai',
+                'debit': 'Kartu Debit',
+                'credit': 'Kartu Kredit',
+                'qris': 'QRIS',
+                'gopay': 'GoPay',
+                'ovo': 'OVO',
+                'dana': 'DANA',
+                'shopeepay': 'ShopeePay'
+            };
+            return paymentMethods[method] || 'Tunai';
+        }
+
+        // Print receipt
+        function printReceipt() {
+            const printBtn = document.querySelector('.btn-print');
+            const originalContent = printBtn.innerHTML;
+            
+            printBtn.innerHTML = '<div class="loading"></div> Menyiapkan...';
+            printBtn.disabled = true;
+            
+            setTimeout(() => {
+                window.print();
+                printBtn.innerHTML = originalContent;
+                printBtn.disabled = false;
+            }, 1000);
+        }
+
+        // Download PDF
+        function downloadPDF() {
+            const downloadBtn = document.querySelector('.btn-download');
+            const originalContent = downloadBtn.innerHTML;
+            
+            downloadBtn.innerHTML = '<div class="loading"></div> Membuat PDF...';
+            downloadBtn.disabled = true;
+            
+            setTimeout(() => {
+                generatePDF();
+                downloadBtn.innerHTML = originalContent;
+                downloadBtn.disabled = false;
+            }, 1000);
+        }
+
+        // Generate PDF
+        function generatePDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            const orderData = window.currentOrder;
+
+            // Header - more compact
+            doc.setFontSize(16);
+            doc.text('CAPPUNABARA RESTAURANT', 105, 15, { align: 'center' });
+            doc.setFontSize(10);
+            doc.text('Jl. Malioboro No. 123, Yogyakarta', 105, 22, { align: 'center' });
+            doc.text('Telp: (0274) 123456', 105, 28, { align: 'center' });
+
+            // Order info - compact layout
+            doc.setFontSize(9);
+            doc.text('='.repeat(60), 15, 35);
+            
+            let yPos = 42;
+            doc.text(`Order ID: ${orderData.orderId}`, 15, yPos);
+            doc.text(`Tanggal: ${new Date(orderData.date).toLocaleString('id-ID')}`, 15, yPos + 6);
+            doc.text(`Jenis Layanan: ${getServiceTypeName(orderData.serviceType)}`, 15, yPos + 12);
+            doc.text(`Pelanggan: ${orderData.customerName}`, 15, yPos + 18);
+            doc.text(`Telepon: ${orderData.customerPhone}`, 15, yPos + 24);
+            
+            // Dynamic info based on service type
+            if (orderData.serviceType === 'delivery') {
+                doc.text(`Alamat: ${orderData.deliveryAddress || 'Tidak ada alamat'}`, 15, yPos + 30);
+                doc.text(`Pembayaran: ${getPaymentMethodName(orderData.paymentMethod)}`, 15, yPos + 36);
+                yPos += 6; // Add extra space for delivery address
+            } else if (orderData.serviceType === 'take-away') {
+                doc.text(`Nomor Antrian: ${orderData.tableNumber}`, 15, yPos + 30);
+                doc.text(`Pembayaran: ${getPaymentMethodName(orderData.paymentMethod)}`, 15, yPos + 36);
+            } else {
+                doc.text(`Meja: ${orderData.tableNumber}`, 15, yPos + 30);
+                doc.text(`Pembayaran: ${getPaymentMethodName(orderData.paymentMethod)}`, 15, yPos + 36);
+            }
+            
+            yPos += 36;
+            doc.text('='.repeat(60), 15, yPos);
+
+            // Items - more compact
+            yPos += 8;
+            doc.setFontSize(10);
+            doc.text('DETAIL PESANAN:', 15, yPos);
+            yPos += 6;
+            
+            doc.setFontSize(8);
+            orderData.items.forEach(item => {
+                // Item name
+                doc.text(`${item.name}`, 15, yPos);
+                // Quantity and price on same line
+                doc.text(`${item.quantity} x Rp ${item.price.toLocaleString('id-ID')}`, 110, yPos);
+                // Total price
+                doc.text(`Rp ${item.total.toLocaleString('id-ID')}`, 160, yPos);
+                yPos += 5;
+            });
+
+            // Totals - compact
+            yPos += 3;
+            doc.text('-'.repeat(60), 15, yPos);
+            yPos += 6;
+            
+            doc.setFontSize(9);
+            doc.text(`Subtotal:`, 110, yPos);
+            doc.text(`Rp ${orderData.subtotal.toLocaleString('id-ID')}`, 160, yPos);
+            yPos += 5;
+            
+            doc.text(`Pajak (10%):`, 110, yPos);
+            doc.text(`Rp ${Math.round(orderData.tax).toLocaleString('id-ID')}`, 160, yPos);
+            yPos += 5;
+            
+            // Add delivery fee if applicable
+            if (orderData.deliveryFee && orderData.deliveryFee > 0) {
+                doc.text(`Biaya Pengiriman:`, 110, yPos);
+                doc.text(`Rp ${orderData.deliveryFee.toLocaleString('id-ID')}`, 160, yPos);
+                yPos += 5;
+            }
+            
+            doc.setFontSize(11);
+            doc.setFont(undefined, 'bold');
+            doc.text(`TOTAL:`, 110, yPos);
+            doc.text(`Rp ${Math.round(orderData.total).toLocaleString('id-ID')}`, 160, yPos);
+
+            // Footer - compact
+            yPos += 15;
+            doc.setFontSize(8);
+            doc.setFont(undefined, 'normal');
+            doc.text('Terima kasih atas kunjungan Anda!', 105, yPos, { align: 'center' });
+            doc.text('Cappunabara - Cita Rasa Nusantara', 105, yPos + 5, { align: 'center' });
+
+            // Save PDF
+            doc.save(`struk-${orderData.orderId}.pdf`);
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            displayOrderData();
+            
+            // Add some animation delays
+            setTimeout(() => {
+                document.querySelector('.success-container').style.transform = 'scale(1)';
+            }, 100);
+        });
+
+        // Handle browser back button
+        window.addEventListener('beforeunload', function() {
+            // Clear the last order data when leaving the page
+            localStorage.removeItem('lastOrder');
+        });
+    </script>
+</body>
+</html>

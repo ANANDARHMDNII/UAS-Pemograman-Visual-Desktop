@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Nama Modern - Cappunabara</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .update-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            width: 100%;
+            overflow: hidden;
+            animation: slideIn 0.6s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .update-header {
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .update-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 36px;
+        }
+
+        .update-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .update-subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .update-content {
+            padding: 40px 30px;
+        }
+
+        .info-box {
+            background: #d1ecf1;
+            border-left: 4px solid #17a2b8;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+
+        .success-box {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            display: none;
+        }
+
+        .names-preview {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .names-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .name-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            border-left: 3px solid #D2691E;
+        }
+
+        .name-item strong {
+            color: #333;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .name-item small {
+            color: #666;
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            padding: 15px 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            color: white;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+        }
+
+        .btn-info {
+            background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+            color: white;
+        }
+
+        .btn-back {
+            background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+            color: white;
+            grid-column: 1 / -1;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .update-container {
+                margin: 10px;
+            }
+
+            .update-content {
+                padding: 30px 20px;
+            }
+
+            .action-buttons {
+                grid-template-columns: 1fr;
+            }
+
+            .btn-back {
+                grid-column: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="update-container">
+        <div class="update-header">
+            <div class="update-icon">
+                <i class="fas fa-sync-alt"></i>
+            </div>
+            <h1 class="update-title">Update Nama Modern</h1>
+            <p class="update-subtitle">Perbarui data karyawan dengan nama-nama kekinian</p>
+        </div>
+
+        <div class="update-content">
+            <div class="info-box">
+                <h3><i class="fas fa-info-circle"></i> Informasi</h3>
+                <p>Halaman ini akan memperbarui semua nama karyawan dengan nama-nama modern dan kekinian yang populer di kalangan generasi muda Indonesia.</p>
+            </div>
+
+            <div class="warning-box">
+                <h3><i class="fas fa-exclamation-triangle"></i> Peringatan</h3>
+                <p>Proses ini akan mengganti semua nama karyawan yang ada dengan nama-nama baru. Data lama akan hilang dan tidak dapat dikembalikan.</p>
+            </div>
+
+            <div class="success-box" id="success-box">
+                <h3><i class="fas fa-check-circle"></i> Berhasil!</h3>
+                <p id="success-message">Data karyawan berhasil diperbarui dengan nama modern.</p>
+            </div>
+
+            <div class="names-preview">
+                <h3 style="color: #333; margin-bottom: 15px;">
+                    <i class="fas fa-eye"></i> Preview Nama Modern
+                </h3>
+                <p style="color: #666; margin-bottom: 15px;">Berikut adalah nama-nama modern yang akan digunakan:</p>
+                
+                <div class="names-grid">
+                    <div class="name-item">
+                        <strong>Alya Putri Maharani</strong>
+                        <small>K001 - Barista</small>
+                    </div>
+                    <div class="name-item">
+                        <strong>Kenzo Aditya Pratama</strong>
+                        <small>K002 - Kasir</small>
+                    </div>
+                    <div class="name-item">
+                        <strong>Naira Safira Azzahra</strong>
+                        <small>K003 - Supervisor</small>
+                    </div>
+                    <div class="name-item">
+                        <strong>Rafa Mahendra Putra</strong>
+                        <small>K004 - Admin</small>
+                    </div>
+                    <div class="name-item">
+                        <strong>Zara Amelia Salsabila</strong>
+                        <small>K005 - Barista</small>
+                    </div>
+                    <div class="name-item">
+                        <strong>Arjuna Bayu Saputra</strong>
+                        <small>K006 - Kasir</small>
+                    </div>
+                    <div class="name-item">
+                        <strong>Kiara Aulia Ramadhani</strong>
+                        <small>K007 - Manager</small>
+                    </div>
+                    <div class="name-item">
+                        <strong>Rayhan Fadhil Akbar</strong>
+                        <small>K008 - Barista</small>
+                    </div>
+                    <div class="name-item">
+                        <strong>Aisyah Zahra Kamila</strong>
+                        <small>K009 - Kasir</small>
+                    </div>
+                    <div class="name-item">
+                        <strong>Daffa Rizky Maulana</strong>
+                        <small>K010 - Supervisor</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-success" onclick="updateToModernNames()" id="update-btn">
+                    <i class="fas fa-sync-alt"></i>
+                    Update Sekarang
+                </button>
+                <button class="btn btn-info" onclick="checkCurrentData()">
+                    <i class="fas fa-search"></i>
+                    Cek Data Saat Ini
+                </button>
+                <a href="employees.html" class="btn btn-back">
+                    <i class="fas fa-arrow-left"></i>
+                    Kembali ke Manajemen Karyawan
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateToModernNames() {
+            const updateBtn = document.getElementById('update-btn');
+            const originalContent = updateBtn.innerHTML;
+            
+            updateBtn.innerHTML = '<div class="loading"></div> Memperbarui...';
+            updateBtn.disabled = true;
+
+            setTimeout(() => {
+                const modernEmployeesData = [
+                    {
+                        id: 'K001',
+                        name: 'Alya Putri Maharani',
+                        position: 'barista',
+                        shift: 'pagi',
+                        phone: '081234567890',
+                        address: 'Jl. Malioboro No. 45, Yogyakarta',
+                        joinDate: '2023-01-15',
+                        status: 'aktif'
+                    },
+                    {
+                        id: 'K002',
+                        name: 'Kenzo Aditya Pratama',
+                        position: 'kasir',
+                        shift: 'siang',
+                        phone: '081234567891',
+                        address: 'Jl. Sudirman No. 123, Yogyakarta',
+                        joinDate: '2023-02-20',
+                        status: 'aktif'
+                    },
+                    {
+                        id: 'K003',
+                        name: 'Naira Safira Azzahra',
+                        position: 'supervisor',
+                        shift: 'pagi',
+                        phone: '081234567892',
+                        address: 'Jl. Tugu No. 67, Yogyakarta',
+                        joinDate: '2022-11-10',
+                        status: 'aktif'
+                    },
+                    {
+                        id: 'K004',
+                        name: 'Rafa Mahendra Putra',
+                        position: 'admin',
+                        shift: 'siang',
+                        phone: '081234567893',
+                        address: 'Jl. Kaliurang No. 89, Yogyakarta',
+                        joinDate: '2023-03-05',
+                        status: 'aktif'
+                    },
+                    {
+                        id: 'K005',
+                        name: 'Zara Amelia Salsabila',
+                        position: 'barista',
+                        shift: 'malam',
+                        phone: '081234567894',
+                        address: 'Jl. Gejayan No. 234, Yogyakarta',
+                        joinDate: '2023-04-12',
+                        status: 'nonaktif'
+                    },
+                    {
+                        id: 'K006',
+                        name: 'Arjuna Bayu Saputra',
+                        position: 'kasir',
+                        shift: 'malam',
+                        phone: '081234567895',
+                        address: 'Jl. Affandi No. 156, Yogyakarta',
+                        joinDate: '2023-05-18',
+                        status: 'aktif'
+                    },
+                    {
+                        id: 'K007',
+                        name: 'Kiara Aulia Ramadhani',
+                        position: 'manager',
+                        shift: 'siang',
+                        phone: '081234567896',
+                        address: 'Jl. Solo No. 78, Yogyakarta',
+                        joinDate: '2022-08-22',
+                        status: 'aktif'
+                    },
+                    {
+                        id: 'K008',
+                        name: 'Rayhan Fadhil Akbar',
+                        position: 'barista',
+                        shift: 'pagi',
+                        phone: '081234567897',
+                        address: 'Jl. Bantul No. 91, Yogyakarta',
+                        joinDate: '2023-06-10',
+                        status: 'aktif'
+                    },
+                    {
+                        id: 'K009',
+                        name: 'Aisyah Zahra Kamila',
+                        position: 'kasir',
+                        shift: 'siang',
+                        phone: '081234567898',
+                        address: 'Jl. Wates No. 45, Yogyakarta',
+                        joinDate: '2023-07-22',
+                        status: 'aktif'
+                    },
+                    {
+                        id: 'K010',
+                        name: 'Daffa Rizky Maulana',
+                        position: 'supervisor',
+                        shift: 'malam',
+                        phone: '081234567899',
+                        address: 'Jl. Imogiri No. 67, Yogyakarta',
+                        joinDate: '2023-08-15',
+                        status: 'aktif'
+                    }
+                ];
+
+                // Clear old data and save new modern data
+                localStorage.removeItem('employeesData');
+                localStorage.setItem('employeesData', JSON.stringify(modernEmployeesData));
+
+                // Show success message
+                const successBox = document.getElementById('success-box');
+                const successMessage = document.getElementById('success-message');
+                
+                successMessage.textContent = `✅ Berhasil! ${modernEmployeesData.length} karyawan telah diperbarui dengan nama modern.`;
+                successBox.style.display = 'block';
+
+                updateBtn.innerHTML = '<i class="fas fa-check"></i> Berhasil Diperbarui';
+                updateBtn.style.background = '#28a745';
+                updateBtn.disabled = true;
+
+                // Show redirect option
+                setTimeout(() => {
+                    if (confirm('Data berhasil diperbarui!\n\nApakah Anda ingin melihat hasil di halaman Manajemen Karyawan?')) {
+                        window.location.href = 'employees.html';
+                    }
+                }, 2000);
+            }, 2000);
+        }
+
+        function checkCurrentData() {
+            const currentData = JSON.parse(localStorage.getItem('employeesData') || '[]');
+            
+            if (currentData.length === 0) {
+                alert('📝 Tidak ada data karyawan saat ini.\n\nSilakan update dengan nama modern terlebih dahulu.');
+            } else {
+                const namesList = currentData.map(emp => `• ${emp.name} (${emp.id})`).join('\n');
+                alert(`📊 Data Karyawan Saat Ini (${currentData.length} orang):\n\n${namesList}`);
+            }
+        }
+
+        // Auto-check if modern names already exist
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentData = JSON.parse(localStorage.getItem('employeesData') || '[]');
+            const hasModernNames = currentData.some(emp => 
+                emp.name.includes('Alya') || 
+                emp.name.includes('Kenzo') || 
+                emp.name.includes('Naira')
+            );
+
+            if (hasModernNames) {
+                const successBox = document.getElementById('success-box');
+                const successMessage = document.getElementById('success-message');
+                
+                successMessage.textContent = '✅ Data karyawan sudah menggunakan nama modern!';
+                successBox.style.display = 'block';
+
+                const updateBtn = document.getElementById('update-btn');
+                updateBtn.innerHTML = '<i class="fas fa-check"></i> Sudah Modern';
+                updateBtn.style.background = '#6c757d';
+                updateBtn.disabled = true;
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Clean PDF - Cappunabara</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 2rem;
+            background: #f5f5f5;
+            margin: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #8B6F47;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .big-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            width: 100%;
+            margin: 10px 0;
+        }
+        .big-btn:hover {
+            background: #45a049;
+        }
+        .setup-btn {
+            background: #2196F3;
+        }
+        .setup-btn:hover {
+            background: #1976D2;
+        }
+        .result {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: monospace;
+        }
+        .success { color: #4CAF50; font-weight: bold; }
+        .error { color: #F44336; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Test Clean PDF</h1>
+        
+        <button class="big-btn setup-btn" onclick="createTestOrder()">
+            1️⃣ CREATE TEST ORDER
+        </button>
+        
+        <button class="big-btn" onclick="testCleanPDF()">
+            2️⃣ TEST CLEAN PDF
+        </button>
+        
+        <div id="result" class="result">
+            Status: Ready for testing...
+        </div>
+        
+        <div style="text-align: center; margin-top: 2rem;">
+            <a href="http://localhost:5140/RiwayatPesanan" target="_blank" style="display: inline-block; background: #8B6F47; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
+                📜 Open Riwayat Pesanan
+            </a>
+        </div>
+    </div>
+
+    <script>
+        function createTestOrder() {
+            const result = document.getElementById('result');
+            
+            try {
+                const testOrder = {
+                    id: 'TEST' + Date.now().toString().slice(-6),
+                    customer: {
+                        name: 'Test Customer',
+                        table: 'A1',
+                        phone: '081234567890',
+                        payment: 'cash',
+                        notes: 'Test order'
+                    },
+                    items: [
+                        { id: 1, name: 'Cappuccino Signature', price: 35000, quantity: 2 },
+                        { id: 19, name: 'Tiramisu Slice', price: 45000, quantity: 1 }
+                    ],
+                    timestamp: new Date().toISOString(),
+                    total: 115000,
+                    status: 'completed'
+                };
+                
+                localStorage.setItem('cappunabara_order_history', JSON.stringify([testOrder]));
+                
+                result.innerHTML = 
+                    '<span class="success">✅ TEST ORDER CREATED!</span><br>' +
+                    'Order ID: ' + testOrder.id + '<br>' +
+                    'Customer: ' + testOrder.customer.name + '<br>' +
+                    'Total: Rp ' + testOrder.total.toLocaleString('id-ID') + '<br>' +
+                    'Status: Ready for PDF download test';
+                
+            } catch (error) {
+                result.innerHTML = '<span class="error">❌ Error: ' + error.message + '</span>';
+            }
+        }
+        
+        function testCleanPDF() {
+            const result = document.getElementById('result');
+            
+            try {
+                const orderHistory = JSON.parse(localStorage.getItem('cappunabara_order_history') || '[]');
+                
+                if (orderHistory.length === 0) {
+                    result.innerHTML = '<span class="error">❌ No orders found! Create test order first.</span>';
+                    return;
+                }
+                
+                const order = orderHistory[0];
+                
+                // Test the clean PDF function
+                createCleanPDF(order);
+                
+                result.innerHTML = 
+                    '<span class="success">✅ CLEAN PDF TEST EXECUTED!</span><br>' +
+                    'Order: ' + order.id + '<br>' +
+                    'Expected: New tab should open with clean PDF struk<br>' +
+                    'Action: Click PRINT/SAVE PDF in the new tab<br>' +
+                    'Result: PDF file will be saved to your computer';
+                
+            } catch (error) {
+                result.innerHTML = '<span class="error">❌ Test Error: ' + error.message + '</span>';
+            }
+        }
+        
+        // Clean PDF function - SIMPLE AND WORKING
+        function createCleanPDF(order) {
+            console.log('Creating clean PDF for order:', order.id);
+            
+            const subtotal = order.total;
+            const tax = subtotal * 0.1;
+            const finalTotal = subtotal + tax;
+            const orderDate = new Date(order.timestamp);
+            
+            // Build HTML step by step
+            let html = '';
+            html += '<!DOCTYPE html>';
+            html += '<html><head><meta charset="UTF-8">';
+            html += '<title>Struk Cappunabara - ' + order.id + '</title>';
+            html += '<style>';
+            html += 'body{font-family:Arial,sans-serif;padding:20px;margin:0}';
+            html += '.struk{max-width:400px;margin:0 auto;border:2px solid #8B6F47;padding:20px;border-radius:10px}';
+            html += '.header{text-align:center;margin-bottom:20px}';
+            html += '.brand{font-size:24px;font-weight:bold;color:#8B6F47}';
+            html += '.info{margin:15px 0}';
+            html += '.info-row{display:flex;justify-content:space-between;margin:5px 0}';
+            html += '.items{margin:20px 0}';
+            html += '.item{display:flex;justify-content:space-between;margin:8px 0;padding:5px 0;border-bottom:1px dashed #ccc}';
+            html += '.totals{margin-top:20px;border-top:2px solid #8B6F47;padding-top:15px}';
+            html += '.total-row{display:flex;justify-content:space-between;margin:5px 0}';
+            html += '.final-total{font-weight:bold;font-size:18px;color:#8B6F47}';
+            html += '.instructions{background:#e3f2fd;padding:15px;margin-bottom:20px;text-align:center;border-radius:8px;border:2px solid #2196F3}';
+            html += '.btn{background:#4CAF50;color:white;border:none;padding:12px 24px;border-radius:5px;cursor:pointer;font-size:16px;margin:5px;font-weight:bold}';
+            html += '.btn:hover{background:#45a049}';
+            html += '.close-btn{background:#f44336}';
+            html += '.close-btn:hover{background:#d32f2f}';
+            html += '@media print{.instructions{display:none}}';
+            html += '</style></head><body>';
+            
+            // Instructions
+            html += '<div class="instructions">';
+            html += '<h3>📥 CARA DOWNLOAD PDF:</h3>';
+            html += '<p><strong>1. Klik tombol PRINT/SAVE PDF di bawah</strong></p>';
+            html += '<p><strong>2. Pilih Save as PDF di dialog print</strong></p>';
+            html += '<p><strong>3. Klik Save untuk menyimpan</strong></p>';
+            html += '<button class="btn" onclick="window.print()">🖨️ PRINT / SAVE PDF</button>';
+            html += '<button class="btn close-btn" onclick="window.close()">❌ TUTUP</button>';
+            html += '</div>';
+            
+            // Struk
+            html += '<div class="struk">';
+            html += '<div class="header">';
+            html += '<div style="font-size:36px">☕</div>';
+            html += '<div class="brand">CAPPUNABARA</div>';
+            html += '<div>Your Cozy Corner</div>';
+            html += '</div>';
+            
+            html += '<div style="text-align:center;font-weight:bold;margin:15px 0;font-size:18px;color:#8B6F47">STRUK PEMBELIAN</div>';
+            
+            html += '<div class="info">';
+            html += '<div class="info-row"><span><strong>No. Pesanan:</strong></span><span>' + order.id + '</span></div>';
+            html += '<div class="info-row"><span><strong>Tanggal:</strong></span><span>' + orderDate.toLocaleDateString('id-ID') + '</span></div>';
+            html += '<div class="info-row"><span><strong>Waktu:</strong></span><span>' + orderDate.toLocaleTimeString('id-ID') + '</span></div>';
+            html += '<div class="info-row"><span><strong>Pelanggan:</strong></span><span>' + order.customer.name + '</span></div>';
+            html += '<div class="info-row"><span><strong>Meja:</strong></span><span>' + order.customer.table + '</span></div>';
+            html += '<div class="info-row"><span><strong>Pembayaran:</strong></span><span>' + order.customer.payment + '</span></div>';
+            html += '</div>';
+            
+            html += '<div class="items">';
+            html += '<div style="font-weight:bold;margin-bottom:10px;color:#8B6F47">DETAIL PESANAN:</div>';
+            
+            for (let i = 0; i < order.items.length; i++) {
+                const item = order.items[i];
+                html += '<div class="item">';
+                html += '<span>' + item.name + ' x' + item.quantity + '</span>';
+                html += '<span><strong>Rp ' + (item.price * item.quantity).toLocaleString('id-ID') + '</strong></span>';
+                html += '</div>';
+            }
+            
+            html += '</div>';
+            
+            html += '<div class="totals">';
+            html += '<div class="total-row"><span>Subtotal:</span><span>Rp ' + subtotal.toLocaleString('id-ID') + '</span></div>';
+            html += '<div class="total-row"><span>Pajak (10%):</span><span>Rp ' + tax.toLocaleString('id-ID') + '</span></div>';
+            html += '<div class="total-row final-total"><span><strong>TOTAL:</strong></span><span><strong>Rp ' + finalTotal.toLocaleString('id-ID') + '</strong></span></div>';
+            html += '</div>';
+            
+            html += '<div style="text-align:center;margin-top:20px;font-size:14px;border-top:1px solid #ddd;padding-top:15px">';
+            html += '<div style="font-weight:bold;color:#8B6F47;margin-bottom:8px">Terima kasih sudah berbelanja di Cappunabara! 💖</div>';
+            html += '<div>📞 0812-3456-7890 | 📧 hello@cafeluna.com</div>';
+            html += '<div>📍 Jl. Kopi Hangat No. 123, Jakarta</div>';
+            html += '<div style="margin-top:10px;font-size:12px;color:#999">Dicetak: ' + new Date().toLocaleString('id-ID') + '</div>';
+            html += '</div>';
+            
+            html += '</div>'; // close struk
+            html += '</body></html>';
+            
+            // Open new window
+            const printWindow = window.open('', '_blank', 'width=800,height=1000');
+            
+            if (!printWindow) {
+                alert('POPUP DIBLOKIR! Silakan allow popup untuk localhost:5140 dan coba lagi.');
+                return;
+            }
+            
+            printWindow.document.write(html);
+            printWindow.document.close();
+            printWindow.focus();
+            
+            alert('STRUK BERHASIL DIBUKA! Tab baru telah terbuka. Klik PRINT/SAVE PDF untuk download.');
+            
+            console.log('Clean PDF window opened successfully for order:', order.id);
+        }
+    </script>
+</body>
+</html>

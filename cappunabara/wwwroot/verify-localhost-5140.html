@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify localhost:5140 - Café Luna</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            padding: 2rem;
+            background: linear-gradient(135deg, #FFF8E7 0%, #F7E7CE 100%);
+            min-height: 100vh;
+            margin: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 16px rgba(139, 111, 71, 0.16);
+        }
+        h1 {
+            color: #8B6F47;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .status-card {
+            background: #f8f9fa;
+            border-left: 4px solid #8B6F47;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .success { border-left-color: #4CAF50; background: #f1f8e9; }
+        .warning { border-left-color: #FF9800; background: #fff8e1; }
+        .error { border-left-color: #F44336; background: #ffebee; }
+        .btn {
+            background: #8B6F47;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 0.5rem;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: 600;
+        }
+        .btn:hover {
+            background: #6B5344;
+            transform: translateY(-1px);
+        }
+        .btn-success { background: #4CAF50; }
+        .btn-success:hover { background: #388E3C; }
+        .btn-warning { background: #FF9800; }
+        .btn-warning:hover { background: #F57C00; }
+        .code {
+            background: #f5f5f5;
+            padding: 0.5rem;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Verify localhost:5140 - Café Luna</h1>
+        
+        <div id="connectionStatus" class="status-card">
+            <h3>🌐 Connection Status</h3>
+            <div id="connectionDetails">Checking connection...</div>
+        </div>
+        
+        <div id="dataStatus" class="status-card">
+            <h3>📊 Data Status</h3>
+            <div id="dataDetails">Checking data...</div>
+        </div>
+        
+        <div id="functionalityStatus" class="status-card">
+            <h3>⚙️ Functionality Status</h3>
+            <div id="functionalityDetails">Checking functionality...</div>
+        </div>
+        
+        <div class="status-card">
+            <h3>🚀 Quick Actions</h3>
+            <button class="btn btn-success" onclick="setupCompleteTestEnvironment()">Setup Complete Test Environment</button>
+            <button class="btn btn-warning" onclick="clearAndReset()">Clear & Reset</button>
+            <a href="http://localhost:5140/DataPesanan" class="btn" target="_blank">Open Data Pesanan</a>
+            <a href="http://localhost:5140/DataPembayaran" class="btn" target="_blank">Open Data Pembayaran</a>
+        </div>
+        
+        <div id="actionResults" class="status-card" style="display: none;">
+            <h3>📋 Action Results</h3>
+            <div id="actionDetails"></div>
+        </div>
+        
+        <div class="status-card">
+            <h3>🔧 Troubleshooting Steps</h3>
+            <ol>
+                <li>Ensure the ASP.NET Core application is running on port 5140</li>
+                <li>Check that all static files are being served correctly</li>
+                <li>Verify browser cache is cleared (Ctrl+Shift+R)</li>
+                <li>Confirm JavaScript files are loading without errors</li>
+                <li>Test edit functionality with the debug panel</li>
+            </ol>
+            
+            <h4>Expected URLs:</h4>
+            <div class="code">
+                http://localhost:5140/<br>
+                http://localhost:5140/Order<br>
+                http://localhost:5140/DataPesanan<br>
+                http://localhost:5140/DataPembayaran<br>
+                http://localhost:5140/RiwayatPesanan
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function checkConnection() {
+            const details = document.getElementById('connectionDetails');
+            const card = document.getElementById('connectionStatus');
+            
+            const currentUrl = window.location.href;
+            const expectedPort = '5140';
+            const actualPort = window.location.port || (window.location.protocol === 'https:' ? '443' : '80');
+            
+            let status = 'success';
+            let message = '';
+            
+            if (actualPort === expectedPort) {
+                message = `✅ Connected to correct port: ${expectedPort}<br>`;
+                message += `📍 Current URL: ${currentUrl}<br>`;
+                message += `🌐 Protocol: ${window.location.protocol}<br>`;
+                message += `🏠 Host: ${window.location.hostname}`;
+            } else {
+                status = 'warning';
+                message = `⚠️ Port mismatch - Expected: ${expectedPort}, Actual: ${actualPort}<br>`;
+                message += `📍 Current URL: ${currentUrl}<br>`;
+                message += `💡 Make sure ASP.NET Core app is running on port 5140`;
+            }
+            
+            card.className = `status-card ${status}`;
+            details.innerHTML = message;
+        }
+        
+        function checkData() {
+            const details = document.getElementById('dataDetails');
+            const card = document.getElementById('dataStatus');
+            
+            try {
+                const orderHistory = JSON.parse(localStorage.getItem('cappunabara_order_history') || '[]');
+                const customerData = JSON.parse(localStorage.getItem('cappunabara_customer_data') || '{}');
+                
+                let status = orderHistory.length > 0 ? 'success' : 'warning';
+                let message = '';
+                
+                if (orderHistory.length > 0) {
+                    message = `✅ Orders found: ${orderHistory.length}<br>`;
+                    message += `👤 Customer: ${customerData.name || 'N/A'}<br>`;
+                    message += `💰 Total spent: Rp ${(customerData.totalSpent || 0).toLocaleString('id-ID')}<br>`;
+                    message += `📅 Last order: ${customerData.lastOrderDate ? new Date(customerData.lastOrderDate).toLocaleString('id-ID') : 'N/A'}`;
+                } else {
+                    status = 'warning';
+                    message = `⚠️ No orders found in localStorage<br>`;
+                    message += `💡 Use "Setup Complete Test Environment" to create test data<br>`;
+                    message += `🔍 localStorage available: ${typeof(Storage) !== "undefined" ? 'YES' : 'NO'}`;
+                }
+                
+                card.className = `status-card ${status}`;
+                details.innerHTML = message;
+                
+            } catch (error) {
+                card.className = 'status-card error';
+                details.innerHTML = `❌ Data check error: ${error.message}`;
+            }
+        }
+        
+        function checkFunctionality() {
+            const details = document.getElementById('functionalityDetails');
+            const card = document.getElementById('functionalityStatus');
+            
+            // Check if we can access the admin pages
+            const adminPages = [
+                { name: 'Data Pesanan', url: '/DataPesanan' },
+                { name: 'Data Pembayaran', url: '/DataPembayaran' },
+                { name: 'Riwayat Pesanan', url: '/RiwayatPesanan' },
+                { name: 'Order Page', url: '/Order' }
+            ];
+            
+            let message = '🔗 Admin Pages:<br>';
+            adminPages.forEach(page => {
+                message += `• <a href="http://localhost:5140${page.url}" target="_blank">${page.name}</a><br>`;
+            });
+            
+            message += '<br>⚙️ Edit Functionality:<br>';
+            message += '• Edit buttons should be visible on admin pages<br>';
+            message += '• Debug panel will appear on admin pages<br>';
+            message += '• Test data can be created and modified<br>';
+            message += '• Changes should persist in localStorage';
+            
+            card.className = 'status-card success';
+            details.innerHTML = message;
+        }
+        
+        function setupCompleteTestEnvironment() {
+            const results = document.getElementById('actionResults');
+            const details = document.getElementById('actionDetails');
+            
+            try {
+                // Create comprehensive test data
+                const testOrders = [
+                    {
+                        id: 'CAFE' + Date.now().toString().slice(-6),
+                        customer: {
+                            name: 'Ahmad Rizki',
+                            table: 'A1',
+                            phone: '081234567890',
+                            payment: 'cash',
+                            notes: 'Extra hot, less sugar'
+                        },
+                        items: [
+                            { id: 1, name: 'Cappuccino Signature', price: 35000, quantity: 2 },
+                            { id: 19, name: 'Tiramisu Slice', price: 45000, quantity: 1 }
+                        ],
+                        timestamp: new Date().toISOString(),
+                        total: 115000,
+                        status: 'completed'
+                    },
+                    {
+                        id: 'CAFE' + (Date.now() + 1000).toString().slice(-6),
+                        customer: {
+                            name: 'Siti Nurhaliza',
+                            table: 'B2',
+                            phone: '081234567891',
+                            payment: 'transfer',
+                            notes: 'No sugar, extra foam'
+                        },
+                        items: [
+                            { id: 2, name: 'Caffe Latte', price: 32000, quantity: 1 },
+                            { id: 20, name: 'Cheesecake Blueberry', price: 42000, quantity: 1 }
+                        ],
+                        timestamp: new Date(Date.now() - 3600000).toISOString(),
+                        total: 74000,
+                        status: 'completed'
+                    },
+                    {
+                        id: 'CAFE' + (Date.now() + 2000).toString().slice(-6),
+                        customer: {
+                            name: 'Budi Santoso',
+                            table: 'C3',
+                            phone: '081234567892',
+                            payment: 'ewallet',
+                            notes: 'To go'
+                        },
+                        items: [
+                            { id: 3, name: 'Americano', price: 28000, quantity: 3 }
+                        ],
+                        timestamp: new Date(Date.now() - 7200000).toISOString(),
+                        total: 84000,
+                        status: 'pending'
+                    }
+                ];
+                
+                localStorage.setItem('cappunabara_order_history', JSON.stringify(testOrders));
+                
+                const customerData = {
+                    name: 'Ahmad Rizki',
+                    phone: '081234567890',
+                    lastOrderDate: new Date().toISOString(),
+                    totalOrders: testOrders.length,
+                    totalSpent: testOrders.reduce((sum, order) => {
+                        const subtotal = order.total;
+                        const tax = subtotal * 0.1;
+                        return sum + subtotal + tax;
+                    }, 0)
+                };
+                
+                localStorage.setItem('cappunabara_customer_data', JSON.stringify(customerData));
+                
+                // Trigger storage events
+                window.dispatchEvent(new StorageEvent('storage', {
+                    key: 'cappunabara_order_history',
+                    newValue: JSON.stringify(testOrders)
+                }));
+                
+                details.innerHTML = `
+                    <strong>✅ Complete Test Environment Setup Successful!</strong><br><br>
+                    <strong>📊 Created Data:</strong><br>
+                    • ${testOrders.length} test orders<br>
+                    • Customer profile with complete data<br>
+                    • Mixed payment methods (cash, transfer, ewallet)<br>
+                    • Different order statuses (completed, pending)<br>
+                    • Realistic timestamps and amounts<br><br>
+                    
+                    <strong>💰 Financial Summary:</strong><br>
+                    • Total orders value: Rp ${testOrders.reduce((sum, order) => sum + order.total, 0).toLocaleString('id-ID')}<br>
+                    • Customer total spent: Rp ${customerData.totalSpent.toLocaleString('id-ID')}<br><br>
+                    
+                    <strong>🎯 Next Steps:</strong><br>
+                    1. Open <a href="http://localhost:5140/DataPesanan" target="_blank">Data Pesanan</a><br>
+                    2. Look for the debug panel in the top-right corner<br>
+                    3. Click edit buttons (✏️) to test functionality<br>
+                    4. Verify changes are saved and visible<br><br>
+                    
+                    <strong>⏰ Setup completed at:</strong> ${new Date().toLocaleString('id-ID')}
+                `;
+                
+                results.style.display = 'block';
+                results.className = 'status-card success';
+                
+                // Refresh other status checks
+                setTimeout(() => {
+                    checkData();
+                }, 500);
+                
+            } catch (error) {
+                details.innerHTML = `❌ Setup failed: ${error.message}`;
+                results.style.display = 'block';
+                results.className = 'status-card error';
+            }
+        }
+        
+        function clearAndReset() {
+            const results = document.getElementById('actionResults');
+            const details = document.getElementById('actionDetails');
+            
+            if (confirm('This will clear all data. Continue?')) {
+                localStorage.removeItem('cappunabara_order_history');
+                localStorage.removeItem('cappunabara_customer_data');
+                
+                details.innerHTML = `
+                    <strong>🗑️ Data Cleared Successfully!</strong><br><br>
+                    • Order history: REMOVED<br>
+                    • Customer data: REMOVED<br>
+                    • localStorage: CLEAN<br><br>
+                    <strong>⏰ Cleared at:</strong> ${new Date().toLocaleString('id-ID')}<br><br>
+                    <strong>💡 Next:</strong> Use "Setup Complete Test Environment" to create new test data
+                `;
+                
+                results.style.display = 'block';
+                results.className = 'status-card warning';
+                
+                // Refresh status checks
+                setTimeout(() => {
+                    checkData();
+                }, 500);
+            }
+        }
+        
+        // Run all checks on page load
+        window.addEventListener('load', function() {
+            checkConnection();
+            checkData();
+            checkFunctionality();
+        });
+        
+        // Auto-refresh data status every 10 seconds
+        setInterval(checkData, 10000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fix Cashier Data - Cappunabara</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #D2691E;
+        }
+
+        .header h1 {
+            color: #8B4513;
+            margin-bottom: 10px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin: 5px;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            color: white;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .info-box {
+            background: #f8f9fa;
+            border-left: 4px solid #D2691E;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .result-box {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .stat-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #8B4513;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-user-cog"></i> Fix Cashier Data</h1>
+            <p>Perbaiki data kasir yang hilang pada riwayat transaksi</p>
+        </div>
+
+        <div class="info-box">
+            <h4>Tentang Tool Ini:</h4>
+            <p>Tool ini akan memperbaiki data transaksi yang tidak memiliki informasi kasir. Kasir akan ditentukan berdasarkan waktu transaksi:</p>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li><strong>06:00 - 14:00:</strong> Kasir 1 (Pagi)</li>
+                <li><strong>14:00 - 22:00:</strong> Kasir 2 (Siang)</li>
+                <li><strong>22:00 - 06:00:</strong> Kasir 3 (Malam)</li>
+            </ul>
+        </div>
+
+        <div class="stats" id="stats">
+            <div class="stat-card">
+                <div class="stat-number" id="total-transactions">0</div>
+                <div class="stat-label">Total Transaksi</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="missing-cashier">0</div>
+                <div class="stat-label">Tanpa Kasir</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="with-cashier">0</div>
+                <div class="stat-label">Sudah Ada Kasir</div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin: 30px 0;">
+            <button class="btn btn-primary" onclick="analyzeCashierData()">
+                <i class="fas fa-search"></i> Analisis Data
+            </button>
+            <button class="btn btn-success" onclick="fixCashierData()">
+                <i class="fas fa-tools"></i> Perbaiki Data Kasir
+            </button>
+        </div>
+
+        <div class="result-box" id="result-box">
+            <h4>Hasil Perbaikan:</h4>
+            <p id="result-message"></p>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px;">
+            <a href="customers.html" class="btn btn-primary">
+                <i class="fas fa-users"></i> Kembali ke Data Pelanggan
+            </a>
+            <a href="modern-dashboard.html" class="btn btn-success">
+                <i class="fas fa-home"></i> Dashboard
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Analyze cashier data
+        function analyzeCashierData() {
+            const salesData = JSON.parse(localStorage.getItem('salesData') || '[]');
+            
+            const totalTransactions = salesData.length;
+            const missingCashier = salesData.filter(transaction => !transaction.cashier).length;
+            const withCashier = totalTransactions - missingCashier;
+            
+            document.getElementById('total-transactions').textContent = totalTransactions;
+            document.getElementById('missing-cashier').textContent = missingCashier;
+            document.getElementById('with-cashier').textContent = withCashier;
+            
+            if (missingCashier > 0) {
+                showNotification(`Ditemukan ${missingCashier} transaksi tanpa informasi kasir`, 'warning');
+            } else {
+                showNotification('Semua transaksi sudah memiliki informasi kasir', 'success');
+            }
+        }
+
+        // Fix cashier data
+        function fixCashierData() {
+            const salesData = JSON.parse(localStorage.getItem('salesData') || '[]');
+            let fixedCount = 0;
+            
+            salesData.forEach(transaction => {
+                if (!transaction.cashier) {
+                    transaction.cashier = getCashierByTime(transaction.date);
+                    fixedCount++;
+                }
+            });
+            
+            if (fixedCount > 0) {
+                localStorage.setItem('salesData', JSON.stringify(salesData));
+                
+                const resultBox = document.getElementById('result-box');
+                const resultMessage = document.getElementById('result-message');
+                
+                resultMessage.textContent = `Berhasil memperbaiki ${fixedCount} transaksi. Semua transaksi sekarang memiliki informasi kasir.`;
+                resultBox.style.display = 'block';
+                
+                // Update stats
+                analyzeCashierData();
+                
+                showNotification(`${fixedCount} transaksi berhasil diperbaiki!`, 'success');
+            } else {
+                showNotification('Tidak ada transaksi yang perlu diperbaiki', 'info');
+            }
+        }
+
+        // Get cashier by transaction time
+        function getCashierByTime(dateString) {
+            const date = new Date(dateString);
+            const hour = date.getHours();
+            
+            if (hour >= 6 && hour < 14) {
+                return 'Kasir 1 (Pagi)';
+            } else if (hour >= 14 && hour < 22) {
+                return 'Kasir 2 (Siang)';
+            } else {
+                return 'Kasir 3 (Malam)';
+            }
+        }
+
+        // Show notification
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? '#28a745' : type === 'warning' ? '#ffc107' : '#17a2b8'};
+                color: ${type === 'warning' ? '#333' : 'white'};
+                padding: 15px 20px;
+                border-radius: 8px;
+                z-index: 1001;
+                animation: slideIn 0.3s ease;
+                max-width: 300px;
+            `;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 4000);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            analyzeCashierData();
+        });
+    </script>
+</body>
+</html>

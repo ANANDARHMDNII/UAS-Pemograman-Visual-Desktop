@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Checkout - Cappunabara</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #D2691E;
+        }
+
+        .header h1 {
+            color: #8B4513;
+            margin-bottom: 10px;
+        }
+
+        .debug-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .form-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .debug-info {
+            background: #e9ecef;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: monospace;
+            font-size: 12px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #D2691E;
+        }
+
+        .service-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .service-card {
+            padding: 10px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .service-card.selected {
+            border-color: #D2691E;
+            background: #fff5f0;
+        }
+
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .payment-method {
+            padding: 8px;
+            border: 2px solid #e1e5e9;
+            border-radius: 6px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .payment-method.selected {
+            border-color: #D2691E;
+            background: #fff5f0;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin: 5px;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            color: white;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .cart-item {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .debug-log {
+            max-height: 300px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            background: #000;
+            color: #0f0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-bug"></i> Debug Checkout Validation</h1>
+            <p>Halaman untuk debug masalah tombol "Proses Pesanan"</p>
+        </div>
+
+        <div class="debug-section">
+            <div class="form-section">
+                <h3>Form Test</h3>
+                
+                <div class="form-group">
+                    <label>Jenis Layanan:</label>
+                    <div class="service-cards">
+                        <div class="service-card" onclick="selectService('dine-in')">
+                            <i class="fas fa-utensils"></i><br>Dine In
+                        </div>
+                        <div class="service-card" onclick="selectService('take-away')">
+                            <i class="fas fa-shopping-bag"></i><br>Take Away
+                        </div>
+                        <div class="service-card" onclick="selectService('delivery')">
+                            <i class="fas fa-motorcycle"></i><br>Delivery
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Nomor Telepon:</label>
+                    <input type="tel" id="phone" placeholder="081234567890" oninput="updateValidation()">
+                </div>
+
+                <div class="form-group">
+                    <label for="name">Nama Pelanggan:</label>
+                    <input type="text" id="name" placeholder="Nama pelanggan" oninput="updateValidation()">
+                </div>
+
+                <div class="form-group" id="table-group">
+                    <label for="table">Nomor Meja/Antrian:</label>
+                    <select id="table" onchange="updateValidation()">
+                        <option value="">Pilih...</option>
+                    </select>
+                </div>
+
+                <div class="form-group" id="address-group" style="display: none;">
+                    <label for="address">Alamat Pengiriman:</label>
+                    <textarea id="address" placeholder="Alamat lengkap" oninput="updateValidation()"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Metode Pembayaran:</label>
+                    <div class="payment-methods">
+                        <div class="payment-method" onclick="selectPayment('cash')">Tunai</div>
+                        <div class="payment-method" onclick="selectPayment('debit')">Debit</div>
+                        <div class="payment-method" onclick="selectPayment('credit')">Credit</div>
+                        <div class="payment-method" onclick="selectPayment('qris')">QRIS</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Keranjang:</label>
+                    <div id="cart-items">
+                        <div class="cart-item">
+                            <span>Nasi Gudeg Special</span>
+                            <span>Rp 25.000</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-success" onclick="addTestItem()">
+                        <i class="fas fa-plus"></i> Tambah Item Test
+                    </button>
+                </div>
+
+                <button class="btn btn-primary" id="checkout-btn" onclick="processTest()" disabled>
+                    <i class="fas fa-check"></i> Proses Pesanan
+                </button>
+            </div>
+
+            <div class="debug-info">
+                <h3>Debug Information</h3>
+                <div id="debug-log" class="debug-log"></div>
+                <button class="btn btn-success" onclick="clearLog()">Clear Log</button>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px;">
+            <a href="order-system.html" class="btn btn-primary">
+                <i class="fas fa-shopping-cart"></i> Order System Asli
+            </a>
+            <a href="modern-dashboard.html" class="btn btn-success">
+                <i class="fas fa-home"></i> Dashboard
+            </a>
+        </div>
+    </div>
+
+    <script>
+        let selectedService = '';
+        let selectedPayment = '';
+        let cart = [{ name: 'Nasi Gudeg Special', price: 25000 }];
+
+        function log(message) {
+            const logElement = document.getElementById('debug-log');
+            const timestamp = new Date().toLocaleTimeString();
+            logElement.textContent += `[${timestamp}] ${message}\n`;
+            logElement.scrollTop = logElement.scrollHeight;
+        }
+
+        function clearLog() {
+            document.getElementById('debug-log').textContent = '';
+        }
+
+        function selectService(service) {
+            selectedService = service;
+            
+            // Update UI
+            document.querySelectorAll('.service-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            event.target.closest('.service-card').classList.add('selected');
+            
+            // Update form fields
+            const tableGroup = document.getElementById('table-group');
+            const addressGroup = document.getElementById('address-group');
+            const tableSelect = document.getElementById('table');
+            
+            if (service === 'delivery') {
+                tableGroup.style.display = 'none';
+                addressGroup.style.display = 'block';
+            } else {
+                tableGroup.style.display = 'block';
+                addressGroup.style.display = 'none';
+                
+                if (service === 'dine-in') {
+                    tableSelect.innerHTML = '<option value="">Pilih Meja</option>';
+                    for (let i = 1; i <= 10; i++) {
+                        tableSelect.innerHTML += `<option value="${i}">Meja ${i}</option>`;
+                    }
+                } else if (service === 'take-away') {
+                    tableSelect.innerHTML = '<option value="">Pilih Nomor Antrian</option>';
+                    for (let i = 1; i <= 50; i++) {
+                        const queueNumber = 'A' + String(i).padStart(3, '0');
+                        tableSelect.innerHTML += `<option value="${queueNumber}">${queueNumber}</option>`;
+                    }
+                }
+            }
+            
+            log(`Service selected: ${service}`);
+            updateValidation();
+        }
+
+        function selectPayment(method) {
+            selectedPayment = method;
+            
+            // Update UI
+            document.querySelectorAll('.payment-method').forEach(pm => {
+                pm.classList.remove('selected');
+            });
+            event.target.classList.add('selected');
+            
+            log(`Payment selected: ${method}`);
+            updateValidation();
+        }
+
+        function addTestItem() {
+            cart.push({ name: 'Es Teh Manis', price: 5000 });
+            
+            const cartItems = document.getElementById('cart-items');
+            cartItems.innerHTML = cart.map(item => `
+                <div class="cart-item">
+                    <span>${item.name}</span>
+                    <span>Rp ${item.price.toLocaleString('id-ID')}</span>
+                </div>
+            `).join('');
+            
+            log(`Item added to cart. Total items: ${cart.length}`);
+            updateValidation();
+        }
+
+        function updateValidation() {
+            const phone = document.getElementById('phone').value;
+            const name = document.getElementById('name').value;
+            const table = document.getElementById('table').value;
+            const address = document.getElementById('address').value;
+            
+            log('=== Validation Check ===');
+            log(`Phone: "${phone}"`);
+            log(`Name: "${name}"`);
+            log(`Service: "${selectedService}"`);
+            log(`Payment: "${selectedPayment}"`);
+            log(`Cart items: ${cart.length}`);
+            
+            let isValid = phone && name && selectedPayment && cart.length > 0 && selectedService;
+            log(`Basic validation: ${isValid}`);
+            
+            if (selectedService === 'delivery') {
+                isValid = isValid && address.trim();
+                log(`Delivery address: "${address}"`);
+                log(`Delivery validation: ${isValid}`);
+            } else if (selectedService === 'dine-in' || selectedService === 'take-away') {
+                isValid = isValid && table;
+                log(`Table/Queue: "${table}"`);
+                log(`Table validation: ${isValid}`);
+            }
+            
+            log(`Final validation: ${isValid}`);
+            log('=== End Validation ===');
+            
+            const checkoutBtn = document.getElementById('checkout-btn');
+            checkoutBtn.disabled = !isValid;
+            
+            if (isValid) {
+                checkoutBtn.style.opacity = '1';
+                checkoutBtn.style.cursor = 'pointer';
+                log('✅ Checkout button ENABLED');
+            } else {
+                checkoutBtn.style.opacity = '0.6';
+                checkoutBtn.style.cursor = 'not-allowed';
+                log('❌ Checkout button DISABLED');
+            }
+        }
+
+        function processTest() {
+            log('🎉 CHECKOUT BUTTON CLICKED! Validation working correctly.');
+            alert('Checkout berhasil! Tombol berfungsi dengan baik.');
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            log('Debug page loaded');
+            updateValidation();
+        });
+    </script>
+</body>
+</html>

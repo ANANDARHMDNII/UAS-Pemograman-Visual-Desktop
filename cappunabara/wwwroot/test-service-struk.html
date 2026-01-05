@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Struk dengan Jenis Layanan - Cappunabara</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #D2691E;
+        }
+
+        .header h1 {
+            color: #8B4513;
+            margin-bottom: 10px;
+        }
+
+        .test-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+        }
+
+        .test-section h3 {
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin: 5px;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            color: white;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+        }
+
+        .btn-info {
+            background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .info-box {
+            background: #f8f9fa;
+            border-left: 4px solid #D2691E;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .info-box h4 {
+            color: #8B4513;
+            margin-bottom: 10px;
+        }
+
+        .info-box ul {
+            margin-left: 20px;
+        }
+
+        .info-box li {
+            margin-bottom: 5px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-receipt"></i> Test Struk dengan Jenis Layanan</h1>
+            <p>Halaman untuk menguji tampilan struk dengan informasi jenis layanan (Dine In, Take Away, Delivery)</p>
+        </div>
+
+        <div class="test-section">
+            <h3><i class="fas fa-utensils"></i> Test Dine In</h3>
+            <p>Buat pesanan dengan layanan Dine In (makan di tempat)</p>
+            <button class="btn btn-primary" onclick="createTestOrder('dine-in')">
+                <i class="fas fa-utensils"></i> Buat Test Order Dine In
+            </button>
+        </div>
+
+        <div class="test-section">
+            <h3><i class="fas fa-shopping-bag"></i> Test Take Away</h3>
+            <p>Buat pesanan dengan layanan Take Away (dibawa pulang)</p>
+            <button class="btn btn-success" onclick="createTestOrder('take-away')">
+                <i class="fas fa-shopping-bag"></i> Buat Test Order Take Away
+            </button>
+        </div>
+
+        <div class="test-section">
+            <h3><i class="fas fa-motorcycle"></i> Test Delivery</h3>
+            <p>Buat pesanan dengan layanan Delivery Order (diantar)</p>
+            <button class="btn btn-info" onclick="createTestOrder('delivery')">
+                <i class="fas fa-motorcycle"></i> Buat Test Order Delivery
+            </button>
+        </div>
+
+        <div class="info-box">
+            <h4>Informasi yang Ditampilkan di Struk:</h4>
+            <ul>
+                <li><strong>Jenis Layanan:</strong> Dine In, Take Away, atau Delivery Order</li>
+                <li><strong>Dine In:</strong> Menampilkan nomor meja</li>
+                <li><strong>Take Away:</strong> Menampilkan nomor antrian</li>
+                <li><strong>Delivery:</strong> Menampilkan alamat pengiriman dan biaya pengiriman</li>
+                <li><strong>PDF & Print:</strong> Semua informasi layanan termasuk dalam struk cetak</li>
+            </ul>
+        </div>
+
+        <div class="test-section">
+            <h3><i class="fas fa-list"></i> Aksi Lainnya</h3>
+            <a href="order-system.html" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Buat Pesanan Baru
+            </a>
+            <a href="modern-dashboard.html" class="btn btn-success">
+                <i class="fas fa-home"></i> Dashboard
+            </a>
+        </div>
+    </div>
+
+    <script>
+        function createTestOrder(serviceType) {
+            // Create sample order data based on service type
+            const baseOrder = {
+                orderId: 'ORD-' + Date.now(),
+                date: new Date().toISOString(),
+                serviceType: serviceType,
+                customerName: 'Test Customer',
+                customerPhone: '081234567890',
+                paymentMethod: 'cash',
+                items: [
+                    {
+                        name: 'Nasi Gudeg Special',
+                        price: 25000,
+                        quantity: 1,
+                        total: 25000
+                    },
+                    {
+                        name: 'Es Teh Manis',
+                        price: 5000,
+                        quantity: 2,
+                        total: 10000
+                    }
+                ],
+                subtotal: 35000,
+                tax: 3500
+            };
+
+            // Customize based on service type
+            if (serviceType === 'dine-in') {
+                baseOrder.tableNumber = '5';
+                baseOrder.total = 38500;
+            } else if (serviceType === 'take-away') {
+                baseOrder.tableNumber = 'A001';
+                baseOrder.total = 38500;
+            } else if (serviceType === 'delivery') {
+                baseOrder.deliveryAddress = 'Jl. Malioboro No. 456, Yogyakarta';
+                baseOrder.deliveryFee = 5000;
+                baseOrder.total = 43500;
+            }
+
+            // Save to localStorage
+            localStorage.setItem('lastOrder', JSON.stringify(baseOrder));
+
+            // Save to sales data
+            const salesData = JSON.parse(localStorage.getItem('salesData') || '[]');
+            baseOrder.items.forEach(item => {
+                salesData.push({
+                    orderId: baseOrder.orderId,
+                    date: baseOrder.date,
+                    serviceType: serviceType,
+                    customerName: baseOrder.customerName,
+                    customerPhone: baseOrder.customerPhone,
+                    tableNumber: baseOrder.tableNumber,
+                    deliveryAddress: baseOrder.deliveryAddress,
+                    paymentMethod: baseOrder.paymentMethod,
+                    menuName: item.name,
+                    quantity: item.quantity,
+                    price: item.price,
+                    totalPrice: item.total,
+                    cashier: 'Kasir 2' // Add cashier information for test orders
+                });
+            });
+            localStorage.setItem('salesData', JSON.stringify(salesData));
+
+            // Redirect to success page
+            window.location.href = `order-success.html?orderId=${baseOrder.orderId}`;
+        }
+
+        // Get service type name for display
+        function getServiceTypeName(serviceType) {
+            const serviceTypes = {
+                'dine-in': 'Dine In (Makan di Tempat)',
+                'take-away': 'Take Away (Dibawa Pulang)',
+                'delivery': 'Delivery Order (Diantar)'
+            };
+            return serviceTypes[serviceType] || serviceType;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Aesthetic PDF - Cappunabara</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 2rem;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            margin: 0;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 1px solid #e9ecef;
+        }
+        h1 {
+            color: #8B6F47;
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .coffee-icon {
+            text-align: center;
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+        .big-btn {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            padding: 20px 30px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            width: 100%;
+            margin: 15px 0;
+            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .big-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(76, 175, 80, 0.4);
+        }
+        .setup-btn {
+            background: linear-gradient(135deg, #2196F3, #1976D2);
+            box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
+        }
+        .setup-btn:hover {
+            box-shadow: 0 6px 16px rgba(33, 150, 243, 0.4);
+        }
+        .result {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border: 2px solid #8B6F47;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+        .success { 
+            color: #4CAF50; 
+            font-weight: bold; 
+            font-size: 16px;
+        }
+        .error { 
+            color: #F44336; 
+            font-weight: bold; 
+            font-size: 16px;
+        }
+        .features {
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 2px solid #2196F3;
+        }
+        .features h3 {
+            color: #1976D2;
+            margin-bottom: 15px;
+        }
+        .features ul {
+            color: #1565C0;
+            margin-left: 20px;
+        }
+        .features li {
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        .link-section {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 2px solid #f1f3f4;
+        }
+        .link-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #8B6F47, #A67B5B);
+            color: white;
+            padding: 15px 25px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 700;
+            margin: 10px;
+            box-shadow: 0 4px 12px rgba(139, 111, 71, 0.3);
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .link-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(139, 111, 71, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="coffee-icon">☕</div>
+        <h1>🎨 Test Aesthetic PDF</h1>
+        
+        <div class="features">
+            <h3>✨ Fitur PDF Aesthetic:</h3>
+            <ul>
+                <li>🎨 Desain modern dengan gradien dan shadow</li>
+                <li>📱 Layout responsive dan professional</li>
+                <li>🎯 Grid layout untuk informasi pesanan</li>
+                <li>📊 Tabel items dengan styling elegant</li>
+                <li>💰 Summary box dengan border gradient</li>
+                <li>🌈 Color scheme Cappunabara yang konsisten</li>
+                <li>🖨️ Print-ready dengan media queries</li>
+            </ul>
+        </div>
+        
+        <button class="big-btn setup-btn" onclick="createTestOrder()">
+            1️⃣ CREATE TEST ORDER
+        </button>
+        
+        <button class="big-btn" onclick="testAestheticPDF()">
+            2️⃣ TEST AESTHETIC PDF
+        </button>
+        
+        <div id="result" class="result">
+            <strong>Status:</strong> Ready for testing...<br>
+            <em>Klik tombol di atas untuk memulai test</em>
+        </div>
+        
+        <div class="link-section">
+            <a href="http://localhost:5140/RiwayatPesanan" target="_blank" class="link-btn">
+                📜 Open Riwayat Pesanan
+            </a>
+            <a href="http://localhost:5140/Order" target="_blank" class="link-btn">
+                🛒 Open Order Page
+            </a>
+        </div>
+    </div>
+
+    <!-- Load the aesthetic PDF generator -->
+    <script src="aesthetic-pdf-generator.js"></script>
+    
+    <script>
+        function createTestOrder() {
+            const result = document.getElementById('result');
+            
+            try {
+                const testOrder = {
+                    id: 'CPB' + Date.now().toString().slice(-6),
+                    customer: {
+                        name: 'Mala Sari',
+                        table: 'A8',
+                        phone: '081234567890',
+                        payment: 'ewallet',
+                        notes: 'Test order untuk aesthetic PDF'
+                    },
+                    items: [
+                        { id: 1, name: 'Cappuccino Signature', price: 35000, quantity: 2 },
+                        { id: 2, name: 'Chicken Wrap', price: 40000, quantity: 1 },
+                        { id: 3, name: 'Tiramisu Slice', price: 45000, quantity: 1 }
+                    ],
+                    timestamp: new Date().toISOString(),
+                    total: 155000,
+                    status: 'completed'
+                };
+                
+                localStorage.setItem('cappunabara_order_history', JSON.stringify([testOrder]));
+                
+                result.innerHTML = `
+                    <span class="success">✅ TEST ORDER BERHASIL DIBUAT!</span><br><br>
+                    <strong>Order Details:</strong><br>
+                    • Order ID: ${testOrder.id}<br>
+                    • Customer: ${testOrder.customer.name}<br>
+                    • Table: ${testOrder.customer.table}<br>
+                    • Payment: ${testOrder.customer.payment}<br>
+                    • Items: ${testOrder.items.length} items<br>
+                    • Total: Rp ${testOrder.total.toLocaleString('id-ID')}<br><br>
+                    <em>Status: Siap untuk test PDF aesthetic!</em>
+                `;
+                
+            } catch (error) {
+                result.innerHTML = `<span class="error">❌ Error: ${error.message}</span>`;
+            }
+        }
+        
+        function testAestheticPDF() {
+            const result = document.getElementById('result');
+            
+            try {
+                const orderHistory = JSON.parse(localStorage.getItem('cappunabara_order_history') || '[]');
+                
+                if (orderHistory.length === 0) {
+                    result.innerHTML = '<span class="error">❌ No orders found! Create test order first.</span>';
+                    return;
+                }
+                
+                const order = orderHistory[0];
+                
+                // Test the aesthetic PDF function
+                if (typeof createAestheticPDF === 'function') {
+                    createAestheticPDF(order);
+                    
+                    result.innerHTML = `
+                        <span class="success">✅ AESTHETIC PDF TEST BERHASIL!</span><br><br>
+                        <strong>Expected Result:</strong><br>
+                        • Tab baru terbuka dengan struk aesthetic<br>
+                        • Desain modern dengan gradien dan shadow<br>
+                        • Layout professional seperti gambar referensi<br>
+                        • Grid layout untuk informasi pesanan<br>
+                        • Tabel items dengan styling elegant<br>
+                        • Summary box dengan border gradient<br><br>
+                        <strong>Next Steps:</strong><br>
+                        1. Klik "PRINT/SAVE PDF" di tab baru<br>
+                        2. Pilih "Save as PDF"<br>
+                        3. Save ke komputer<br><br>
+                        <em>Order: ${order.id} | Customer: ${order.customer.name}</em>
+                    `;
+                } else {
+                    result.innerHTML = '<span class="error">❌ createAestheticPDF function not found! Check if aesthetic-pdf-generator.js is loaded.</span>';
+                }
+                
+            } catch (error) {
+                result.innerHTML = `<span class="error">❌ Test Error: ${error.message}</span>`;
+            }
+        }
+        
+        // Show welcome message
+        setTimeout(function() {
+            console.log('🎨 Aesthetic PDF Test Page Loaded');
+            console.log('✨ Features: Modern design, gradients, professional layout');
+        }, 1000);
+    </script>
+</body>
+</html>

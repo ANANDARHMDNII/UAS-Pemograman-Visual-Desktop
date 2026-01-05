@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Katalog Inventori - Cappunabara</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8f9fa;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar-brand {
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: background 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        .page-header {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .page-title {
+            font-size: 32px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .page-subtitle {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .stats-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            margin: 0 auto 15px;
+        }
+
+        .stat-card:nth-child(1) .stat-icon { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .stat-card:nth-child(2) .stat-icon { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .stat-card:nth-child(3) .stat-icon { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .stat-card:nth-child(4) .stat-icon { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .category-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .category-title {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #D2691E;
+        }
+
+        .category-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: white;
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+        }
+
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+        }
+
+        .item-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            border-left: 4px solid #D2691E;
+            transition: all 0.3s ease;
+        }
+
+        .item-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .item-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .item-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .item-detail {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .item-detail strong {
+            color: #333;
+        }
+
+        .menu-related {
+            background: white;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 10px;
+        }
+
+        .menu-related-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #D2691E;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .menu-list {
+            font-size: 13px;
+            color: #555;
+            line-height: 1.4;
+        }
+
+        .stock-indicator {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .stock-high { background: #d4edda; color: #155724; }
+        .stock-medium { background: #fff3cd; color: #856404; }
+        .stock-low { background: #f8d7da; color: #721c24; }
+        .stock-out { background: #f5c6cb; color: #721c24; }
+
+        .filter-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filter-tab {
+            padding: 12px 24px;
+            border: 2px solid #D2691E;
+            background: white;
+            color: #D2691E;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .filter-tab.active {
+            background: #D2691E;
+            color: white;
+        }
+
+        .filter-tab:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(210, 105, 30, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .items-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .item-details {
+                grid-template-columns: 1fr;
+            }
+            
+            .filter-tabs {
+                justify-content: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-content">
+            <div class="navbar-brand">
+                <i class="fas fa-book"></i>
+                Cappunabara - Katalog Inventori
+            </div>
+            <div class="nav-links">
+                <a href="modern-dashboard.html" class="nav-link">
+                    <i class="fas fa-home"></i> Dashboard
+                </a>
+                <a href="inventory.html" class="nav-link">
+                    <i class="fas fa-boxes"></i> Inventori
+                </a>
+                <a href="menu-management.html" class="nav-link">
+                    <i class="fas fa-utensils"></i> Kelola Menu
+                </a>
+                <a href="order-system.html" class="nav-link">
+                    <i class="fas fa-plus-circle"></i> Pesanan Baru
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">Katalog Inventori Lengkap</h1>
+            <p class="page-subtitle">Daftar lengkap 28 item inventori yang mendukung semua menu di Cappunabara Restaurant</p>
+        </div>
+
+        <div class="stats-overview">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-boxes"></i>
+                </div>
+                <div class="stat-number">28</div>
+                <div class="stat-label">Total Item Inventori</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-layer-group"></i>
+                </div>
+                <div class="stat-number">8</div>
+                <div class="stat-label">Kategori Bahan</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-utensils"></i>
+                </div>
+                <div class="stat-number">28</div>
+                <div class="stat-label">Menu Didukung</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-money-bill-wave"></i>
+                </div>
+                <div class="stat-number">2.8M</div>
+                <div class="stat-label">Nilai Inventori (Rp)</div>
+            </div>
+        </div>
+
+        <div class="filter-tabs">
+            <button class="filter-tab active" onclick="filterCategory('all')">Semua Kategori</button>
+            <button class="filter-tab" onclick="filterCategory('Bahan Pokok')">Bahan Pokok</button>
+            <button class="filter-tab" onclick="filterCategory('Protein')">Protein</button>
+            <button class="filter-tab" onclick="filterCategory('Sayuran')">Sayuran & Bumbu</button>
+            <button class="filter-tab" onclick="filterCategory('Buah')">Buah</button>
+            <button class="filter-tab" onclick="filterCategory('Minuman')">Minuman</button>
+            <button class="filter-tab" onclick="filterCategory('Bahan Masak')">Bahan Masak</button>
+            <button class="filter-tab" onclick="filterCategory('Pelengkap')">Pelengkap</button>
+        </div>
+
+        <div id="inventory-catalog">
+            <!-- Content will be populated by JavaScript -->
+        </div>
+    </div>
+
+    <script src="modern-auth.js"></script>
+    <script>
+        // Check authentication
+        if (!isModernLoggedIn()) {
+            window.location.href = 'modern-login.html';
+        }
+
+        // Complete inventory data
+        const inventoryData = [
+            // BAHAN POKOK
+            {
+                id: 1,
+                name: 'Beras Premium',
+                category: 'Bahan Pokok',
+                stock: 50,
+                unit: 'kg',
+                price: 15000,
+                minStock: 20,
+                maxStock: 100,
+                menuRelated: ['Nasi Gudeg Special', 'Nasi Liwet']
+            },
+            {
+                id: 20,
+                name: 'Gula Pasir',
+                category: 'Bahan Pokok',
+                stock: 25,
+                unit: 'kg',
+                price: 12000,
+                minStock: 15,
+                maxStock: 40,
+                menuRelated: ['Es Teh Manis', 'Kopi Tubruk', 'Cappuccino', 'Semua minuman manis']
+            },
+            {
+                id: 21,
+                name: 'Gula Merah',
+                category: 'Bahan Pokok',
+                stock: 8,
+                unit: 'kg',
+                price: 15000,
+                minStock: 10,
+                maxStock: 25,
+                menuRelated: ['Wedang Jahe', 'Kolak Pisang', 'Es Cendol']
+            },
+            {
+                id: 23,
+                name: 'Tepung Terigu',
+                category: 'Bahan Pokok',
+                stock: 40,
+                unit: 'kg',
+                price: 10000,
+                minStock: 20,
+                maxStock: 60,
+                menuRelated: ['Tempe Mendoan', 'Pisang Goreng', 'Bakwan Jagung', 'Tahu Isi']
+            },
+            {
+                id: 25,
+                name: 'Tepung Ketan',
+                category: 'Bahan Pokok',
+                stock: 15,
+                unit: 'kg',
+                price: 12000,
+                minStock: 10,
+                maxStock: 25,
+                menuRelated: ['Klepon', 'Es Cendol']
+            },
+
+            // PROTEIN
+            {
+                id: 2,
+                name: 'Ayam Segar',
+                category: 'Protein',
+                stock: 15,
+                unit: 'kg',
+                price: 35000,
+                minStock: 10,
+                maxStock: 50,
+                menuRelated: ['Nasi Gudeg Special', 'Ayam Bakar Madu', 'Soto Ayam Lamongan']
+            },
+            {
+                id: 3,
+                name: 'Daging Sapi',
+                category: 'Protein',
+                stock: 8,
+                unit: 'kg',
+                price: 120000,
+                minStock: 5,
+                maxStock: 25,
+                menuRelated: ['Rendang Daging', 'Rawon']
+            },
+            {
+                id: 4,
+                name: 'Ikan Lele',
+                category: 'Protein',
+                stock: 12,
+                unit: 'kg',
+                price: 25000,
+                minStock: 8,
+                maxStock: 30,
+                menuRelated: ['Pecel Lele']
+            },
+            {
+                id: 5,
+                name: 'Telur Ayam',
+                category: 'Protein',
+                stock: 20,
+                unit: 'kg',
+                price: 28000,
+                minStock: 15,
+                maxStock: 40,
+                menuRelated: ['Nasi Gudeg Special']
+            },
+            {
+                id: 6,
+                name: 'Tempe Segar',
+                category: 'Protein',
+                stock: 6,
+                unit: 'kg',
+                price: 8000,
+                minStock: 10,
+                maxStock: 25,
+                menuRelated: ['Tempe Mendoan']
+            },
+            {
+                id: 7,
+                name: 'Tahu Putih',
+                category: 'Protein',
+                stock: 8,
+                unit: 'kg',
+                price: 6000,
+                minStock: 10,
+                maxStock: 20,
+                menuRelated: ['Tahu Isi']
+            },
+
+            // SAYURAN & BUMBU
+            {
+                id: 8,
+                name: 'Cabai Merah',
+                category: 'Sayuran',
+                stock: 5,
+                unit: 'kg',
+                price: 25000,
+                minStock: 10,
+                maxStock: 30,
+                menuRelated: ['Rendang Daging', 'Rawon', 'Pecel Lele', 'Semua menu pedas']
+            },
+            {
+                id: 9,
+                name: 'Bawang Merah',
+                category: 'Bumbu',
+                stock: 15,
+                unit: 'kg',
+                price: 18000,
+                minStock: 10,
+                maxStock: 25,
+                menuRelated: ['Semua menu masakan Indonesia']
+            },
+            {
+                id: 10,
+                name: 'Bawang Putih',
+                category: 'Bumbu',
+                stock: 12,
+                unit: 'kg',
+                price: 22000,
+                minStock: 8,
+                maxStock: 20,
+                menuRelated: ['Semua menu masakan Indonesia']
+            },
+            {
+                id: 11,
+                name: 'Jahe Segar',
+                category: 'Bumbu',
+                stock: 3,
+                unit: 'kg',
+                price: 15000,
+                minStock: 5,
+                maxStock: 15,
+                menuRelated: ['Wedang Jahe']
+            },
+            {
+                id: 12,
+                name: 'Sayuran Gado-gado',
+                category: 'Sayuran',
+                stock: 10,
+                unit: 'kg',
+                price: 12000,
+                minStock: 8,
+                maxStock: 20,
+                menuRelated: ['Gado-gado']
+            },
+            {
+                id: 13,
+                name: 'Jagung Pipil',
+                category: 'Sayuran',
+                stock: 8,
+                unit: 'kg',
+                price: 10000,
+                minStock: 5,
+                maxStock: 15,
+                menuRelated: ['Bakwan Jagung']
+            },
+
+            // BUAH
+            {
+                id: 14,
+                name: 'Pisang Raja',
+                category: 'Buah',
+                stock: 15,
+                unit: 'kg',
+                price: 8000,
+                minStock: 10,
+                maxStock: 25,
+                menuRelated: ['Pisang Goreng', 'Kolak Pisang']
+            },
+            {
+                id: 17,
+                name: 'Jeruk Segar',
+                category: 'Buah',
+                stock: 20,
+                unit: 'kg',
+                price: 15000,
+                minStock: 15,
+                maxStock: 40,
+                menuRelated: ['Jus Jeruk']
+            },
+            {
+                id: 18,
+                name: 'Kelapa Muda',
+                category: 'Buah',
+                stock: 25,
+                unit: 'buah',
+                price: 8000,
+                minStock: 20,
+                maxStock: 50,
+                menuRelated: ['Es Kelapa Muda']
+            },
+
+            // MINUMAN
+            {
+                id: 15,
+                name: 'Kopi Arabika',
+                category: 'Minuman',
+                stock: 5,
+                unit: 'kg',
+                price: 80000,
+                minStock: 3,
+                maxStock: 10,
+                menuRelated: ['Kopi Tubruk', 'Cappuccino', 'Espresso', 'Americano']
+            },
+            {
+                id: 16,
+                name: 'Teh Hitam',
+                category: 'Minuman',
+                stock: 8,
+                unit: 'kg',
+                price: 25000,
+                minStock: 5,
+                maxStock: 15,
+                menuRelated: ['Es Teh Manis']
+            },
+            {
+                id: 27,
+                name: 'Susu Segar',
+                category: 'Minuman',
+                stock: 20,
+                unit: 'liter',
+                price: 12000,
+                minStock: 15,
+                maxStock: 35,
+                menuRelated: ['Cappuccino', 'Es Krim Vanilla', 'Puding Coklat']
+            },
+
+            // BAHAN MASAK
+            {
+                id: 19,
+                name: 'Minyak Goreng',
+                category: 'Bahan Masak',
+                stock: 0,
+                unit: 'liter',
+                price: 18000,
+                minStock: 10,
+                maxStock: 30,
+                menuRelated: ['Ayam Bakar', 'Pecel Lele', 'Tempe Mendoan', 'Pisang Goreng', 'Semua menu goreng']
+            },
+            {
+                id: 22,
+                name: 'Santan Kelapa',
+                category: 'Bahan Masak',
+                stock: 30,
+                unit: 'liter',
+                price: 8000,
+                minStock: 15,
+                maxStock: 50,
+                menuRelated: ['Rendang Daging', 'Nasi Gudeg', 'Es Cendol', 'Kolak Pisang']
+            },
+            {
+                id: 26,
+                name: 'Kelapa Parut',
+                category: 'Bahan Masak',
+                stock: 10,
+                unit: 'kg',
+                price: 8000,
+                minStock: 8,
+                maxStock: 20,
+                menuRelated: ['Klepon', 'Es Cendol', 'Gado-gado']
+            },
+            {
+                id: 28,
+                name: 'Coklat Bubuk',
+                category: 'Bahan Masak',
+                stock: 5,
+                unit: 'kg',
+                price: 45000,
+                minStock: 3,
+                maxStock: 10,
+                menuRelated: ['Puding Coklat']
+            },
+
+            // PELENGKAP
+            {
+                id: 24,
+                name: 'Kerupuk Udang',
+                category: 'Pelengkap',
+                stock: 50,
+                unit: 'bungkus',
+                price: 5000,
+                minStock: 30,
+                maxStock: 80,
+                menuRelated: ['Kerupuk Udang', 'Pelengkap nasi']
+            }
+        ];
+
+        let currentFilter = 'all';
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            renderCatalog();
+        });
+
+        // Get stock status
+        function getStockStatus(item) {
+            if (item.stock === 0) return 'out';
+            if (item.stock <= item.minStock) return 'low';
+            if (item.stock <= item.minStock * 1.5) return 'medium';
+            return 'high';
+        }
+
+        // Get stock status text
+        function getStockStatusText(status) {
+            switch(status) {
+                case 'out': return 'Habis';
+                case 'low': return 'Rendah';
+                case 'medium': return 'Sedang';
+                case 'high': return 'Aman';
+                default: return 'Unknown';
+            }
+        }
+
+        // Group items by category
+        function groupByCategory(items) {
+            const categories = {};
+            items.forEach(item => {
+                if (!categories[item.category]) {
+                    categories[item.category] = [];
+                }
+                categories[item.category].push(item);
+            });
+            return categories;
+        }
+
+        // Get category icon
+        function getCategoryIcon(category) {
+            const icons = {
+                'Bahan Pokok': 'fas fa-seedling',
+                'Protein': 'fas fa-drumstick-bite',
+                'Sayuran': 'fas fa-carrot',
+                'Bumbu': 'fas fa-pepper-hot',
+                'Buah': 'fas fa-apple-alt',
+                'Minuman': 'fas fa-coffee',
+                'Bahan Masak': 'fas fa-fire',
+                'Pelengkap': 'fas fa-plus-circle'
+            };
+            return icons[category] || 'fas fa-box';
+        }
+
+        // Filter by category
+        function filterCategory(category) {
+            currentFilter = category;
+            
+            // Update active tab
+            document.querySelectorAll('.filter-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            renderCatalog();
+        }
+
+        // Render catalog
+        function renderCatalog() {
+            const container = document.getElementById('inventory-catalog');
+            
+            let filteredData = inventoryData;
+            if (currentFilter !== 'all') {
+                filteredData = inventoryData.filter(item => 
+                    item.category === currentFilter || 
+                    (currentFilter === 'Sayuran' && (item.category === 'Sayuran' || item.category === 'Bumbu'))
+                );
+            }
+            
+            const groupedItems = groupByCategory(filteredData);
+            
+            container.innerHTML = Object.entries(groupedItems).map(([category, items]) => `
+                <div class="category-section">
+                    <h2 class="category-title">
+                        <div class="category-icon">
+                            <i class="${getCategoryIcon(category)}"></i>
+                        </div>
+                        ${category} (${items.length} item)
+                    </h2>
+                    <div class="items-grid">
+                        ${items.map(item => {
+                            const status = getStockStatus(item);
+                            const statusText = getStockStatusText(status);
+                            const totalValue = item.stock * item.price;
+                            
+                            return `
+                                <div class="item-card">
+                                    <div class="item-name">${item.name}</div>
+                                    <div class="item-details">
+                                        <div class="item-detail">
+                                            <strong>Stok:</strong> ${item.stock} ${item.unit}
+                                        </div>
+                                        <div class="item-detail">
+                                            <strong>Harga:</strong> Rp ${item.price.toLocaleString('id-ID')}
+                                        </div>
+                                        <div class="item-detail">
+                                            <strong>Min/Max:</strong> ${item.minStock}/${item.maxStock} ${item.unit}
+                                        </div>
+                                        <div class="item-detail">
+                                            <strong>Status:</strong> <span class="stock-indicator stock-${status}">${statusText}</span>
+                                        </div>
+                                    </div>
+                                    <div class="item-detail" style="margin-bottom: 10px;">
+                                        <strong>Nilai Total:</strong> Rp ${totalValue.toLocaleString('id-ID')}
+                                    </div>
+                                    <div class="menu-related">
+                                        <div class="menu-related-title">Menu Terkait:</div>
+                                        <div class="menu-list">${item.menuRelated.join(', ')}</div>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+    </script>
+</body>
+</html>

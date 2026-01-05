@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Edit Features - Café Luna</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            padding: 2rem;
+            background: linear-gradient(135deg, #FFF8E7 0%, #F7E7CE 50%, #F5EBE0 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 16px rgba(139, 111, 71, 0.16);
+        }
+        h1 {
+            color: #8B6F47;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .test-section {
+            margin-bottom: 2rem;
+            padding: 1rem;
+            border: 2px solid #F7E7CE;
+            border-radius: 8px;
+        }
+        .test-button {
+            background: linear-gradient(135deg, #8B6F47 0%, #A67B5B 100%);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 0.5rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .test-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(139, 111, 71, 0.3);
+        }
+        .edit-button {
+            background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%);
+        }
+        .result {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #f9f9f9;
+            border-radius: 4px;
+            font-family: monospace;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .order-card {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 0.5rem 0;
+        }
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        .order-id {
+            font-weight: bold;
+            color: #8B6F47;
+        }
+        .order-total {
+            font-weight: bold;
+            color: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>✏️ Test Edit Features - Café Luna</h1>
+        
+        <div class="test-section">
+            <h3>🧪 Setup Test Data</h3>
+            <button class="test-button" onclick="createTestOrders()">Create Test Orders</button>
+            <button class="test-button" onclick="loadExistingOrders()">Load Existing Orders</button>
+            <button class="test-button" onclick="clearAllData()">Clear All Data</button>
+            <div id="setupResult" class="result"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>📋 Test Order Editing</h3>
+            <button class="test-button" onclick="listOrdersForEdit()">List Orders</button>
+            <button class="edit-button" onclick="testEditOrder()">Test Edit Function</button>
+            <div id="orderEditResult" class="result"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>💳 Test Payment Editing</h3>
+            <button class="test-button" onclick="listPaymentsForEdit()">List Payments</button>
+            <button class="edit-button" onclick="testEditPayment()">Test Edit Function</button>
+            <div id="paymentEditResult" class="result"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>🔗 Navigation to Admin Pages</h3>
+            <a href="/DataPesanan" class="test-button">📊 Data Pesanan (Test Edit Orders)</a>
+            <a href="/DataPembayaran" class="test-button">💳 Data Pembayaran (Test Edit Payments)</a>
+            <a href="/RiwayatPesanan" class="test-button">📜 Riwayat Pesanan</a>
+            <a href="/Order" class="test-button">🛒 Order Page</a>
+        </div>
+        
+        <div class="test-section">
+            <h3>📊 Current Data Status</h3>
+            <button class="test-button" onclick="checkDataStatus()">Check Data Status</button>
+            <div id="statusResult" class="result"></div>
+        </div>
+    </div>
+
+    <script>
+        function createTestOrders() {
+            const result = document.getElementById('setupResult');
+            
+            const testOrders = [
+                {
+                    id: 'CAF' + Date.now().toString().slice(-6),
+                    customer: {
+                        name: 'John Doe',
+                        table: 'A1',
+                        phone: '081234567890',
+                        payment: 'cash',
+                        notes: 'Extra hot'
+                    },
+                    items: [
+                        { id: 1, name: 'Cappuccino Signature', price: 35000, quantity: 2, image: '☕' },
+                        { id: 19, name: 'Tiramisu Slice', price: 45000, quantity: 1, image: '🍰' }
+                    ],
+                    timestamp: new Date().toISOString(),
+                    total: 115000,
+                    status: 'completed'
+                },
+                {
+                    id: 'CAF' + (Date.now() + 1000).toString().slice(-6),
+                    customer: {
+                        name: 'Jane Smith',
+                        table: 'B2',
+                        phone: '081234567891',
+                        payment: 'transfer',
+                        notes: 'No sugar'
+                    },
+                    items: [
+                        { id: 2, name: 'Caffe Latte', price: 32000, quantity: 1, image: '☕' },
+                        { id: 20, name: 'Cheesecake Blueberry', price: 42000, quantity: 1, image: '🍰' }
+                    ],
+                    timestamp: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
+                    total: 74000,
+                    status: 'completed'
+                }
+            ];
+            
+            try {
+                localStorage.setItem('cappunabara_order_history', JSON.stringify(testOrders));
+                
+                const customerData = {
+                    name: 'John Doe',
+                    phone: '081234567890',
+                    lastOrderDate: new Date().toISOString(),
+                    totalOrders: 2,
+                    totalSpent: 189000
+                };
+                
+                localStorage.setItem('cappunabara_customer_data', JSON.stringify(customerData));
+                
+                result.innerHTML = `
+                    <strong>✅ Test Orders Created:</strong><br>
+                    - Order 1: ${testOrders[0].id} (${testOrders[0].customer.name})<br>
+                    - Order 2: ${testOrders[1].id} (${testOrders[1].customer.name})<br>
+                    - Total value: Rp ${testOrders.reduce((sum, order) => sum + order.total, 0).toLocaleString('id-ID')}<br>
+                    - Customer data updated: YES
+                `;
+                
+                // Trigger storage events
+                window.dispatchEvent(new StorageEvent('storage', {
+                    key: 'cappunabara_order_history',
+                    newValue: JSON.stringify(testOrders)
+                }));
+                
+            } catch (error) {
+                result.innerHTML = `<strong>❌ Error:</strong> ${error.message}`;
+            }
+        }
+        
+        function loadExistingOrders() {
+            const result = document.getElementById('setupResult');
+            
+            try {
+                const orderHistory = JSON.parse(localStorage.getItem('cappunabara_order_history') || '[]');
+                const customerData = JSON.parse(localStorage.getItem('cappunabara_customer_data') || '{}');
+                
+                result.innerHTML = `
+                    <strong>📊 Existing Data:</strong><br>
+                    - Orders found: ${orderHistory.length}<br>
+                    - Customer name: ${customerData.name || 'N/A'}<br>
+                    - Total spent: Rp ${(customerData.totalSpent || 0).toLocaleString('id-ID')}<br>
+                    - Last order: ${customerData.lastOrderDate ? new Date(customerData.lastOrderDate).toLocaleString('id-ID') : 'N/A'}
+                `;
+                
+                if (orderHistory.length > 0) {
+                    result.innerHTML += '<br><br><strong>Orders:</strong><br>';
+                    orderHistory.forEach(order => {
+                        result.innerHTML += `- ${order.id}: ${order.customer.name} (Rp ${order.total.toLocaleString('id-ID')})<br>`;
+                    });
+                }
+                
+            } catch (error) {
+                result.innerHTML = `<strong>❌ Error:</strong> ${error.message}`;
+            }
+        }
+        
+        function listOrdersForEdit() {
+            const result = document.getElementById('orderEditResult');
+            
+            try {
+                const orderHistory = JSON.parse(localStorage.getItem('cappunabara_order_history') || '[]');
+                
+                if (orderHistory.length === 0) {
+                    result.innerHTML = '<strong>⚠️ No orders found. Create test orders first.</strong>';
+                    return;
+                }
+                
+                result.innerHTML = '<strong>📋 Orders Available for Editing:</strong><br><br>';
+                
+                orderHistory.forEach(order => {
+                    const orderDate = new Date(order.timestamp).toLocaleDateString('id-ID');
+                    result.innerHTML += `
+                        <div class="order-card">
+                            <div class="order-header">
+                                <span class="order-id">#${order.id}</span>
+                                <span class="order-total">Rp ${order.total.toLocaleString('id-ID')}</span>
+                            </div>
+                            <div>
+                                <strong>Customer:</strong> ${order.customer.name}<br>
+                                <strong>Table:</strong> ${order.customer.table}<br>
+                                <strong>Payment:</strong> ${order.customer.payment}<br>
+                                <strong>Date:</strong> ${orderDate}<br>
+                                <strong>Items:</strong> ${order.items.length} items<br>
+                                <strong>Status:</strong> ${order.status}
+                            </div>
+                        </div>
+                    `;
+                });
+                
+            } catch (error) {
+                result.innerHTML = `<strong>❌ Error:</strong> ${error.message}`;
+            }
+        }
+        
+        function testEditOrder() {
+            const result = document.getElementById('orderEditResult');
+            
+            try {
+                const orderHistory = JSON.parse(localStorage.getItem('cappunabara_order_history') || '[]');
+                
+                if (orderHistory.length === 0) {
+                    result.innerHTML = '<strong>⚠️ No orders to edit. Create test orders first.</strong>';
+                    return;
+                }
+                
+                const orderToEdit = orderHistory[0];
+                
+                // Simulate edit
+                const editedOrder = {
+                    ...orderToEdit,
+                    customer: {
+                        ...orderToEdit.customer,
+                        name: 'EDITED - ' + orderToEdit.customer.name,
+                        notes: 'EDITED: Test edit functionality'
+                    },
+                    lastModified: new Date().toISOString()
+                };
+                
+                // Update in array
+                orderHistory[0] = editedOrder;
+                
+                // Save back to localStorage
+                localStorage.setItem('cappunabara_order_history', JSON.stringify(orderHistory));
+                
+                result.innerHTML = `
+                    <strong>✅ Order Edit Test Successful:</strong><br>
+                    - Order ID: ${editedOrder.id}<br>
+                    - Original name: ${orderToEdit.customer.name}<br>
+                    - New name: ${editedOrder.customer.name}<br>
+                    - Modified: ${new Date(editedOrder.lastModified).toLocaleString('id-ID')}<br>
+                    - Status: Order updated in localStorage
+                `;
+                
+                // Trigger storage event
+                window.dispatchEvent(new StorageEvent('storage', {
+                    key: 'cappunabara_order_history',
+                    newValue: JSON.stringify(orderHistory)
+                }));
+                
+            } catch (error) {
+                result.innerHTML = `<strong>❌ Edit Test Error:</strong> ${error.message}`;
+            }
+        }
+        
+        function listPaymentsForEdit() {
+            const result = document.getElementById('paymentEditResult');
+            
+            try {
+                const orderHistory = JSON.parse(localStorage.getItem('cappunabara_order_history') || '[]');
+                
+                if (orderHistory.length === 0) {
+                    result.innerHTML = '<strong>⚠️ No payments found. Create test orders first.</strong>';
+                    return;
+                }
+                
+                result.innerHTML = '<strong>💳 Payments Available for Editing:</strong><br><br>';
+                
+                orderHistory.forEach(order => {
+                    const subtotal = order.total;
+                    const tax = subtotal * 0.1;
+                    const total = subtotal + tax;
+                    const orderDate = new Date(order.timestamp).toLocaleDateString('id-ID');
+                    
+                    result.innerHTML += `
+                        <div class="order-card">
+                            <div class="order-header">
+                                <span class="order-id">Payment #${order.id}</span>
+                                <span class="order-total">Rp ${total.toLocaleString('id-ID')}</span>
+                            </div>
+                            <div>
+                                <strong>Customer:</strong> ${order.customer.name}<br>
+                                <strong>Method:</strong> ${order.customer.payment}<br>
+                                <strong>Subtotal:</strong> Rp ${subtotal.toLocaleString('id-ID')}<br>
+                                <strong>Tax:</strong> Rp ${tax.toLocaleString('id-ID')}<br>
+                                <strong>Date:</strong> ${orderDate}<br>
+                                <strong>Status:</strong> ${order.status}
+                            </div>
+                        </div>
+                    `;
+                });
+                
+            } catch (error) {
+                result.innerHTML = `<strong>❌ Error:</strong> ${error.message}`;
+            }
+        }
+        
+        function testEditPayment() {
+            const result = document.getElementById('paymentEditResult');
+            
+            try {
+                const orderHistory = JSON.parse(localStorage.getItem('cappunabara_order_history') || '[]');
+                
+                if (orderHistory.length === 0) {
+                    result.innerHTML = '<strong>⚠️ No payments to edit. Create test orders first.</strong>';
+                    return;
+                }
+                
+                const paymentToEdit = orderHistory[0];
+                
+                // Simulate payment edit
+                const editedPayment = {
+                    ...paymentToEdit,
+                    customer: {
+                        ...paymentToEdit.customer,
+                        payment: paymentToEdit.customer.payment === 'cash' ? 'transfer' : 'cash',
+                        notes: 'EDITED: Payment method changed'
+                    },
+                    lastModified: new Date().toISOString()
+                };
+                
+                // Update in array
+                orderHistory[0] = editedPayment;
+                
+                // Save back to localStorage
+                localStorage.setItem('cappunabara_order_history', JSON.stringify(orderHistory));
+                
+                result.innerHTML = `
+                    <strong>✅ Payment Edit Test Successful:</strong><br>
+                    - Payment ID: ${editedPayment.id}<br>
+                    - Original method: ${paymentToEdit.customer.payment}<br>
+                    - New method: ${editedPayment.customer.payment}<br>
+                    - Modified: ${new Date(editedPayment.lastModified).toLocaleString('id-ID')}<br>
+                    - Status: Payment updated in localStorage
+                `;
+                
+                // Trigger storage event
+                window.dispatchEvent(new StorageEvent('storage', {
+                    key: 'cappunabara_order_history',
+                    newValue: JSON.stringify(orderHistory)
+                }));
+                
+            } catch (error) {
+                result.innerHTML = `<strong>❌ Payment Edit Test Error:</strong> ${error.message}`;
+            }
+        }
+        
+        function clearAllData() {
+            const result = document.getElementById('setupResult');
+            
+            if (confirm('Are you sure you want to clear all data?')) {
+                localStorage.removeItem('cappunabara_order_history');
+                localStorage.removeItem('cappunabara_customer_data');
+                
+                result.innerHTML = `
+                    <strong>🗑️ All Data Cleared:</strong><br>
+                    - Order history: CLEARED<br>
+                    - Customer data: CLEARED<br>
+                    - localStorage: EMPTY<br>
+                    - Cleared at: ${new Date().toLocaleString('id-ID')}
+                `;
+                
+                // Clear other result divs
+                document.getElementById('orderEditResult').innerHTML = '';
+                document.getElementById('paymentEditResult').innerHTML = '';
+                document.getElementById('statusResult').innerHTML = '';
+            }
+        }
+        
+        function checkDataStatus() {
+            const result = document.getElementById('statusResult');
+            
+            try {
+                const orderHistory = JSON.parse(localStorage.getItem('cappunabara_order_history') || '[]');
+                const customerData = JSON.parse(localStorage.getItem('cappunabara_customer_data') || '{}');
+                
+                result.innerHTML = `
+                    <strong>📊 Current Data Status:</strong><br>
+                    - Total orders: ${orderHistory.length}<br>
+                    - Customer name: ${customerData.name || 'N/A'}<br>
+                    - Total spent: Rp ${(customerData.totalSpent || 0).toLocaleString('id-ID')}<br>
+                    - Last order: ${customerData.lastOrderDate ? new Date(customerData.lastOrderDate).toLocaleString('id-ID') : 'N/A'}<br>
+                    - localStorage size: ${JSON.stringify(orderHistory).length + JSON.stringify(customerData).length} characters<br>
+                    - Edit functionality: READY ✅<br>
+                    - Current time: ${new Date().toLocaleString('id-ID')}
+                `;
+                
+                if (orderHistory.length > 0) {
+                    result.innerHTML += '<br><br><strong>Recent Orders:</strong><br>';
+                    orderHistory.slice(0, 3).forEach(order => {
+                        const hasEdit = order.lastModified ? ' (EDITED)' : '';
+                        result.innerHTML += `- ${order.id}: ${order.customer.name}${hasEdit}<br>`;
+                    });
+                }
+                
+            } catch (error) {
+                result.innerHTML = `<strong>❌ Status Check Error:</strong> ${error.message}`;
+            }
+        }
+        
+        // Auto-run status check on page load
+        window.addEventListener('load', function() {
+            checkDataStatus();
+        });
+    </script>
+</body>
+</html>

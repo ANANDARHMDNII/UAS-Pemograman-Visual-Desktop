@@ -1,0 +1,525 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\cappunabara.bundle.scp.css",
+      "PackagePath": "staticwebassets\\cappunabara.bundle.scp.css"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\aesthetic-pdf-generator.js",
+      "PackagePath": "staticwebassets\\aesthetic-pdf-generator.js"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\assets\\css\\admin.css",
+      "PackagePath": "staticwebassets\\assets\\css\\admin.css"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\assets\\css\\cappunabara_home.css",
+      "PackagePath": "staticwebassets\\assets\\css\\cappunabara_home.css"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\assets\\css\\history.css",
+      "PackagePath": "staticwebassets\\assets\\css\\history.css"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\assets\\css\\order.css",
+      "PackagePath": "staticwebassets\\assets\\css\\order.css"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\assets\\images\\menu-images.js",
+      "PackagePath": "staticwebassets\\assets\\images\\menu-images.js"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\assets\\js\\admin-orders.js",
+      "PackagePath": "staticwebassets\\assets\\js\\admin-orders.js"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\assets\\js\\admin-payments.js",
+      "PackagePath": "staticwebassets\\assets\\js\\admin-payments.js"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\assets\\js\\history.js",
+      "PackagePath": "staticwebassets\\assets\\js\\history.js"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\assets\\js\\order_clean.js",
+      "PackagePath": "staticwebassets\\assets\\js\\order_clean.js"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\auth-system.js",
+      "PackagePath": "staticwebassets\\auth-system.js"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\css\\site.css",
+      "PackagePath": "staticwebassets\\css\\site.css"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\customers.html",
+      "PackagePath": "staticwebassets\\customers.html"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\dashboard.html",
+      "PackagePath": "staticwebassets\\dashboard.html"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\debug-cafe-luna.js",
+      "PackagePath": "staticwebassets\\debug-cafe-luna.js"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\debug-checkout.html",
+      "PackagePath": "staticwebassets\\debug-checkout.html"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\debug-edit-functionality.js",
+      "PackagePath": "staticwebassets\\debug-edit-functionality.js"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\debug-pdf-data.html",
+      "PackagePath": "staticwebassets\\debug-pdf-data.html"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\demo-employees.html",
+      "PackagePath": "staticwebassets\\demo-employees.html"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\employees.html",
+      "PackagePath": "staticwebassets\\employees.html"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\favicon.ico",
+      "PackagePath": "staticwebassets\\favicon.ico"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\fix-cashier-data.html",
+      "PackagePath": "staticwebassets\\fix-cashier-data.html"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\fix-customers.html",
+      "PackagePath": "staticwebassets\\fix-customers.html"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\fix-download-struk.js",
+      "PackagePath": "staticwebassets\\fix-download-struk.js"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\fix-undefined-pdf.js",
+      "PackagePath": "staticwebassets\\fix-undefined-pdf.js"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\immediate-fix.html",
+      "PackagePath": "staticwebassets\\immediate-fix.html"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\index.html",
+      "PackagePath": "staticwebassets\\index.html"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\inventory-add.html",
+      "PackagePath": "staticwebassets\\inventory-add.html"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\inventory-catalog.html",
+      "PackagePath": "staticwebassets\\inventory-catalog.html"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\inventory-edit.html",
+      "PackagePath": "staticwebassets\\inventory-edit.html"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\inventory-history.html",
+      "PackagePath": "staticwebassets\\inventory-history.html"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\inventory.html",
+      "PackagePath": "staticwebassets\\inventory.html"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\js\\site.js",
+      "PackagePath": "staticwebassets\\js\\site.js"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\lib\\bootstrap\\LICENSE",
+      "PackagePath": "staticwebassets\\lib\\bootstrap"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.css"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.css.map"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.min.css"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.js"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.js.map"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.min.js"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\lib\\jquery-validation-unobtrusive\\LICENSE.txt",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation-unobtrusive\\LICENSE.txt"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.js"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.min.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.min.js"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\lib\\jquery-validation\\LICENSE.md",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation\\LICENSE.md"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\additional-methods.js"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.min.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\additional-methods.min.js"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\jquery.validate.js"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.min.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\jquery.validate.min.js"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\lib\\jquery\\LICENSE.txt",
+      "PackagePath": "staticwebassets\\lib\\jquery\\LICENSE.txt"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\lib\\jquery\\dist\\jquery.js",
+      "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.js"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\lib\\jquery\\dist\\jquery.min.js",
+      "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.js"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\lib\\jquery\\dist\\jquery.min.map",
+      "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.map"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\login.html",
+      "PackagePath": "staticwebassets\\login.html"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\menu-management.html",
+      "PackagePath": "staticwebassets\\menu-management.html"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\modern-auth.js",
+      "PackagePath": "staticwebassets\\modern-auth.js"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\modern-dashboard.html",
+      "PackagePath": "staticwebassets\\modern-dashboard.html"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\modern-login.html",
+      "PackagePath": "staticwebassets\\modern-login.html"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\modern-names-showcase.html",
+      "PackagePath": "staticwebassets\\modern-names-showcase.html"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\order-success.html",
+      "PackagePath": "staticwebassets\\order-success.html"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\order-system.html",
+      "PackagePath": "staticwebassets\\order-system.html"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\panduan-status-pelanggan.html",
+      "PackagePath": "staticwebassets\\panduan-status-pelanggan.html"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\pdf-struk-generator.js",
+      "PackagePath": "staticwebassets\\pdf-struk-generator.js"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\profile.html",
+      "PackagePath": "staticwebassets\\profile.html"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\reports.html",
+      "PackagePath": "staticwebassets\\reports.html"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\reset-customers.html",
+      "PackagePath": "staticwebassets\\reset-customers.html"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\settings.html",
+      "PackagePath": "staticwebassets\\settings.html"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\simple-pdf-download.js",
+      "PackagePath": "staticwebassets\\simple-pdf-download.js"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\test-aesthetic-pdf.html",
+      "PackagePath": "staticwebassets\\test-aesthetic-pdf.html"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\test-checkout-validation.html",
+      "PackagePath": "staticwebassets\\test-checkout-validation.html"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\test-clean.html",
+      "PackagePath": "staticwebassets\\test-clean.html"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\test-download-struk.html",
+      "PackagePath": "staticwebassets\\test-download-struk.html"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\test-edit-features.html",
+      "PackagePath": "staticwebassets\\test-edit-features.html"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\test-features.html",
+      "PackagePath": "staticwebassets\\test-features.html"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\test-final.html",
+      "PackagePath": "staticwebassets\\test-final.html"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\test-fix-undefined.html",
+      "PackagePath": "staticwebassets\\test-fix-undefined.html"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\test-inventory-edit.html",
+      "PackagePath": "staticwebassets\\test-inventory-edit.html"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\test-localhost-5140.html",
+      "PackagePath": "staticwebassets\\test-localhost-5140.html"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\test-order-success.html",
+      "PackagePath": "staticwebassets\\test-order-success.html"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\test-pdf-simple.html",
+      "PackagePath": "staticwebassets\\test-pdf-simple.html"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\test-pdf-working.html",
+      "PackagePath": "staticwebassets\\test-pdf-working.html"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\test-print-layout.html",
+      "PackagePath": "staticwebassets\\test-print-layout.html"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\test-service-struk.html",
+      "PackagePath": "staticwebassets\\test-service-struk.html"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\test-working-pdf.html",
+      "PackagePath": "staticwebassets\\test-working-pdf.html"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\test.html",
+      "PackagePath": "staticwebassets\\test.html"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\update-modern-names.html",
+      "PackagePath": "staticwebassets\\update-modern-names.html"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\verify-localhost-5140.html",
+      "PackagePath": "staticwebassets\\verify-localhost-5140.html"
+    },
+    {
+      "Id": "C:\\cappunabara\\cappunabara\\wwwroot\\working-pdf-download.js",
+      "PackagePath": "staticwebassets\\working-pdf-download.js"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.cappunabara.props",
+      "PackagePath": "build\\cappunabara.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.cappunabara.props",
+      "PackagePath": "buildMultiTargeting\\cappunabara.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.cappunabara.props",
+      "PackagePath": "buildTransitive\\cappunabara.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.cappunabara.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

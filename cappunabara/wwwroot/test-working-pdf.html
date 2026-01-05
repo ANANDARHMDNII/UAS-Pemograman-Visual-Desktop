@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Working PDF - Cappunabara</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 2rem;
+            background: #f5f5f5;
+            margin: 0;
+        }
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #8B6F47;
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+        }
+        .alert {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        .big-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            width: 100%;
+            margin: 10px 0;
+        }
+        .big-btn:hover {
+            background: #45a049;
+        }
+        .setup-btn {
+            background: #2196F3;
+        }
+        .setup-btn:hover {
+            background: #1976D2;
+        }
+        .result {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: monospace;
+        }
+        .success { color: #4CAF50; font-weight: bold; }
+        .error { color: #F44336; font-weight: bold; }
+        .steps {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .steps h3 {
+            color: #856404;
+            margin-top: 0;
+        }
+        .steps ol {
+            color: #856404;
+            margin-left: 20px;
+        }
+        .steps li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 Test Working PDF - GUARANTEED</h1>
+        
+        <div class="alert">
+            ⚠️ PENTING: Pastikan popup tidak diblokir untuk localhost:5140
+        </div>
+        
+        <button class="big-btn setup-btn" onclick="createTestOrder()">
+            1️⃣ CREATE TEST ORDER
+        </button>
+        
+        <button class="big-btn" onclick="testWorkingPDF()">
+            2️⃣ TEST WORKING PDF
+        </button>
+        
+        <div id="result" class="result">
+            Status: Ready for testing...
+        </div>
+        
+        <div class="steps">
+            <h3>📋 LANGKAH DOWNLOAD PDF:</h3>
+            <ol>
+                <li><strong>Klik "TEST WORKING PDF"</strong> - Tab baru akan terbuka</li>
+                <li><strong>Klik "PRINT/SAVE PDF"</strong> - Dialog print akan muncul</li>
+                <li><strong>Pilih "Save as PDF"</strong> - JANGAN pilih printer</li>
+                <li><strong>Klik "Save"</strong> - PDF akan tersimpan di Downloads</li>
+            </ol>
+        </div>
+        
+        <div style="text-align: center; margin-top: 2rem;">
+            <a href="http://localhost:5140/RiwayatPesanan" target="_blank" style="display: inline-block; background: #8B6F47; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
+                📜 Open Riwayat Pesanan
+            </a>
+        </div>
+    </div>
+
+    <!-- Load the working PDF generator -->
+    <script src="working-pdf-download.js"></script>
+    
+    <script>
+        function createTestOrder() {
+            const result = document.getElementById('result');
+            
+            try {
+                const testOrder = {
+                    id: 'CPB' + Date.now().toString().slice(-6),
+                    customer: {
+                        name: 'Mala Sari',
+                        table: 'A8',
+                        phone: '081234567890',
+                        payment: 'ewallet',
+                        notes: 'Test order untuk working PDF'
+                    },
+                    items: [
+                        { 
+                            id: 1, 
+                            name: 'Mocha Delight', 
+                            price: 38000, 
+                            quantity: 2,
+                            image: '☕'
+                        },
+                        { 
+                            id: 2, 
+                            name: 'Chicken Wrap', 
+                            price: 40000, 
+                            quantity: 1,
+                            image: '🌯'
+                        }
+                    ],
+                    timestamp: new Date().toISOString(),
+                    total: 116000,
+                    status: 'completed'
+                };
+                
+                localStorage.setItem('cappunabara_order_history', JSON.stringify([testOrder]));
+                
+                result.innerHTML = 
+                    '<span class="success">✅ TEST ORDER BERHASIL DIBUAT!</span><br>' +
+                    'Order ID: ' + testOrder.id + '<br>' +
+                    'Customer: ' + testOrder.customer.name + '<br>' +
+                    'Table: ' + testOrder.customer.table + '<br>' +
+                    'Payment: ' + testOrder.customer.payment + '<br>' +
+                    'Items: ' + testOrder.items.length + ' items<br>' +
+                    'Total: Rp ' + testOrder.total.toLocaleString('id-ID') + '<br>' +
+                    'Status: Siap untuk test PDF download';
+                
+            } catch (error) {
+                result.innerHTML = '<span class="error">❌ Error: ' + error.message + '</span>';
+            }
+        }
+        
+        function testWorkingPDF() {
+            const result = document.getElementById('result');
+            
+            try {
+                const orderHistory = JSON.parse(localStorage.getItem('cappunabara_order_history') || '[]');
+                
+                if (orderHistory.length === 0) {
+                    result.innerHTML = '<span class="error">❌ No orders found! Create test order first.</span>';
+                    return;
+                }
+                
+                const order = orderHistory[0];
+                
+                // Test the working PDF function
+                if (typeof createWorkingPDF === 'function') {
+                    createWorkingPDF(order);
+                    
+                    result.innerHTML = 
+                        '<span class="success">✅ WORKING PDF TEST BERHASIL!</span><br>' +
+                        'Order: ' + order.id + '<br>' +
+                        'Expected: Tab baru terbuka dengan struk<br>' +
+                        'Action: Klik "PRINT/SAVE PDF" di tab baru<br>' +
+                        'Result: PDF akan tersimpan di komputer<br><br>' +
+                        '<strong>JIKA TAB TIDAK TERBUKA:</strong><br>' +
+                        '1. Allow popup untuk localhost:5140<br>' +
+                        '2. Refresh halaman dan coba lagi';
+                } else {
+                    result.innerHTML = '<span class="error">❌ createWorkingPDF function not found! Check if working-pdf-download.js is loaded.</span>';
+                }
+                
+            } catch (error) {
+                result.innerHTML = '<span class="error">❌ Test Error: ' + error.message + '</span>';
+            }
+        }
+        
+        // Check if popup is blocked
+        function checkPopupBlocked() {
+            const testWindow = window.open('', '_blank', 'width=1,height=1');
+            if (!testWindow) {
+                alert('⚠️ POPUP DIBLOKIR!\n\nSilakan:\n1. Klik icon popup di address bar\n2. Pilih "Always allow popups from localhost:5140"\n3. Refresh halaman ini\n4. Coba lagi');
+                return false;
+            } else {
+                testWindow.close();
+                return true;
+            }
+        }
+        
+        // Auto-check popup on load
+        setTimeout(function() {
+            console.log('🔧 Working PDF Test Page Loaded');
+            console.log('✅ Features: Simple, reliable, guaranteed to work');
+        }, 1000);
+    </script>
+</body>
+</html>

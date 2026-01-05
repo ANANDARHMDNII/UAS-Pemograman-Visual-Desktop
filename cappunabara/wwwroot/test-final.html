@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Final PDF - Café Luna</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 2rem;
+            background: #f5f5f5;
+            margin: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #8B6F47;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .big-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            width: 100%;
+            margin: 10px 0;
+        }
+        .big-btn:hover {
+            background: #45a049;
+        }
+        .setup-btn {
+            background: #2196F3;
+        }
+        .setup-btn:hover {
+            background: #1976D2;
+        }
+        .result {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: monospace;
+        }
+        .success { color: #4CAF50; font-weight: bold; }
+        .error { color: #F44336; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Test Final PDF Download</h1>
+        
+        <button class="big-btn setup-btn" onclick="createTestOrder()">
+            1️⃣ CREATE TEST ORDER
+        </button>
+        
+        <button class="big-btn" onclick="testDownload()">
+            2️⃣ TEST DOWNLOAD PDF
+        </button>
+        
+        <div id="result" class="result">
+            Status: Ready for testing...
+        </div>
+        
+        <div style="text-align: center; margin-top: 2rem;">
+            <a href="http://localhost:5140/RiwayatPesanan" target="_blank" style="display: inline-block; background: #8B6F47; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
+                📜 Open Riwayat Pesanan
+            </a>
+        </div>
+    </div>
+
+    <script>
+        function createTestOrder() {
+            const result = document.getElementById('result');
+            
+            try {
+                const testOrder = {
+                    id: 'TEST' + Date.now().toString().slice(-6),
+                    customer: {
+                        name: 'Test Customer',
+                        table: 'A1',
+                        phone: '081234567890',
+                        payment: 'cash',
+                        notes: 'Test order'
+                    },
+                    items: [
+                        { id: 1, name: 'Cappuccino Signature', price: 35000, quantity: 2 },
+                        { id: 19, name: 'Tiramisu Slice', price: 45000, quantity: 1 }
+                    ],
+                    timestamp: new Date().toISOString(),
+                    total: 115000,
+                    status: 'completed'
+                };
+                
+                localStorage.setItem('cappunabara_order_history', JSON.stringify([testOrder]));
+                
+                result.innerHTML = `
+                    <span class="success">✅ TEST ORDER CREATED!</span><br>
+                    Order ID: ${testOrder.id}<br>
+                    Customer: ${testOrder.customer.name}<br>
+                    Total: Rp ${testOrder.total.toLocaleString('id-ID')}<br>
+                    Status: Ready for PDF download test
+                `;
+                
+            } catch (error) {
+                result.innerHTML = `<span class="error">❌ Error: ${error.message}</span>`;
+            }
+        }
+        
+        function testDownload() {
+            const result = document.getElementById('result');
+            
+            try {
+                const orderHistory = JSON.parse(localStorage.getItem('cappunabara_order_history') || '[]');
+                
+                if (orderHistory.length === 0) {
+                    result.innerHTML = '<span class="error">❌ No orders found! Create test order first.</span>';
+                    return;
+                }
+                
+                const order = orderHistory[0];
+                
+                // Test the download function directly
+                createAndDownloadPDF(order);
+                
+                result.innerHTML = `
+                    <span class="success">✅ DOWNLOAD TEST EXECUTED!</span><br>
+                    Order: ${order.id}<br>
+                    Expected: New tab should open with PDF struk<br>
+                    Action: Click "PRINT/SAVE PDF" in the new tab<br>
+                    Result: PDF file will be saved to your computer
+                `;
+                
+            } catch (error) {
+                result.innerHTML = `<span class="error">❌ Test Error: ${error.message}</span>`;
+            }
+        }
+        
+        // Copy the createAndDownloadPDF function here for testing
+        function createAndDownloadPDF(order) {
+            console.log('Creating PDF for order:', order.id);
+            
+            const subtotal = order.total;
+            const tax = subtotal * 0.1;
+            const finalTotal = subtotal + tax;
+            const orderDate = new Date(order.timestamp);
+            
+            const htmlContent = \`
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Struk Café Luna - \${order.id}</title>
+    <style>
+        @page { size: A4; margin: 15mm; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; line-height: 1.4; color: #333; background: white; padding: 20px; }
+        .struk { max-width: 400px; margin: 0 auto; border: 3px solid #8B6F47; border-radius: 15px; padding: 30px; background: white; }
+        .header { text-align: center; margin-bottom: 25px; padding-bottom: 20px; border-bottom: 2px solid #8B6F47; }
+        .logo { font-size: 36px; margin-bottom: 8px; }
+        .brand { font-size: 24px; font-weight: bold; color: #8B6F47; margin-bottom: 5px; }
+        .tagline { font-size: 14px; color: #666; font-style: italic; }
+        .title { text-align: center; font-size: 18px; font-weight: bold; color: #8B6F47; margin: 20px 0; text-transform: uppercase; }
+        .info { background: #f9f9f9; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
+        .info-row { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 14px; }
+        .info-label { font-weight: bold; color: #555; }
+        .info-value { font-weight: bold; color: #8B6F47; }
+        .items { margin: 20px 0; }
+        .items-header { background: #8B6F47; color: white; padding: 10px; font-weight: bold; text-align: center; border-radius: 6px 6px 0 0; }
+        .items-table { width: 100%; border-collapse: collapse; border: 2px solid #8B6F47; border-top: none; border-radius: 0 0 6px 6px; }
+        .items-table th { background: #A67B5B; color: white; padding: 8px; font-size: 12px; }
+        .items-table td { padding: 10px 6px; border-bottom: 1px solid #ddd; font-size: 13px; }
+        .items-table tr:nth-child(even) { background: #f9f9f9; }
+        .item-name { font-weight: 600; }
+        .item-qty { text-align: center; color: #666; font-weight: bold; }
+        .item-price { text-align: right; font-weight: bold; color: #8B6F47; }
+        .totals { margin-top: 20px; padding: 15px; background: linear-gradient(135deg, #F7E7CE 0%, #FFF8E7 100%); border: 2px solid #8B6F47; border-radius: 10px; }
+        .total-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 15px; }
+        .total-label { font-weight: 600; color: #555; }
+        .total-value { font-weight: bold; color: #8B6F47; }
+        .final-total { font-size: 18px; font-weight: bold; color: #8B6F47; border-top: 2px solid #8B6F47; padding-top: 10px; margin-top: 10px; }
+        .footer { text-align: center; margin-top: 25px; padding-top: 20px; border-top: 1px solid #ddd; }
+        .thank-you { font-size: 16px; font-weight: bold; color: #8B6F47; margin-bottom: 10px; }
+        .contact { font-size: 12px; color: #666; margin-bottom: 5px; }
+        .print-date { margin-top: 15px; font-size: 10px; color: #999; }
+        .print-instructions { background: #e3f2fd; border: 2px solid #2196F3; border-radius: 10px; padding: 20px; margin-bottom: 25px; text-align: center; }
+        .big-btn { background: #4CAF50; color: white; border: none; padding: 15px 30px; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: bold; margin: 8px; }
+        .big-btn:hover { background: #45a049; }
+        .close-btn { background: #f44336; }
+        .close-btn:hover { background: #d32f2f; }
+        @media print { .print-instructions { display: none !important; } .struk { border: none; margin: 0; padding: 0; } }
+    </style>
+</head>
+<body>
+    <div class="print-instructions">
+        <h3>📥 CARA DOWNLOAD PDF:</h3>
+        <p><strong>1. Klik "PRINT/SAVE PDF" di bawah</strong></p>
+        <p><strong>2. Atau tekan Ctrl+P</strong></p>
+        <p><strong>3. Pilih "Save as PDF"</strong></p>
+        <p><strong>4. Klik "Save"</strong></p>
+        <button class="big-btn" onclick="window.print()">🖨️ PRINT / SAVE PDF</button>
+        <button class="big-btn close-btn" onclick="window.close()">❌ TUTUP</button>
+    </div>
+    
+    <div class="struk">
+        <div class="header">
+            <div class="logo">☕</div>
+            <div class="brand">CAFÉ LUNA</div>
+            <div class="tagline">Your Cozy Corner</div>
+        </div>
+        
+        <div class="title">STRUK PEMBELIAN</div>
+        
+        <div class="info">
+            <div class="info-row"><span class="info-label">No. Pesanan:</span><span class="info-value">\${order.id}</span></div>
+            <div class="info-row"><span class="info-label">Tanggal:</span><span class="info-value">\${orderDate.toLocaleDateString('id-ID')}</span></div>
+            <div class="info-row"><span class="info-label">Waktu:</span><span class="info-value">\${orderDate.toLocaleTimeString('id-ID')}</span></div>
+            <div class="info-row"><span class="info-label">Pelanggan:</span><span class="info-value">\${order.customer.name}</span></div>
+            <div class="info-row"><span class="info-label">Meja:</span><span class="info-value">\${order.customer.table}</span></div>
+            <div class="info-row"><span class="info-label">Pembayaran:</span><span class="info-value">\${order.customer.payment}</span></div>
+        </div>
+        
+        <div class="items">
+            <div class="items-header">DETAIL PESANAN</div>
+            <table class="items-table">
+                <thead>
+                    <tr>
+                        <th style="text-align: left;">ITEM</th>
+                        <th style="width: 50px;">QTY</th>
+                        <th style="width: 90px; text-align: right;">HARGA</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    \${order.items.map(item => \`
+                        <tr>
+                            <td class="item-name">\${item.name}</td>
+                            <td class="item-qty">\${item.quantity}x</td>
+                            <td class="item-price">Rp \${(item.price * item.quantity).toLocaleString('id-ID')}</td>
+                        </tr>
+                    \`).join('')}
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="totals">
+            <div class="total-row"><span class="total-label">Subtotal:</span><span class="total-value">Rp \${subtotal.toLocaleString('id-ID')}</span></div>
+            <div class="total-row"><span class="total-label">Pajak (10%):</span><span class="total-value">Rp \${tax.toLocaleString('id-ID')}</span></div>
+            <div class="total-row final-total"><span class="total-label">TOTAL PEMBAYARAN:</span><span class="total-value">Rp \${finalTotal.toLocaleString('id-ID')}</span></div>
+        </div>
+        
+        <div class="footer">
+            <div class="thank-you">Terima kasih sudah berbelanja di Café Luna! 💖</div>
+            <div class="contact">📞 0812-3456-7890 | 📧 hello@cafeluna.com</div>
+            <div class="contact">📍 Jl. Kopi Hangat No. 123, Jakarta</div>
+            <div class="print-date">Dicetak: \${new Date().toLocaleString('id-ID')}</div>
+        </div>
+    </div>
+    
+    <script>
+        window.focus();
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.key === 'p') {
+                e.preventDefault();
+                window.print();
+            }
+            if (e.key === 'Escape') {
+                window.close();
+            }
+        });
+        
+        setTimeout(function() {
+            alert('CARA DOWNLOAD PDF:\\\\n\\\\n1. Klik tombol "PRINT/SAVE PDF"\\\\n2. Atau tekan Ctrl+P\\\\n3. Pilih "Save as PDF"\\\\n4. Klik "Save"\\\\n\\\\nStruk akan tersimpan sebagai file PDF!');
+        }, 1000);
+    </script>
+</body>
+</html>\`;
+            
+            const printWindow = window.open('', '_blank', 'width=800,height=1000,scrollbars=yes');
+            
+            if (!printWindow) {
+                alert('❌ POPUP DIBLOKIR!\\n\\nSilakan:\\n1. Allow popup untuk localhost:5140\\n2. Refresh halaman\\n3. Coba lagi');
+                return;
+            }
+            
+            printWindow.document.write(htmlContent);
+            printWindow.document.close();
+            printWindow.focus();
+            
+            alert('✅ STRUK BERHASIL DIBUKA!\\n\\nTab baru telah terbuka dengan struk.\\nKlik "PRINT/SAVE PDF" untuk download.');
+            
+            console.log('PDF window opened successfully for order:', order.id);
+        }
+    </script>
+</body>
+</html>

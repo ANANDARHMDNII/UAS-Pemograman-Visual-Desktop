@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Cappunabara Modern</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            color: white;
+            padding: 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .brand-icon {
+            width: 45px;
+            height: 45px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .navbar-user {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            padding: 8px 16px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .user-info:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .user-details h4 {
+            font-size: 16px;
+            margin-bottom: 2px;
+        }
+
+        .user-details p {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .logout-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        .welcome-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .welcome-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .welcome-section h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .welcome-section p {
+            font-size: 16px;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .stat-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: white;
+            position: relative;
+        }
+
+        .stat-card:nth-child(1) .stat-icon { 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+        }
+        .stat-card:nth-child(2) .stat-icon { 
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); 
+        }
+        .stat-card:nth-child(3) .stat-icon { 
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); 
+        }
+        .stat-card:nth-child(4) .stat-icon { 
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); 
+        }
+
+        .stat-trend {
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        .trend-up {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .trend-down {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .stat-number {
+            font-size: 36px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 8px;
+            line-height: 1;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .stat-description {
+            color: #999;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .sidebar-content {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-title {
+            font-size: 22px;
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .card-title i {
+            color: #D2691E;
+        }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .action-btn {
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            color: white;
+            border: none;
+            padding: 25px 20px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+            display: block;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .action-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .action-btn:hover::before {
+            left: 100%;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(139, 69, 19, 0.3);
+        }
+
+        .action-btn i {
+            font-size: 28px;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .action-btn span {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #f0f0f0;
+            transition: all 0.3s ease;
+        }
+
+        .activity-item:hover {
+            background: #f8f9fa;
+            margin: 0 -30px;
+            padding: 20px 30px;
+            border-radius: 10px;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+            font-size: 18px;
+            color: white;
+        }
+
+        .activity-item:nth-child(odd) .activity-icon { 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+        }
+        .activity-item:nth-child(even) .activity-icon { 
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); 
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+            font-size: 15px;
+        }
+
+        .activity-description {
+            color: #666;
+            font-size: 13px;
+            margin-bottom: 3px;
+        }
+
+        .activity-time {
+            font-size: 11px;
+            color: #999;
+        }
+
+        .notification-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 15px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .notification-item:last-child {
+            border-bottom: none;
+        }
+
+        .notification-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 14px;
+            color: white;
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        .notification-content {
+            flex: 1;
+        }
+
+        .notification-title {
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+            margin-bottom: 3px;
+        }
+
+        .notification-text {
+            color: #666;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        .notification-time {
+            font-size: 11px;
+            color: #999;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 1200px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .user-details {
+                display: none;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .quick-actions {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .welcome-section {
+                padding: 25px;
+            }
+            
+            .welcome-section h1 {
+                font-size: 24px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 20px 15px;
+            }
+            
+            .card {
+                padding: 20px;
+            }
+            
+            .quick-actions {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-content">
+            <div class="navbar-brand">
+                <div class="brand-icon">
+                    <i class="fas fa-utensils"></i>
+                </div>
+                <span>Cappunabara Dashboard</span>
+            </div>
+            <div class="navbar-user">
+                <div class="user-info" onclick="showUserMenu()">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-details">
+                        <h4 id="user-name">Loading...</h4>
+                        <p id="user-role">Loading...</p>
+                    </div>
+                </div>
+                <button class="logout-btn" onclick="handleLogout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Logout
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="welcome-section">
+            <div class="welcome-content">
+                <h1>Selamat Datang Kembali! 👋</h1>
+                <p>Kelola restoran Cappunabara Anda dengan dashboard modern yang intuitif. Pantau performa, kelola pesanan, dan tingkatkan pengalaman pelanggan dalam satu platform terpadu.</p>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <div class="stat-trend trend-up">
+                        <i class="fas fa-arrow-up"></i> +12%
+                    </div>
+                </div>
+                <div class="stat-number" data-target="247">0</div>
+                <div class="stat-label">Pesanan Hari Ini</div>
+                <div class="stat-description">Meningkat dari kemarin</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                    <div class="stat-trend trend-up">
+                        <i class="fas fa-arrow-up"></i> +8%
+                    </div>
+                </div>
+                <div class="stat-number" data-target="3.2" data-prefix="Rp " data-suffix="M">Rp 0M</div>
+                <div class="stat-label">Pendapatan Hari Ini</div>
+                <div class="stat-description">Target tercapai 85%</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-trend trend-up">
+                        <i class="fas fa-arrow-up"></i> +15%
+                    </div>
+                </div>
+                <div class="stat-number" data-target="128">0</div>
+                <div class="stat-label">Pelanggan Aktif</div>
+                <div class="stat-description">Pelanggan baru: 23</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="stat-trend trend-up">
+                        <i class="fas fa-arrow-up"></i> +0.2
+                    </div>
+                </div>
+                <div class="stat-number" data-target="4.9">0</div>
+                <div class="stat-label">Rating Rata-rata</div>
+                <div class="stat-description">Dari 156 review</div>
+            </div>
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="main-content">
+                <div class="card">
+                    <h2 class="card-title">
+                        <i class="fas fa-bolt"></i>
+                        Aksi Cepat
+                    </h2>
+                    <div class="quick-actions">
+                        <a href="order-system.html" class="action-btn">
+                            <i class="fas fa-plus-circle"></i>
+                            <span>Pesanan Baru</span>
+                        </a>
+                        <a href="menu-management.html" class="action-btn">
+                            <i class="fas fa-utensils"></i>
+                            <span>Kelola Menu</span>
+                        </a>
+                        <a href="reports.html" class="action-btn">
+                            <i class="fas fa-chart-line"></i>
+                            <span>Laporan</span>
+                        </a>
+                        <a href="customers.html" class="action-btn">
+                            <i class="fas fa-users"></i>
+                            <span>Pelanggan</span>
+                        </a>
+                        <a href="employees.html" class="action-btn">
+                            <i class="fas fa-users-cog"></i>
+                            <span>Karyawan</span>
+                        </a>
+                        <a href="inventory.html" class="action-btn">
+                            <i class="fas fa-boxes"></i>
+                            <span>Inventori</span>
+                        </a>
+                        <a href="inventory-catalog.html" class="action-btn">
+                            <i class="fas fa-book"></i>
+                            <span>Katalog Inventori</span>
+                        </a>
+                        <a href="inventory-history.html" class="action-btn">
+                            <i class="fas fa-history"></i>
+                            <span>Riwayat Stok</span>
+                        </a>
+                        <a href="settings.html" class="action-btn">
+                            <i class="fas fa-cog"></i>
+                            <span>Pengaturan</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2 class="card-title">
+                        <i class="fas fa-clock"></i>
+                        Aktivitas Terbaru
+                    </h2>
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-title">Pesanan baru dari Meja 12</div>
+                            <div class="activity-description">2x Nasi Gudeg, 1x Es Teh Manis - Total: Rp 45.000</div>
+                            <div class="activity-time">2 menit yang lalu</div>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-title">Pesanan #1247 selesai</div>
+                            <div class="activity-description">Pesanan untuk Meja 8 telah diselesaikan</div>
+                            <div class="activity-time">5 menit yang lalu</div>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-user-plus"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-title">Pelanggan baru terdaftar</div>
+                            <div class="activity-description">Sari Dewi bergabung sebagai member</div>
+                            <div class="activity-time">12 menit yang lalu</div>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-title">Review 5 bintang diterima</div>
+                            <div class="activity-description">"Makanan enak, pelayanan ramah!"</div>
+                            <div class="activity-time">18 menit yang lalu</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-content">
+                <div class="card">
+                    <h2 class="card-title">
+                        <i class="fas fa-bell"></i>
+                        Notifikasi
+                    </h2>
+                    <div class="notification-item">
+                        <div class="notification-icon">
+                            <i class="fas fa-exclamation"></i>
+                        </div>
+                        <div class="notification-content">
+                            <div class="notification-title">Stok Rendah</div>
+                            <div class="notification-text">Bahan baku Ayam tinggal 5kg</div>
+                            <div class="notification-time">10 menit lalu</div>
+                        </div>
+                    </div>
+                    <div class="notification-item">
+                        <div class="notification-icon">
+                            <i class="fas fa-gift"></i>
+                        </div>
+                        <div class="notification-content">
+                            <div class="notification-title">Promo Baru</div>
+                            <div class="notification-text">Diskon 20% untuk menu spesial</div>
+                            <div class="notification-time">1 jam lalu</div>
+                        </div>
+                    </div>
+                    <div class="notification-item">
+                        <div class="notification-icon">
+                            <i class="fas fa-chart-up"></i>
+                        </div>
+                        <div class="notification-content">
+                            <div class="notification-title">Target Tercapai</div>
+                            <div class="notification-text">Penjualan minggu ini naik 15%</div>
+                            <div class="notification-time">2 jam lalu</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2 class="card-title">
+                        <i class="fas fa-fire"></i>
+                        Menu Terpopuler
+                    </h2>
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-utensils"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-title">Nasi Gudeg Special</div>
+                            <div class="activity-description">47 porsi terjual hari ini</div>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-drumstick-bite"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-title">Ayam Bakar Madu</div>
+                            <div class="activity-description">32 porsi terjual hari ini</div>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-bowl-food"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-title">Soto Ayam Lamongan</div>
+                            <div class="activity-description">28 porsi terjual hari ini</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="modern-auth.js"></script>
+    <script>
+        // Check authentication and auto-fix customers
+        if (!isModernLoggedIn()) {
+            window.location.href = 'modern-login.html';
+        } else {
+            // Auto-fix inactive customers when dashboard loads
+            autoFixInactiveCustomers();
+        }
+
+        // Automatically fix inactive customers
+        function autoFixInactiveCustomers() {
+            let customers = JSON.parse(localStorage.getItem('customersData') || '[]');
+            let hasChanges = false;
+            
+            customers.forEach(customer => {
+                if (customer.status === 'inactive' || !customer.status) {
+                    customer.status = 'active';
+                    hasChanges = true;
+                }
+            });
+            
+            if (hasChanges) {
+                localStorage.setItem('customersData', JSON.stringify(customers));
+                console.log('Dashboard: Auto-activated all inactive customers');
+            }
+        }
+
+        // Load user info
+        function loadUserInfo() {
+            const user = getCurrentModernUser();
+            if (user) {
+                document.getElementById('user-name').textContent = user.name;
+                document.getElementById('user-role').textContent = user.role;
+            }
+        }
+
+        // Animate numbers
+        function animateNumbers() {
+            const numbers = document.querySelectorAll('.stat-number');
+            numbers.forEach(number => {
+                const target = parseFloat(number.dataset.target);
+                const prefix = number.dataset.prefix || '';
+                const suffix = number.dataset.suffix || '';
+                let current = 0;
+                const increment = target / 100;
+                
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        current = target;
+                        clearInterval(timer);
+                    }
+                    
+                    let displayValue;
+                    if (suffix === 'M') {
+                        displayValue = (current).toFixed(1);
+                    } else if (target % 1 !== 0) {
+                        displayValue = current.toFixed(1);
+                    } else {
+                        displayValue = Math.floor(current);
+                    }
+                    
+                    number.textContent = prefix + displayValue + suffix;
+                }, 20);
+            });
+        }
+
+        // Handle logout
+        function handleLogout() {
+            if (confirm('Apakah Anda yakin ingin logout?')) {
+                modernLogout();
+                window.location.href = 'index.html';
+            }
+        }
+
+        // Show user menu (placeholder)
+        function showUserMenu() {
+            alert('User menu akan dikembangkan');
+        }
+
+        // Initialize dashboard
+        function initDashboard() {
+            loadUserInfo();
+            
+            // Start animations after page load
+            setTimeout(() => {
+                animateNumbers();
+            }, 500);
+            
+            // Auto refresh data every 30 seconds
+            setInterval(() => {
+                console.log('Refreshing dashboard data...');
+                // In real app, this would fetch new data
+            }, 30000);
+        }
+
+        // Initialize when DOM is ready
+        document.addEventListener('DOMContentLoaded', initDashboard);
+
+        // Add some interactivity
+        document.querySelectorAll('.action-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                // Let the links work normally, don't prevent default
+                console.log('Navigating to:', this.href);
+            });
+        });
+
+
+    </script>
+</body>
+</html>

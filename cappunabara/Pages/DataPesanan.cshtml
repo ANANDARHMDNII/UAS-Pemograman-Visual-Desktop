@@ -1,0 +1,193 @@
+@page
+@model DataPesananModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Cappunabara - Data Pesanan Admin">
+    <title>Cappunabara - Data Pesanan</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="~/assets/css/cappunabara_home.css">
+    <link rel="stylesheet" href="~/assets/css/admin.css">
+</head>
+
+<body>
+    <!-- Navigation Header -->
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">
+                <span class="logo-emoji">☕</span>
+                <span class="logo-text">Cappunabara Admin</span>
+            </a>
+
+            <nav class="nav-menu">
+                <a href="/DataPesanan" class="nav-link active">📋 Data Pesanan</a>
+                <a href="/DataPembayaran" class="nav-link">💳 Data Pembayaran</a>
+                <a href="/RiwayatPesanan" class="nav-link">📜 Riwayat Pesanan</a>
+                <a href="/Order" class="nav-link">🛒 Kembali ke Order</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Page Header -->
+            <div class="page-header">
+                <div class="header-content">
+                    <h1 class="page-title">📋 Data Pesanan</h1>
+                    <p class="page-subtitle">Kelola dan pantau semua pesanan pelanggan</p>
+                </div>
+                
+                <div class="header-actions">
+                    <button class="btn-refresh" id="refreshData" onclick="loadOrderData()">
+                        <span>🔄</span> Refresh
+                    </button>
+                    <button class="btn-save" id="saveAllData" onclick="saveAllData()">
+                        <span>💾</span> Simpan Semua
+                    </button>
+                    <button class="btn-export" id="exportData" onclick="exportToCSV()">
+                        <span>📥</span> Export CSV
+                    </button>
+                </div>
+            </div>
+
+            <!-- Statistics Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">📊</div>
+                    <div class="stat-content">
+                        <div class="stat-value" id="totalOrders">0</div>
+                        <div class="stat-label">Total Pesanan</div>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">💰</div>
+                    <div class="stat-content">
+                        <div class="stat-value" id="totalRevenue">Rp 0</div>
+                        <div class="stat-label">Total Pendapatan</div>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">📅</div>
+                    <div class="stat-content">
+                        <div class="stat-value" id="todayOrders">0</div>
+                        <div class="stat-label">Pesanan Hari Ini</div>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">⭐</div>
+                    <div class="stat-content">
+                        <div class="stat-value" id="avgOrder">Rp 0</div>
+                        <div class="stat-label">Rata-rata Pesanan</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filters -->
+            <div class="filters-section">
+                <div class="filter-group">
+                    <label for="dateFilter">Filter Tanggal:</label>
+                    <select id="dateFilter" onchange="filterOrders()">
+                        <option value="all">Semua Waktu</option>
+                        <option value="today">Hari Ini</option>
+                        <option value="week">Minggu Ini</option>
+                        <option value="month">Bulan Ini</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="statusFilter">Filter Status:</label>
+                    <select id="statusFilter" onchange="filterOrders()">
+                        <option value="all">Semua Status</option>
+                        <option value="completed">Selesai</option>
+                        <option value="pending">Pending</option>
+                        <option value="cancelled">Dibatalkan</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="searchFilter">Cari:</label>
+                    <input type="text" id="searchFilter" placeholder="Cari berdasarkan nama atau nomor pesanan..." onkeyup="filterOrders()">
+                </div>
+            </div>
+
+            <!-- Data Table -->
+            <div class="table-container">
+                <table class="data-table" id="ordersTable">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>No Pesanan</th>
+                            <th>Tgl Pesanan</th>
+                            <th>Pelanggan</th>
+                            <th>Meja</th>
+                            <th>Items</th>
+                            <th>Subtotal</th>
+                            <th>Pajak</th>
+                            <th>Total Pembayaran</th>
+                            <th>Status</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ordersTableBody">
+                        <!-- Data will be loaded here -->
+                    </tbody>
+                </table>
+                
+                <div class="empty-state" id="emptyState" style="display: none;">
+                    <div class="empty-icon">📋</div>
+                    <h3>Belum Ada Data Pesanan</h3>
+                    <p>Data pesanan akan muncul di sini setelah ada transaksi</p>
+                </div>
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination-container">
+                <div class="pagination-info">
+                    Menampilkan <span id="showingStart">0</span> - <span id="showingEnd">0</span> dari <span id="totalRecords">0</span> data
+                </div>
+                <div class="pagination" id="pagination">
+                    <!-- Pagination buttons will be generated here -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Order Detail Modal -->
+    <div class="modal" id="orderDetailModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2 class="modal-title">Detail Pesanan</h2>
+                <button class="modal-close" onclick="closeOrderDetail()">✕</button>
+            </div>
+            <div class="modal-body" id="orderDetailContent">
+                <!-- Order details will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Overlay -->
+    <div class="overlay" id="overlay" onclick="closeAllModals()"></div>
+
+    <!-- JavaScript -->
+    <script src="~/assets/js/admin-orders.js"></script>
+    <script src="~/debug-edit-functionality.js"></script>
+</body>
+
+</html>

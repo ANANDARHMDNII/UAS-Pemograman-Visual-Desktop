@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo Manajemen Karyawan - Cappunabara</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .demo-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            max-width: 800px;
+            width: 100%;
+            overflow: hidden;
+            animation: slideIn 0.6s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .demo-header {
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .demo-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 36px;
+        }
+
+        .demo-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .demo-subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .demo-content {
+            padding: 40px 30px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .feature-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 24px;
+            color: white;
+        }
+
+        .feature-card:nth-child(1) .feature-icon { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .feature-card:nth-child(2) .feature-icon { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .feature-card:nth-child(3) .feature-icon { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .feature-card:nth-child(4) .feature-icon { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+
+        .feature-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .feature-description {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .sample-table {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            overflow-x: auto;
+        }
+
+        .sample-table h3 {
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .table th,
+        .table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .table th {
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .table td {
+            font-size: 13px;
+        }
+
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .status-active {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .shift-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .shift-pagi {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .shift-siang {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 5px;
+        }
+
+        .btn-sm {
+            padding: 4px 8px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 11px;
+            color: white;
+        }
+
+        .btn-info { background: #17a2b8; }
+        .btn-warning { background: #ffc107; color: #333; }
+        .btn-danger { background: #dc3545; }
+
+        .demo-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 15px 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            color: white;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+        }
+
+        .btn-info {
+            background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .demo-container {
+                margin: 10px;
+            }
+
+            .demo-content {
+                padding: 30px 20px;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .demo-actions {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <div class="demo-header">
+            <div class="demo-icon">
+                <i class="fas fa-users-cog"></i>
+            </div>
+            <h1 class="demo-title">Manajemen Karyawan</h1>
+            <p class="demo-subtitle">Sistem manajemen karyawan lengkap untuk Cappunabara</p>
+        </div>
+
+        <div class="demo-content">
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                    <h3 class="feature-title">Tambah Karyawan</h3>
+                    <p class="feature-description">Daftarkan karyawan baru dengan data lengkap termasuk ID, jabatan, shift, dan kontak.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3 class="feature-title">Pencarian & Filter</h3>
+                    <p class="feature-description">Cari karyawan berdasarkan nama, ID, atau filter berdasarkan jabatan dan shift kerja.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-edit"></i>
+                    </div>
+                    <h3 class="feature-title">Edit & Update</h3>
+                    <p class="feature-description">Update informasi karyawan, ubah jabatan, shift, atau status aktif/nonaktif.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <h3 class="feature-title">Statistik</h3>
+                    <p class="feature-description">Lihat statistik karyawan aktif, total karyawan, dan distribusi berdasarkan shift.</p>
+                </div>
+            </div>
+
+            <div class="sample-table">
+                <h3><i class="fas fa-table"></i> Contoh Data Karyawan</h3>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nama</th>
+                            <th>Jabatan</th>
+                            <th>Shift</th>
+                            <th>Status</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>K001</strong></td>
+                            <td>Alya Putri Maharani</td>
+                            <td>Barista</td>
+                            <td><span class="shift-badge shift-pagi">Pagi</span></td>
+                            <td><span class="status-badge status-active">Aktif</span></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-sm btn-info">👁️</button>
+                                    <button class="btn-sm btn-warning">✏️</button>
+                                    <button class="btn-sm btn-danger">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>K002</strong></td>
+                            <td>Kenzo Aditya Pratama</td>
+                            <td>Kasir</td>
+                            <td><span class="shift-badge shift-siang">Siang</span></td>
+                            <td><span class="status-badge status-active">Aktif</span></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-sm btn-info">👁️</button>
+                                    <button class="btn-sm btn-warning">✏️</button>
+                                    <button class="btn-sm btn-danger">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>K003</strong></td>
+                            <td>Naira Safira Azzahra</td>
+                            <td>Supervisor</td>
+                            <td><span class="shift-badge shift-pagi">Pagi</span></td>
+                            <td><span class="status-badge status-active">Aktif</span></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-sm btn-info">👁️</button>
+                                    <button class="btn-sm btn-warning">✏️</button>
+                                    <button class="btn-sm btn-danger">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div style="background: #e8f5e8; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                <h4 style="color: #155724; margin-bottom: 10px;">
+                    <i class="fas fa-check-circle"></i> Fitur Lengkap Tersedia:
+                </h4>
+                <ul style="color: #155724; margin-left: 20px;">
+                    <li>✅ <strong>CRUD Lengkap</strong> - Create, Read, Update, Delete karyawan</li>
+                    <li>✅ <strong>Data Lengkap</strong> - ID, Nama, Jabatan, Shift, HP, Alamat, Tanggal Masuk</li>
+                    <li>✅ <strong>Filter & Pencarian</strong> - Berdasarkan nama, jabatan, shift</li>
+                    <li>✅ <strong>Status Management</strong> - Aktif/Nonaktif karyawan</li>
+                    <li>✅ <strong>Responsive Design</strong> - Bekerja di desktop dan mobile</li>
+                    <li>✅ <strong>Data Persistence</strong> - Data tersimpan di localStorage</li>
+                </ul>
+            </div>
+
+            <div class="demo-actions">
+                <a href="employees.html" class="btn btn-primary">
+                    <i class="fas fa-users-cog"></i>
+                    Buka Manajemen Karyawan
+                </a>
+                <a href="modern-dashboard.html" class="btn btn-success">
+                    <i class="fas fa-home"></i>
+                    Kembali ke Dashboard
+                </a>
+                <button class="btn btn-info" onclick="generateSampleData()">
+                    <i class="fas fa-database"></i>
+                    Generate Sample Data
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function generateSampleData() {
+            const sampleEmployees = [
+                {
+                    id: 'K001',
+                    name: 'Alya Putri Maharani',
+                    position: 'barista',
+                    shift: 'pagi',
+                    phone: '081234567890',
+                    address: 'Jl. Malioboro No. 45, Yogyakarta',
+                    joinDate: '2023-01-15',
+                    status: 'aktif'
+                },
+                {
+                    id: 'K002',
+                    name: 'Kenzo Aditya Pratama',
+                    position: 'kasir',
+                    shift: 'siang',
+                    phone: '081234567891',
+                    address: 'Jl. Sudirman No. 123, Yogyakarta',
+                    joinDate: '2023-02-20',
+                    status: 'aktif'
+                },
+                {
+                    id: 'K003',
+                    name: 'Naira Safira Azzahra',
+                    position: 'supervisor',
+                    shift: 'pagi',
+                    phone: '081234567892',
+                    address: 'Jl. Tugu No. 67, Yogyakarta',
+                    joinDate: '2022-11-10',
+                    status: 'aktif'
+                },
+                {
+                    id: 'K004',
+                    name: 'Rafa Mahendra Putra',
+                    position: 'admin',
+                    shift: 'siang',
+                    phone: '081234567893',
+                    address: 'Jl. Kaliurang No. 89, Yogyakarta',
+                    joinDate: '2023-03-05',
+                    status: 'aktif'
+                },
+                {
+                    id: 'K005',
+                    name: 'Zara Amelia Salsabila',
+                    position: 'barista',
+                    shift: 'malam',
+                    phone: '081234567894',
+                    address: 'Jl. Gejayan No. 234, Yogyakarta',
+                    joinDate: '2023-04-12',
+                    status: 'nonaktif'
+                },
+                {
+                    id: 'K006',
+                    name: 'Arjuna Bayu Saputra',
+                    position: 'kasir',
+                    shift: 'malam',
+                    phone: '081234567895',
+                    address: 'Jl. Affandi No. 156, Yogyakarta',
+                    joinDate: '2023-05-18',
+                    status: 'aktif'
+                },
+                {
+                    id: 'K007',
+                    name: 'Kiara Aulia Ramadhani',
+                    position: 'manager',
+                    shift: 'siang',
+                    phone: '081234567896',
+                    address: 'Jl. Solo No. 78, Yogyakarta',
+                    joinDate: '2022-08-22',
+                    status: 'aktif'
+                },
+                {
+                    id: 'K008',
+                    name: 'Rayhan Fadhil Akbar',
+                    position: 'barista',
+                    shift: 'pagi',
+                    phone: '081234567897',
+                    address: 'Jl. Bantul No. 91, Yogyakarta',
+                    joinDate: '2023-06-10',
+                    status: 'aktif'
+                },
+                {
+                    id: 'K009',
+                    name: 'Aisyah Zahra Kamila',
+                    position: 'kasir',
+                    shift: 'siang',
+                    phone: '081234567898',
+                    address: 'Jl. Wates No. 45, Yogyakarta',
+                    joinDate: '2023-07-22',
+                    status: 'aktif'
+                },
+                {
+                    id: 'K010',
+                    name: 'Daffa Rizky Maulana',
+                    position: 'supervisor',
+                    shift: 'malam',
+                    phone: '081234567899',
+                    address: 'Jl. Imogiri No. 67, Yogyakarta',
+                    joinDate: '2023-08-15',
+                    status: 'aktif'
+                }
+            ];
+
+            localStorage.setItem('employeesData', JSON.stringify(sampleEmployees));
+            
+            alert('✅ Sample data karyawan berhasil dibuat!\n\n' +
+                  `${sampleEmployees.length} karyawan telah ditambahkan ke sistem.\n\n` +
+                  'Klik "Buka Manajemen Karyawan" untuk melihat data.');
+        }
+
+        // Auto-generate sample data if not exists
+        document.addEventListener('DOMContentLoaded', function() {
+            const existingData = localStorage.getItem('employeesData');
+            if (!existingData || JSON.parse(existingData).length === 0) {
+                generateSampleData();
+            }
+        });
+    </script>
+</body>
+</html>

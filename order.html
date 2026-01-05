@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Cappunabara - Pesan menu favorit Anda dengan mudah dan cepat">
+    <title>Cappunabara - Order Now</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/order.css">
+
+    <!-- jsPDF Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+
+<body>
+    <!-- Navigation Header -->
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="verification_home.html" class="nav-logo">
+                <span class="logo-emoji">☕</span>
+                <span class="logo-text">Cappunabara</span>
+            </a>
+
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Cari menu favorit..." class="search-input">
+                <span class="search-icon">🔍</span>
+            </div>
+
+            <button class="cart-button" id="cartButton">
+                <span class="cart-icon">🛒</span>
+                <span class="cart-badge" id="cartBadge">0</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title">Selamat Datang di Cappunabara! ☕</h1>
+            <p class="hero-subtitle">Pilih menu favorit Anda dan nikmati kelezatan dalam setiap gigitan</p>
+            <div class="hero-badges">
+                <span class="badge">✨ Fresh Daily</span>
+                <span class="badge">🚀 Fast Service</span>
+                <span class="badge">💖 Made with Love</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Category Tabs -->
+    <section class="category-section">
+        <div class="container">
+            <div class="category-tabs" id="categoryTabs">
+                <button class="category-tab active" data-category="all">
+                    <span class="tab-icon">🍽️</span>
+                    <span class="tab-text">Semua Menu</span>
+                </button>
+                <button class="category-tab" data-category="makanan">
+                    <span class="tab-icon">🍱</span>
+                    <span class="tab-text">Makanan</span>
+                </button>
+                <button class="category-tab" data-category="minuman">
+                    <span class="tab-icon">🧋</span>
+                    <span class="tab-text">Minuman</span>
+                </button>
+                <button class="category-tab" data-category="snacks">
+                    <span class="tab-icon">🍿</span>
+                    <span class="tab-text">Snacks</span>
+                </button>
+                <button class="category-tab" data-category="desserts">
+                    <span class="tab-icon">🍰</span>
+                    <span class="tab-text">Desserts</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Grid -->
+    <section class="menu-section">
+        <div class="container">
+            <div class="menu-grid" id="menuGrid">
+                <!-- Menu items will be loaded here dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Cart Sidebar -->
+    <aside class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h2 class="cart-title">Keranjang Belanja</h2>
+            <button class="cart-close" id="cartClose">✕</button>
+        </div>
+
+        <div class="cart-body">
+            <div class="empty-cart" id="emptyCart">
+                <div class="empty-icon">🛒</div>
+                <p class="empty-text">Keranjang masih kosong</p>
+                <small class="empty-subtext">Yuk pilih menu favoritmu!</small>
+            </div>
+
+            <div class="cart-items" id="cartItems">
+                <!-- Cart items will be loaded here -->
+            </div>
+        </div>
+
+        <div class="cart-footer" id="cartFooter" style="display: none;">
+            <div class="cart-summary">
+                <div class="summary-row">
+                    <span>Subtotal:</span>
+                    <span id="subtotal">Rp 0</span>
+                </div>
+                <div class="summary-row">
+                    <span>Pajak (10%):</span>
+                    <span id="tax">Rp 0</span>
+                </div>
+                <div class="summary-row summary-total">
+                    <span><strong>Total:</strong></span>
+                    <span><strong id="total">Rp 0</strong></span>
+                </div>
+            </div>
+
+            <div class="cart-actions">
+                <button class="btn-clear" id="btnClear">
+                    <span>🗑️</span> Kosongkan
+                </button>
+                <button class="btn-checkout" id="btnCheckout">
+                    <span>🎯</span> Checkout
+                </button>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Overlay -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Checkout Modal -->
+    <div class="modal" id="checkoutModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2 class="modal-title">Detail Pesanan</h2>
+                <button class="modal-close" id="checkoutClose">✕</button>
+            </div>
+
+            <div class="modal-body">
+                <form id="checkoutForm" class="checkout-form">
+                    <div class="form-group">
+                        <label for="customerName">Nama Pelanggan *</label>
+                        <input type="text" id="customerName" placeholder="Masukkan nama Anda" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tableNumber">Nomor Meja *</label>
+                        <input type="text" id="tableNumber" placeholder="Contoh: A1, B2" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phoneNumber">Nomor Telepon (Opsional)</label>
+                        <input type="tel" id="phoneNumber" placeholder="08xxxxxxxxxx">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="paymentMethod">Metode Pembayaran *</label>
+                        <select id="paymentMethod" required>
+                            <option value="">Pilih metode pembayaran</option>
+                            <option value="cash">Cash</option>
+                            <option value="transfer">Transfer Bank</option>
+                            <option value="ewallet">E-Wallet (GoPay/OVO/DANA)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="notes">Catatan Khusus</label>
+                        <textarea id="notes" rows="3" placeholder="Contoh: Pedas sedang, tidak pakai es"></textarea>
+                    </div>
+
+                    <div class="order-summary">
+                        <h3>Ringkasan Pesanan</h3>
+                        <div id="checkoutItems" class="checkout-items">
+                            <!-- Checkout items will be loaded here -->
+                        </div>
+                        <div class="checkout-total">
+                            <div class="total-row">
+                                <span>Subtotal:</span>
+                                <span id="checkoutSubtotal">Rp 0</span>
+                            </div>
+                            <div class="total-row">
+                                <span>Pajak (10%):</span>
+                                <span id="checkoutTax">Rp 0</span>
+                            </div>
+                            <div class="total-row total-final">
+                                <span><strong>Total Pembayaran:</strong></span>
+                                <span><strong id="checkoutTotal">Rp 0</strong></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-submit">
+                        <span>📝</span> Buat Pesanan
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Receipt Modal -->
+    <div class="modal" id="receiptModal">
+        <div class="modal-container receipt-container">
+            <button class="modal-close-float" id="receiptClose">✕</button>
+
+            <div class="receipt" id="receiptContent">
+                <div class="receipt-header">
+                    <div class="receipt-logo">☕</div>
+                    <h1 class="receipt-brand">Cappunabara</h1>
+                    <p class="receipt-tagline">Your Cozy Corner</p>
+                </div>
+
+                <div class="receipt-divider"></div>
+
+                <div class="receipt-info">
+                    <div class="info-row">
+                        <span class="info-label">No. Order:</span>
+                        <span class="info-value" id="receiptOrderNo">-</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Tanggal:</span>
+                        <span class="info-value" id="receiptDate">-</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Waktu:</span>
+                        <span class="info-value" id="receiptTime">-</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Nama:</span>
+                        <span class="info-value" id="receiptName">-</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Meja:</span>
+                        <span class="info-value" id="receiptTable">-</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Pembayaran:</span>
+                        <span class="info-value" id="receiptPayment">-</span>
+                    </div>
+                </div>
+
+                <div class="receipt-divider"></div>
+
+                <div class="receipt-items" id="receiptItems">
+                    <!-- Receipt items will be loaded here -->
+                </div>
+
+                <div class="receipt-divider"></div>
+
+                <div class="receipt-summary">
+                    <div class="summary-line">
+                        <span>Subtotal:</span>
+                        <span id="receiptSubtotal">Rp 0</span>
+                    </div>
+                    <div class="summary-line">
+                        <span>Pajak (10%):</span>
+                        <span id="receiptTax">Rp 0</span>
+                    </div>
+                    <div class="summary-line summary-grand-total">
+                        <span><strong>Total:</strong></span>
+                        <span><strong id="receiptGrandTotal">Rp 0</strong></span>
+                    </div>
+                </div>
+
+                <div class="receipt-divider"></div>
+
+                <div class="receipt-footer">
+                    <p class="footer-thanks">Terima kasih sudah memesan di Cappunabara! 💖</p>
+                    <p class="footer-contact">📞 0812-3456-7890 | 📧 hello@cappunabara.com</p>
+                    <p class="footer-tagline">Selamat menikmati! ✨</p>
+                </div>
+            </div>
+
+            <div class="receipt-actions">
+                <button class="btn-print" id="btnPrint">
+                    <span>🖨️</span> Print Struk
+                </button>
+                <button class="btn-pdf" id="btnPDF">
+                    <span>📥</span> Download PDF
+                </button>
+                <button class="btn-new-order" id="btnNewOrder">
+                    <span>🔄</span> Pesan Lagi
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="assets/js/order.js"></script>
+</body>
+
+</html>

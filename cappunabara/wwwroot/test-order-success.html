@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Order Success</title>
+</head>
+<body>
+    <h1>Test Order Success Page</h1>
+    <p>Click the button below to test the order success page with sample data:</p>
+    
+    <button onclick="testOrderSuccess()" style="padding: 15px 30px; background: #28a745; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px;">
+        Test Order Success Page
+    </button>
+
+    <script>
+        function testOrderSuccess() {
+            // Create sample order data
+            const sampleOrder = {
+                orderId: 'ORD-' + Date.now(),
+                date: new Date().toISOString(),
+                customerName: 'Test Customer',
+                customerPhone: '081234567890',
+                tableNumber: '5',
+                paymentMethod: 'qris',
+                items: [
+                    { name: 'Nasi Gudeg Special', price: 25000, quantity: 2, total: 50000 },
+                    { name: 'Es Teh Manis', price: 5000, quantity: 1, total: 5000 },
+                    { name: 'Tempe Mendoan', price: 8000, quantity: 1, total: 8000 }
+                ],
+                subtotal: 63000,
+                tax: 6300,
+                total: 69300
+            };
+
+            // Store in localStorage
+            localStorage.setItem('lastOrder', JSON.stringify(sampleOrder));
+
+            // Redirect to success page
+            window.location.href = `order-success.html?orderId=${sampleOrder.orderId}`;
+        }
+    </script>
+</body>
+</html>

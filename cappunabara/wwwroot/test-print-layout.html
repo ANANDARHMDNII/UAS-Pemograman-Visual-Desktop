@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Print Layout - Cappunabara</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 20px;
+            background: #f5f5f5;
+        }
+
+        .test-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .test-title {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .test-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            padding: 15px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            color: white;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+        }
+
+        .btn-info {
+            background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+            color: white;
+        }
+
+        .info-box {
+            background: #d1ecf1;
+            border-left: 4px solid #17a2b8;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .success-box {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .print-preview {
+            border: 2px dashed #ddd;
+            padding: 20px;
+            margin: 20px 0;
+            background: white;
+            border-radius: 8px;
+        }
+
+        .sample-receipt {
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            line-height: 1.4;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            white-space: pre-line;
+        }
+
+        /* Print styles for this test page */
+        @media print {
+            body {
+                background: white;
+                margin: 0;
+                padding: 0;
+            }
+
+            .test-container {
+                box-shadow: none;
+                border-radius: 0;
+                max-width: none;
+                margin: 0;
+                padding: 10mm;
+            }
+
+            .test-buttons {
+                display: none;
+            }
+
+            .info-box,
+            .warning-box {
+                display: none;
+            }
+
+            @page {
+                size: A4;
+                margin: 10mm;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1 class="test-title">🖨️ Test Print Layout Struk</h1>
+
+        <div class="info-box">
+            <h3><i class="fas fa-info-circle"></i> Informasi</h3>
+            <p>Halaman ini untuk menguji layout print struk agar muat dalam 1 halaman.</p>
+            <p>Gunakan tombol di bawah untuk membuat sample order dan test print.</p>
+        </div>
+
+        <div class="test-buttons">
+            <button class="btn btn-primary" onclick="createSampleOrder()">
+                📝 Buat Sample Order
+            </button>
+            <button class="btn btn-success" onclick="testPrintLayout()">
+                🖨️ Test Print Layout
+            </button>
+            <a href="order-success.html" class="btn btn-info">
+                📄 Ke Halaman Success
+            </a>
+        </div>
+
+        <div class="warning-box">
+            <h3>⚠️ Cara Test Print:</h3>
+            <ol>
+                <li>Klik "Buat Sample Order" untuk membuat data sample</li>
+                <li>Klik "Test Print Layout" atau tekan Ctrl+P</li>
+                <li>Pastikan struk muat dalam 1 halaman di print preview</li>
+                <li>Jika masih 2 halaman, refresh dan coba lagi</li>
+            </ol>
+        </div>
+
+        <div class="print-preview">
+            <h3>📋 Preview Struk Sample:</h3>
+            <div class="sample-receipt" id="sample-receipt">
+Loading sample receipt...
+            </div>
+        </div>
+
+        <div class="success-box">
+            <h3>✅ Tips Optimasi Print:</h3>
+            <ul>
+                <li><strong>Font size:</strong> Diperkecil menjadi 10px untuk print</li>
+                <li><strong>Margin:</strong> Dikurangi menjadi 8mm</li>
+                <li><strong>Scale:</strong> Diperkecil 85% untuk fit lebih baik</li>
+                <li><strong>Line height:</strong> Dikurangi menjadi 1.1</li>
+                <li><strong>Padding:</strong> Semua padding dikurangi untuk print</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function createSampleOrder() {
+            const sampleOrder = {
+                orderId: 'ORD-TEST-' + Date.now(),
+                date: new Date().toISOString(),
+                customerName: 'Test Customer Print',
+                customerPhone: '081234567890',
+                tableNumber: '5',
+                paymentMethod: 'qris',
+                items: [
+                    { name: 'Nasi Gudeg Special', price: 25000, quantity: 2, total: 50000 },
+                    { name: 'Ayam Bakar Madu', price: 30000, quantity: 1, total: 30000 },
+                    { name: 'Es Teh Manis', price: 5000, quantity: 2, total: 10000 },
+                    { name: 'Tempe Mendoan', price: 8000, quantity: 1, total: 8000 },
+                    { name: 'Kopi Tubruk', price: 10000, quantity: 1, total: 10000 }
+                ],
+                subtotal: 108000,
+                tax: 10800,
+                total: 118800
+            };
+
+            localStorage.setItem('lastOrder', JSON.stringify(sampleOrder));
+            
+            // Update preview
+            updateSampleReceipt(sampleOrder);
+            
+            alert('✅ Sample order berhasil dibuat!\n\nSekarang Anda bisa:\n1. Test print layout (Ctrl+P)\n2. Atau buka halaman Order Success');
+        }
+
+        function updateSampleReceipt(order) {
+            const receiptText = `
+===============================================
+           CAPPUNABARA RESTAURANT
+        Jl. Malioboro No. 123, Yogyakarta
+              Telp: (0274) 123456
+===============================================
+
+Order ID: ${order.orderId}
+Tanggal: ${new Date(order.date).toLocaleString('id-ID')}
+Pelanggan: ${order.customerName}
+Telepon: ${order.customerPhone}
+Meja: ${order.tableNumber}
+Pembayaran: ${order.paymentMethod.toUpperCase()}
+
+===============================================
+DETAIL PESANAN:
+
+${order.items.map(item => 
+`${item.name}
+${item.quantity} x Rp ${item.price.toLocaleString('id-ID')} = Rp ${item.total.toLocaleString('id-ID')}`
+).join('\n\n')}
+
+-----------------------------------------------
+Subtotal:                 Rp ${order.subtotal.toLocaleString('id-ID')}
+Pajak (10%):              Rp ${order.tax.toLocaleString('id-ID')}
+-----------------------------------------------
+TOTAL:                    Rp ${order.total.toLocaleString('id-ID')}
+
+===============================================
+        Terima kasih atas kunjungan Anda!
+         Cappunabara - Cita Rasa Nusantara
+===============================================
+            `;
+            
+            document.getElementById('sample-receipt').textContent = receiptText;
+        }
+
+        function testPrintLayout() {
+            // Create sample order first if not exists
+            if (!localStorage.getItem('lastOrder')) {
+                createSampleOrder();
+            }
+            
+            // Open print dialog
+            window.print();
+        }
+
+        // Initialize with sample data
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if sample order exists
+            const lastOrder = localStorage.getItem('lastOrder');
+            if (lastOrder) {
+                const order = JSON.parse(lastOrder);
+                updateSampleReceipt(order);
+            } else {
+                document.getElementById('sample-receipt').textContent = 'Klik "Buat Sample Order" untuk melihat preview struk';
+            }
+        });
+    </script>
+</body>
+</html>

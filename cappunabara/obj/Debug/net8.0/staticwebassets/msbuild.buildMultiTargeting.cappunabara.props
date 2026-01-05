@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\cappunabara.props" />
+</Project>

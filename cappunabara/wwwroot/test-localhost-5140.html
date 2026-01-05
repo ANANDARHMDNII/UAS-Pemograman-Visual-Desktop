@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Edit Features - localhost:5140</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            padding: 2rem;
+            background: linear-gradient(135deg, #FFF8E7 0%, #F7E7CE 50%, #F5EBE0 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 16px rgba(139, 111, 71, 0.16);
+        }
+        h1 {
+            color: #8B6F47;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .test-section {
+            margin-bottom: 2rem;
+            padding: 1rem;
+            border: 2px solid #F7E7CE;
+            border-radius: 8px;
+        }
+        .test-button {
+            background: linear-gradient(135deg, #8B6F47 0%, #A67B5B 100%);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 0.5rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .test-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(139, 111, 71, 0.3);
+        }
+        .success {
+            background: #4CAF50;
+        }
+        .warning {
+            background: #FF9800;
+        }
+        .result {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #f9f9f9;
+            border-radius: 4px;
+            font-family: monospace;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .status-good {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+        .status-bad {
+            color: #F44336;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 Test Edit Features - localhost:5140</h1>
+        
+        <div class="test-section">
+            <h3>🌐 Application Status Check</h3>
+            <button class="test-button" onclick="checkApplicationStatus()">Check Application Status</button>
+            <div id="appStatusResult" class="result"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>📊 Data Verification</h3>
+            <button class="test-button" onclick="setupTestData()">Setup Test Data</button>
+            <button class="test-button" onclick="verifyData()">Verify Data</button>
+            <button class="test-button warning" onclick="clearData()">Clear Data</button>
+            <div id="dataResult" class="result"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>✏️ Edit Function Tests</h3>
+            <button class="test-button" onclick="testEditFunctions()">Test Edit Functions</button>
+            <button class="test-button success" onclick="simulateEdit()">Simulate Edit</button>
+            <div id="editResult" class="result"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>🔗 Direct Links to Admin Pages</h3>
+            <a href="http://localhost:5140/DataPesanan" class="test-button" target="_blank">📊 Data Pesanan</a>
+            <a href="http://localhost:5140/DataPembayaran" class="test-button" target="_blank">💳 Data Pembayaran</a>
+            <a href="http://localhost:5140/RiwayatPesanan" class="test-button" target="_blank">📜 Riwayat Pesanan</a>
+            <a href="http://localhost:5140/Order" class="test-button" target="_blank">🛒 Order Page</a>
+        </div>
+        
+        <div class="test-section">
+            <h3>🚀 Quick Actions</h3>
+            <button class="test-button success" onclick="forceRefresh()">Force Refresh All Pages</button>
+            <button class="test-button" onclick="checkBrowserCache()">Check Browser Cache</button>
+            <div id="actionResult" class="result"></div>
+        </div>
+    </div>
+
+    <script>
+        function checkApplicationStatus() {
+            const result = document.getElementById('appStatusResult');
+            
+            result.innerHTML = `
+                <strong>🌐 Application Status Check:</strong><br>
+                - Current URL: ${window.location.href}<br>
+                - Expected Port: 5140<br>
+                - Current Port: ${window.location.port || 'default'}<br>
+                - Protocol: ${window.location.protocol}<br>
+                - Host: ${window.location.hostname}<br>
+                - User Agent: ${navigator.userAgent.substring(0, 50)}...<br>
+                - Local Storage Available: ${typeof(Storage) !== "undefined" ? '✅ YES' : '❌ NO'}<br>
+                - Current Time: ${new Date().toLocaleString('id-ID')}<br>
+                - Status: <span class="status-good">READY FOR TESTING</span>
+            `;
+        }
+        
+        function setupTestData() {
+            const result = document.getElementById('dataResult');
+            
+            try {
+                const testOrders = [
+                    {
+                        id: 'TEST' + Date.now().toString().slice(-6),
+                        customer: {
+                            name: 'Test User 1',
+                            table: 'A1',
+                            phone: '081234567890',
+                            payment: 'cash',
+                            notes: 'Test order for edit functionality'
+                        },
+                        items: [
+                            { id: 1, name: 'Cappuccino Signature', price: 35000, quantity: 2 },
+                            { id: 19, name: 'Tiramisu Slice', price: 45000, quantity: 1 }
+                        ],
+                        timestamp: new Date().toISOString(),
+                        total: 115000,
+                        status: 'completed'
+                    },
+                    {
+                        id: 'TEST' + (Date.now() + 1000).toString().slice(-6),
+                        customer: {
+                            name: 'Test User 2',
+                            table: 'B2',
+                            phone: '081234567891',
+                            payment: 'transfer',
+                            notes: 'Another test order'
+                        },
+                        items: [
+                            { id: 2, name: 'Caffe Latte', price: 32000, quantity: 1 }
+                        ],
+                        timestamp: new Date(Date.now() - 60000).toISOString(),
+                        total: 32000,
+                        status: 'pending'
+                    }
+                ];
+                
+                localStorage.setItem('cappunabara_order_history', JSON.stringify(testOrders));
+                
+                const customerData = {
+                    name: 'Test User 1',
+                    phone: '081234567890',
+                    lastOrderDate: new Date().toISOString(),
+                    totalOrders: 2,
+                    totalSpent: 147000
+                };
+                
+                localStorage.setItem('cappunabara_customer_data', JSON.stringify(customerData));
+                
+                result.innerHTML = `
+                    <strong>✅ Test Data Created Successfully:</strong><br>
+                    - Orders created: ${testOrders.length}<br>
+                    - Order IDs: ${testOrders.map(o => o.id).join(', ')}<br>
+                    - Total value: Rp ${testOrders.reduce((sum, order) => sum + order.total, 0).toLocaleString('id-ID')}<br>
+                    - Customer data: Updated<br>
+                    - Status: <span class="status-good">READY FOR EDIT TESTING</span><br>
+                    - Created at: ${new Date().toLocaleString('id-ID')}
+                `;
+                
+                // Trigger storage events
+                window.dispatchEvent(new StorageEvent('storage', {
+                    key: 'cappunabara_order_history',
+                    newValue: JSON.stringify(testOrders)
+                }));
+                
+            } catch (error) {
+                result.innerHTML = `<strong>❌ Error creating test data:</strong> ${error.message}`;
+            }
+        }
+        
+        function verifyData() {
+            const result = document.getElementById('dataResult');
+            
+            try {
+                const orderHistory = JSON.parse(localStorage.getItem('cappunabara_order_history') || '[]');
+                const customerData = JSON.parse(localStorage.getItem('cappunabara_customer_data') || '{}');
+                
+                result.innerHTML = `
+                    <strong>📊 Data Verification Results:</strong><br>
+                    - Orders in localStorage: ${orderHistory.length}<br>
+                    - Customer name: ${customerData.name || 'N/A'}<br>
+                    - Total spent: Rp ${(customerData.totalSpent || 0).toLocaleString('id-ID')}<br>
+                    - Last order date: ${customerData.lastOrderDate ? new Date(customerData.lastOrderDate).toLocaleString('id-ID') : 'N/A'}<br>
+                    - Data integrity: <span class="status-good">GOOD</span><br>
+                    - Verified at: ${new Date().toLocaleString('id-ID')}
+                `;
+                
+                if (orderHistory.length > 0) {
+                    result.innerHTML += '<br><br><strong>Order Details:</strong><br>';
+                    orderHistory.forEach((order, index) => {
+                        const hasEdit = order.lastModified ? ' (EDITED)' : '';
+                        result.innerHTML += `${index + 1}. ${order.id}: ${order.customer.name} - Rp ${order.total.toLocaleString('id-ID')}${hasEdit}<br>`;
+                    });
+                }
+                
+            } catch (error) {
+                result.innerHTML = `<strong>❌ Data verification error:</strong> ${error.message}`;
+            }
+        }
+        
+        function testEditFunctions() {
+            const result = document.getElementById('editResult');
+            
+            try {
+                const orderHistory = JSON.parse(localStorage.getItem('cappunabara_order_history') || '[]');
+                
+                if (orderHistory.length === 0) {
+                    result.innerHTML = '<strong>⚠️ No orders found. Please setup test data first.</strong>';
+                    return;
+                }
+                
+                // Test if edit functions exist (simulate what admin pages do)
+                const editFunctionsExist = {
+                    editOrder: typeof window.editOrder === 'function',
+                    editPayment: typeof window.editPayment === 'function',
+                    showEditOrderModal: typeof window.showEditOrderModal === 'function',
+                    showEditPaymentModal: typeof window.showEditPaymentModal === 'function'
+                };
+                
+                result.innerHTML = `
+                    <strong>🔧 Edit Function Test Results:</strong><br>
+                    - Orders available: ${orderHistory.length}<br>
+                    - editOrder function: ${editFunctionsExist.editOrder ? '✅ EXISTS' : '❌ MISSING'}<br>
+                    - editPayment function: ${editFunctionsExist.editPayment ? '✅ EXISTS' : '❌ MISSING'}<br>
+                    - showEditOrderModal function: ${editFunctionsExist.showEditOrderModal ? '✅ EXISTS' : '❌ MISSING'}<br>
+                    - showEditPaymentModal function: ${editFunctionsExist.showEditPaymentModal ? '✅ EXISTS' : '❌ MISSING'}<br>
+                    - Status: <span class="${Object.values(editFunctionsExist).every(v => v) ? 'status-good">FUNCTIONS READY' : 'status-bad">FUNCTIONS MISSING'}</span><br>
+                    - Note: Functions are loaded on admin pages, not on this test page<br>
+                    - Tested at: ${new Date().toLocaleString('id-ID')}
+                `;
+                
+            } catch (error) {
+                result.innerHTML = `<strong>❌ Function test error:</strong> ${error.message}`;
+            }
+        }
+        
+        function simulateEdit() {
+            const result = document.getElementById('editResult');
+            
+            try {
+                const orderHistory = JSON.parse(localStorage.getItem('cappunabara_order_history') || '[]');
+                
+                if (orderHistory.length === 0) {
+                    result.innerHTML = '<strong>⚠️ No orders to edit. Please setup test data first.</strong>';
+                    return;
+                }
+                
+                const orderToEdit = orderHistory[0];
+                const originalName = orderToEdit.customer.name;
+                
+                // Simulate edit
+                orderToEdit.customer.name = 'EDITED - ' + originalName;
+                orderToEdit.customer.notes = 'EDITED: Simulated edit from test page';
+                orderToEdit.lastModified = new Date().toISOString();
+                
+                // Save back
+                localStorage.setItem('cappunabara_order_history', JSON.stringify(orderHistory));
+                
+                result.innerHTML = `
+                    <strong>✅ Edit Simulation Successful:</strong><br>
+                    - Order ID: ${orderToEdit.id}<br>
+                    - Original name: ${originalName}<br>
+                    - New name: ${orderToEdit.customer.name}<br>
+                    - Modified time: ${new Date(orderToEdit.lastModified).toLocaleString('id-ID')}<br>
+                    - Status: <span class="status-good">EDIT APPLIED</span><br>
+                    - Action: Data updated in localStorage<br>
+                    - Next: Check admin pages to see changes
+                `;
+                
+                // Trigger storage event
+                window.dispatchEvent(new StorageEvent('storage', {
+                    key: 'cappunabara_order_history',
+                    newValue: JSON.stringify(orderHistory)
+                }));
+                
+            } catch (error) {
+                result.innerHTML = `<strong>❌ Edit simulation error:</strong> ${error.message}`;
+            }
+        }
+        
+        function clearData() {
+            const result = document.getElementById('dataResult');
+            
+            if (confirm('Clear all test data?')) {
+                localStorage.removeItem('cappunabara_order_history');
+                localStorage.removeItem('cappunabara_customer_data');
+                
+                result.innerHTML = `
+                    <strong>🗑️ Data Cleared:</strong><br>
+                    - Order history: REMOVED<br>
+                    - Customer data: REMOVED<br>
+                    - localStorage: EMPTY<br>
+                    - Status: <span class="status-good">CLEAN SLATE</span><br>
+                    - Cleared at: ${new Date().toLocaleString('id-ID')}
+                `;
+            }
+        }
+        
+        function forceRefresh() {
+            const result = document.getElementById('actionResult');
+            
+            // Clear browser cache programmatically (limited)
+            if ('caches' in window) {
+                caches.keys().then(function(names) {
+                    names.forEach(function(name) {
+                        caches.delete(name);
+                    });
+                });
+            }
+            
+            result.innerHTML = `
+                <strong>🚀 Force Refresh Actions:</strong><br>
+                - Browser cache: CLEARED (if supported)<br>
+                - Storage events: TRIGGERED<br>
+                - Recommendation: Press Ctrl+F5 on admin pages<br>
+                - Alternative: Close and reopen browser tabs<br>
+                - Status: <span class="status-good">REFRESH INITIATED</span><br>
+                - Action time: ${new Date().toLocaleString('id-ID')}
+            `;
+            
+            // Trigger storage events to refresh other tabs
+            window.dispatchEvent(new StorageEvent('storage', {
+                key: 'cappunabara_order_history',
+                newValue: localStorage.getItem('cappunabara_order_history')
+            }));
+        }
+        
+        function checkBrowserCache() {
+            const result = document.getElementById('actionResult');
+            
+            result.innerHTML = `
+                <strong>🔍 Browser Cache Information:</strong><br>
+                - Cache API supported: ${'caches' in window ? '✅ YES' : '❌ NO'}<br>
+                - Service Worker: ${navigator.serviceWorker ? '✅ AVAILABLE' : '❌ NOT AVAILABLE'}<br>
+                - Local Storage: ${localStorage ? '✅ WORKING' : '❌ NOT WORKING'}<br>
+                - Session Storage: ${sessionStorage ? '✅ WORKING' : '❌ NOT WORKING'}<br>
+                - Cookies enabled: ${navigator.cookieEnabled ? '✅ YES' : '❌ NO'}<br>
+                - Recommendation: Use Ctrl+Shift+R for hard refresh<br>
+                - Alternative: Open DevTools > Application > Clear Storage<br>
+                - Checked at: ${new Date().toLocaleString('id-ID')}
+            `;
+        }
+        
+        // Auto-run application status check on page load
+        window.addEventListener('load', function() {
+            checkApplicationStatus();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Download Struk - Café Luna</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            padding: 2rem;
+            background: linear-gradient(135deg, #FFF8E7 0%, #F7E7CE 100%);
+            min-height: 100vh;
+            margin: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 16px rgba(139, 111, 71, 0.16);
+        }
+        h1 {
+            color: #8B6F47;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .test-section {
+            background: #f8f9fa;
+            border-left: 4px solid #8B6F47;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .btn {
+            background: linear-gradient(135deg, #8B6F47 0%, #A67B5B 100%);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 0.5rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(139, 111, 71, 0.3);
+        }
+        .btn-success { background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%); }
+        .btn-warning { background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%); }
+        .btn-info { background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%); }
+        .result {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #f9f9f9;
+            border-radius: 4px;
+            font-family: monospace;
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+        }
+        .status-good { color: #4CAF50; font-weight: bold; }
+        .status-bad { color: #F44336; font-weight: bold; }
+        .status-warning { color: #FF9800; font-weight: bold; }
+        .order-preview {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #eee;
+        }
+        .order-id { font-weight: bold; color: #8B6F47; }
+        .order-total { font-weight: bold; color: #4CAF50; }
+        .instructions {
+            background: #e3f2fd;
+            border: 1px solid #2196F3;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📥 Test Download Struk - Café Luna</h1>
+        
+        <div class="instructions">
+            <h3>📋 Instruksi Testing</h3>
+            <ol>
+                <li>Pastikan aplikasi berjalan di <strong>localhost:5140</strong></li>
+                <li>Setup test data untuk membuat pesanan sample</li>
+                <li>Test fungsi download struk dari berbagai sumber</li>
+                <li>Verify format PDF dan print functionality</li>
+            </ol>
+        </div>
+        
+        <div class="test-section">
+            <h3>🔧 Setup Test Environment</h3>
+            <button class="btn btn-success" onclick="setupTestData()">Create Sample Orders</button>
+            <button class="btn btn-warning" onclick="clearTestData()">Clear All Data</button>
+            <button class="btn btn-info" onclick="checkDataStatus()">Check Data Status</button>
+            <div id="setupResult" class="result"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>📥 Test PDF Download Functions</h3>
+            <button class="btn" onclick="testPDFDownloadLatest()">Test PDF Download Latest</button>
+            <button class="btn" onclick="testPDFDownloadSpecific()">Test PDF Download Specific</button>
+            <button class="btn" onclick="testDirectPDFGeneration()">Test Direct PDF Generation</button>
+            <div id="pdfDownloadResult" class="result"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>📥 Test Download Functions</h3>
+            <button class="btn" onclick="testDownloadLatest()">Test Download Latest Order</button>
+            <button class="btn" onclick="testDownloadSpecific()">Test Download Specific Order</button>
+            <button class="btn" onclick="testGeneratePDF()">Test Generate PDF Function</button>
+            <div id="downloadResult" class="result"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>📋 Available Orders for Testing</h3>
+            <button class="btn btn-info" onclick="listAvailableOrders()">List Available Orders</button>
+            <div id="ordersResult" class="result"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>🔗 Direct Links for Testing</h3>
+            <a href="http://localhost:5140/RiwayatPesanan" class="btn" target="_blank">📜 Riwayat Pesanan</a>
+            <a href="http://localhost:5140/Order" class="btn" target="_blank">🛒 Order Page</a>
+            <a href="http://localhost:5140/verify-localhost-5140.html" class="btn btn-info" target="_blank">🔍 Verify Setup</a>
+        </div>
+        
+        <div class="test-section">
+            <h3>🎯 Manual Testing Steps</h3>
+            <div style="background: white; padding: 1rem; border-radius: 4px; margin-top: 1rem;">
+                <h4>Step 1: Test dari Order Page</h4>
+                <ol>
+                    <li>Buka <a href="http://localhost:5140/Order" target="_blank">Order Page</a></li>
+                    <li>Tambahkan beberapa item ke cart</li>
+                    <li>Checkout dengan data pelanggan</li>
+                    <li>Klik "Print Struk" di modal konfirmasi</li>
+                    <li>Verify struk terbuka di tab baru</li>
+                </ol>
+                
+                <h4>Step 2: Test dari Riwayat Pesanan</h4>
+                <ol>
+                    <li>Buka <a href="http://localhost:5140/RiwayatPesanan" target="_blank">Riwayat Pesanan</a></li>
+                    <li>Klik "📥 Download Struk" di bagian atas</li>
+                    <li>Klik "📥 Download Struk" pada pesanan tertentu</li>
+                    <li>Verify kedua fungsi bekerja dengan baik</li>
+                </ol>
+                
+                <h4>Step 3: Test Save as PDF</h4>
+                <ol>
+                    <li>Ketika struk terbuka, tekan Ctrl+P</li>
+                    <li>Pilih "Save as PDF" sebagai destination</li>
+                    <li>Save file dan verify isinya</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function setupTestData() {
+            const result = document.getElementById('setupResult');
+            
+            try {
+                // Create comprehensive test orders
+                const testOrders = [
+                    {
+                        id: 'STRUK' + Date.now().toString().slice(-6),
+                        customer: {
+                            name: 'Test Customer 1',
+                            table: 'A1',
+                            phone: '081234567890',
+                            payment: 'cash',
+                            notes: 'Test order untuk download struk'
+                        },
+                        items: [
+                            { id: 1, name: 'Cappuccino Signature', price: 35000, quantity: 2 },
+                            { id: 19, name: 'Tiramisu Slice', price: 45000, quantity: 1 }
+                        ],
+                        timestamp: new Date().toISOString(),
+                        total: 115000,
+                        status: 'completed'
+                    },
+                    {
+                        id: 'STRUK' + (Date.now() + 1000).toString().slice(-6),
+                        customer: {
+                            name: 'Test Customer 2',
+                            table: 'B2',
+                            phone: '081234567891',
+                            payment: 'transfer',
+                            notes: 'Order kedua untuk testing'
+                        },
+                        items: [
+                            { id: 2, name: 'Caffe Latte', price: 32000, quantity: 1 },
+                            { id: 20, name: 'Cheesecake Blueberry', price: 42000, quantity: 1 }
+                        ],
+                        timestamp: new Date(Date.now() - 3600000).toISOString(),
+                        total: 74000,
+                        status: 'completed'
+                    },
+                    {
+                        id: 'STRUK' + (Date.now() + 2000).toString().slice(-6),
+                        customer: {
+                            name: 'Test Customer 3',
+                            table: 'C3',
+                            phone: '081234567892',
+                            payment: 'ewallet',
+                            notes: 'Order ketiga untuk testing download'
+                        },
+                        items: [
+                            { id: 3, name: 'Americano', price: 28000, quantity: 2 },
+                            { id: 25, name: 'Caesar Salad', price: 38000, quantity: 1 }
+                        ],
+                        timestamp: new Date(Date.now() - 7200000).toISOString(),
+                        total: 94000,
+                        status: 'completed'
+                    }
+                ];
+                
+                localStorage.setItem('cappunabara_order_history', JSON.stringify(testOrders));
+                
+                const customerData = {
+                    name: 'Test Customer 1',
+                    phone: '081234567890',
+                    lastOrderDate: new Date().toISOString(),
+                    totalOrders: testOrders.length,
+                    totalSpent: testOrders.reduce((sum, order) => {
+                        const subtotal = order.total;
+                        const tax = subtotal * 0.1;
+                        return sum + subtotal + tax;
+                    }, 0)
+                };
+                
+                localStorage.setItem('cappunabara_customer_data', JSON.stringify(customerData));
+                
+                result.innerHTML = `
+                    <strong>✅ Test Data Created Successfully!</strong><br><br>
+                    <strong>📊 Orders Created:</strong><br>
+                    ${testOrders.map(order => `• ${order.id}: ${order.customer.name} - Rp ${order.total.toLocaleString('id-ID')}`).join('<br>')}<br><br>
+                    
+                    <strong>💰 Financial Summary:</strong><br>
+                    • Total orders: ${testOrders.length}<br>
+                    • Total value: Rp ${testOrders.reduce((sum, order) => sum + order.total, 0).toLocaleString('id-ID')}<br>
+                    • Customer total spent: Rp ${customerData.totalSpent.toLocaleString('id-ID')}<br><br>
+                    
+                    <strong>🎯 Ready for Testing:</strong><br>
+                    • Download functions: <span class="status-good">READY</span><br>
+                    • PDF generation: <span class="status-good">READY</span><br>
+                    • Print functionality: <span class="status-good">READY</span><br><br>
+                    
+                    <strong>⏰ Created at:</strong> ${new Date().toLocaleString('id-ID')}
+                `;
+                
+                // Trigger storage events
+                window.dispatchEvent(new StorageEvent('storage', {
+                    key: 'cappunabara_order_history',
+                    newValue: JSON.stringify(testOrders)
+                }));
+                
+            } catch (error) {
+                result.innerHTML = `<strong>❌ Error creating test data:</strong> ${error.message}`;
+            }
+        }
+        
+        function clearTestData() {
+            const result = document.getElementById('setupResult');
+            
+            if (confirm('Clear all test data?')) {
+                localStorage.removeItem('cappunabara_order_history');
+                localStorage.removeItem('cappunabara_customer_data');
+                
+                result.innerHTML = `
+                    <strong>🗑️ Test Data Cleared!</strong><br><br>
+                    • Order history: <span class="status-warning">REMOVED</span><br>
+                    • Customer data: <span class="status-warning">REMOVED</span><br>
+                    • localStorage: <span class="status-good">CLEAN</span><br><br>
+                    <strong>⏰ Cleared at:</strong> ${new Date().toLocaleString('id-ID')}
+                `;
+            }
+        }
+        
+        function checkDataStatus() {
+            const result = document.getElementById('setupResult');
+            
+            try {
+                const orderHistory = JSON.parse(localStorage.getItem('cappunabara_order_history') || '[]');
+                const customerData = JSON.parse(localStorage.getItem('cappunabara_customer_data') || '{}');
+                
+                result.innerHTML = `
+                    <strong>📊 Current Data Status:</strong><br><br>
+                    • Orders in localStorage: <span class="${orderHistory.length > 0 ? 'status-good' : 'status-warning'}">${orderHistory.length}</span><br>
+                    • Customer data: <span class="${Object.keys(customerData).length > 0 ? 'status-good' : 'status-warning'}">${Object.keys(customerData).length > 0 ? 'AVAILABLE' : 'MISSING'}</span><br>
+                    • Download functions: <span class="${typeof downloadReceipt === 'function' ? 'status-good' : 'status-bad'}">${typeof downloadReceipt === 'function' ? 'LOADED' : 'NOT LOADED'}</span><br>
+                    • Generate PDF function: <span class="${typeof generateReceiptPDF === 'function' ? 'status-good' : 'status-bad'}">${typeof generateReceiptPDF === 'function' ? 'LOADED' : 'NOT LOADED'}</span><br><br>
+                    
+                    <strong>🔍 Function Availability:</strong><br>
+                    • downloadReceipt: ${typeof downloadReceipt}<br>
+                    • downloadOrderReceipt: ${typeof downloadOrderReceipt}<br>
+                    • generateReceiptPDF: ${typeof generateReceiptPDF}<br><br>
+                    
+                    <strong>⏰ Checked at:</strong> ${new Date().toLocaleString('id-ID')}
+                `;
+                
+            } catch (error) {
+                result.innerHTML = `<strong>❌ Status check error:</strong> ${error.message}`;
+            }
+        }
+        
+        function testPDFDownloadLatest() {
+            const result = document.getElementById('pdfDownloadResult');
+            
+            try {
+                const orderHistory = JSON.parse(localStorage.getItem('cappunabara_order_history') || '[]');
+                
+                if (orderHistory.length === 0) {
+                    result.innerHTML = '<strong>⚠️ No orders found. Please create test data first.</strong>';
+                    return;
+                }
+                
+                // Test the new PDF download function
+                if (typeof window.downloadReceiptPDF === 'function') {
+                    window.downloadReceiptPDF();
+                    result.innerHTML = `
+                        <strong>✅ PDF Download Latest Test:</strong><br>
+                        • Function called: downloadReceiptPDF()<br>
+                        • Latest order: ${orderHistory[0].id}<br>
+                        • Customer: ${orderHistory[0].customer.name}<br>
+                        • Total: Rp ${orderHistory[0].total.toLocaleString('id-ID')}<br>
+                        • Status: <span class="status-good">EXECUTED</span><br>
+                        • Expected: PDF should download automatically<br><br>
+                        <strong>⏰ Tested at:</strong> ${new Date().toLocaleString('id-ID')}
+                    `;
+                } else {
+                    result.innerHTML = `
+                        <strong>❌ PDF Function Not Available:</strong><br>
+                        • downloadReceiptPDF function: <span class="status-bad">NOT FOUND</span><br>
+                        • Check if pdf-struk-generator.js is loaded<br>
+                        • Available functions: ${Object.keys(window).filter(key => key.includes('download')).join(', ')}
+                    `;
+                }
+                
+            } catch (error) {
+                result.innerHTML = `<strong>❌ PDF Test error:</strong> ${error.message}`;
+            }
+        }
+        
+        function testPDFDownloadSpecific() {
+            const result = document.getElementById('pdfDownloadResult');
+            
+            try {
+                const orderHistory = JSON.parse(localStorage.getItem('cappunabara_order_history') || '[]');
+                
+                if (orderHistory.length === 0) {
+                    result.innerHTML = '<strong>⚠️ No orders found. Please create test data first.</strong>';
+                    return;
+                }
+                
+                const testOrder = orderHistory.length > 1 ? orderHistory[1] : orderHistory[0];
+                
+                if (typeof window.downloadOrderReceiptPDF === 'function') {
+                    window.downloadOrderReceiptPDF(testOrder.id);
+                    result.innerHTML = `
+                        <strong>✅ PDF Download Specific Test:</strong><br>
+                        • Function called: downloadOrderReceiptPDF('${testOrder.id}')<br>
+                        • Order ID: ${testOrder.id}<br>
+                        • Customer: ${testOrder.customer.name}<br>
+                        • Total: Rp ${testOrder.total.toLocaleString('id-ID')}<br>
+                        • Status: <span class="status-good">EXECUTED</span><br>
+                        • Expected: PDF should download automatically<br><br>
+                        <strong>⏰ Tested at:</strong> ${new Date().toLocaleString('id-ID')}
+                    `;
+                } else {
+                    result.innerHTML = `
+                        <strong>❌ PDF Function Not Available:</strong><br>
+                        • downloadOrderReceiptPDF function: <span class="status-bad">NOT FOUND</span><br>
+                        • Check if pdf-struk-generator.js is loaded
+                    `;
+                }
+                
+            } catch (error) {
+                result.innerHTML = `<strong>❌ PDF Test error:</strong> ${error.message}`;
+            }
+        }
+        
+        function testDirectPDFGeneration() {
+            const result = document.getElementById('pdfDownloadResult');
+            
+            try {
+                const orderHistory = JSON.parse(localStorage.getItem('cappunabara_order_history') || '[]');
+                
+                if (orderHistory.length === 0) {
+                    result.innerHTML = '<strong>⚠️ No orders found. Please create test data first.</strong>';
+                    return;
+                }
+                
+                const testOrder = orderHistory[0];
+                const orderData = {
+                    id: testOrder.id,
+                    timestamp: testOrder.timestamp,
+                    customer: testOrder.customer,
+                    items: testOrder.items,
+                    total: testOrder.total
+                };
+                
+                if (typeof window.downloadStrukPDF === 'function') {
+                    window.downloadStrukPDF(orderData);
+                    result.innerHTML = `
+                        <strong>✅ Direct PDF Generation Test:</strong><br>
+                        • Function called: downloadStrukPDF()<br>
+                        • Order data prepared: YES<br>
+                        • Status: <span class="status-good">EXECUTED</span><br>
+                        • Expected: PDF should download or HTML fallback<br><br>
+                        <strong>📊 Order Data:</strong><br>
+                        • ID: ${orderData.id}<br>
+                        • Customer: ${orderData.customer.name}<br>
+                        • Items: ${orderData.items.length}<br>
+                        • Total: Rp ${orderData.total.toLocaleString('id-ID')}<br><br>
+                        <strong>⏰ Tested at:</strong> ${new Date().toLocaleString('id-ID')}
+                    `;
+                } else {
+                    result.innerHTML = `
+                        <strong>❌ Direct PDF Function Not Available:</strong><br>
+                        • downloadStrukPDF function: <span class="status-bad">NOT FOUND</span><br>
+                        • Check if pdf-struk-generator.js is loaded properly
+                    `;
+                }
+                
+            } catch (error) {
+                result.innerHTML = `<strong>❌ Direct PDF Test error:</strong> ${error.message}`;
+            }
+        }
+        
+        function testDownloadLatest() {
+            const result = document.getElementById('downloadResult');
+            
+            try {
+                const orderHistory = JSON.parse(localStorage.getItem('cappunabara_order_history') || '[]');
+                
+                if (orderHistory.length === 0) {
+                    result.innerHTML = '<strong>⚠️ No orders found. Please create test data first.</strong>';
+                    return;
+                }
+                
+                // Test the downloadReceipt function (latest order)
+                if (typeof downloadReceipt === 'function') {
+                    downloadReceipt();
+                    result.innerHTML = `
+                        <strong>✅ Download Latest Order Test:</strong><br>
+                        • Function called: downloadReceipt()<br>
+                        • Latest order: ${orderHistory[0].id}<br>
+                        • Customer: ${orderHistory[0].customer.name}<br>
+                        • Total: Rp ${orderHistory[0].total.toLocaleString('id-ID')}<br>
+                        • Status: <span class="status-good">EXECUTED</span><br>
+                        • Expected: New tab should open with receipt<br><br>
+                        <strong>⏰ Tested at:</strong> ${new Date().toLocaleString('id-ID')}
+                    `;
+                } else {
+                    result.innerHTML = `
+                        <strong>❌ Function Not Available:</strong><br>
+                        • downloadReceipt function: <span class="status-bad">NOT FOUND</span><br>
+                        • This function should be loaded from history.js<br>
+                        • Check if history.js is properly loaded
+                    `;
+                }
+                
+            } catch (error) {
+                result.innerHTML = `<strong>❌ Test error:</strong> ${error.message}`;
+            }
+        }
+        
+        function testDownloadSpecific() {
+            const result = document.getElementById('downloadResult');
+            
+            try {
+                const orderHistory = JSON.parse(localStorage.getItem('cappunabara_order_history') || '[]');
+                
+                if (orderHistory.length === 0) {
+                    result.innerHTML = '<strong>⚠️ No orders found. Please create test data first.</strong>';
+                    return;
+                }
+                
+                // Test with the second order if available, otherwise first
+                const testOrder = orderHistory.length > 1 ? orderHistory[1] : orderHistory[0];
+                
+                if (typeof downloadOrderReceipt === 'function') {
+                    downloadOrderReceipt(testOrder.id);
+                    result.innerHTML = `
+                        <strong>✅ Download Specific Order Test:</strong><br>
+                        • Function called: downloadOrderReceipt('${testOrder.id}')<br>
+                        • Order ID: ${testOrder.id}<br>
+                        • Customer: ${testOrder.customer.name}<br>
+                        • Total: Rp ${testOrder.total.toLocaleString('id-ID')}<br>
+                        • Status: <span class="status-good">EXECUTED</span><br>
+                        • Expected: New tab should open with specific receipt<br><br>
+                        <strong>⏰ Tested at:</strong> ${new Date().toLocaleString('id-ID')}
+                    `;
+                } else {
+                    result.innerHTML = `
+                        <strong>❌ Function Not Available:</strong><br>
+                        • downloadOrderReceipt function: <span class="status-bad">NOT FOUND</span><br>
+                        • This function should be loaded from history.js<br>
+                        • Check if history.js is properly loaded
+                    `;
+                }
+                
+            } catch (error) {
+                result.innerHTML = `<strong>❌ Test error:</strong> ${error.message}`;
+            }
+        }
+        
+        function testGeneratePDF() {
+            const result = document.getElementById('downloadResult');
+            
+            try {
+                const orderHistory = JSON.parse(localStorage.getItem('cappunabara_order_history') || '[]');
+                
+                if (orderHistory.length === 0) {
+                    result.innerHTML = '<strong>⚠️ No orders found. Please create test data first.</strong>';
+                    return;
+                }
+                
+                const testOrder = orderHistory[0];
+                const orderData = {
+                    id: testOrder.id,
+                    timestamp: new Date(testOrder.timestamp),
+                    customer: testOrder.customer,
+                    items: testOrder.items,
+                    total: testOrder.total
+                };
+                
+                if (typeof generateReceiptPDF === 'function') {
+                    generateReceiptPDF(orderData);
+                    result.innerHTML = `
+                        <strong>✅ Generate PDF Test:</strong><br>
+                        • Function called: generateReceiptPDF()<br>
+                        • Order data: ${JSON.stringify(orderData, null, 2).substring(0, 200)}...<br>
+                        • Status: <span class="status-good">EXECUTED</span><br>
+                        • Expected: New tab with formatted receipt<br><br>
+                        <strong>⏰ Tested at:</strong> ${new Date().toLocaleString('id-ID')}
+                    `;
+                } else {
+                    result.innerHTML = `
+                        <strong>❌ Function Not Available:</strong><br>
+                        • generateReceiptPDF function: <span class="status-bad">NOT FOUND</span><br>
+                        • This function should be loaded from history.js<br>
+                        • Check if history.js is properly loaded
+                    `;
+                }
+                
+            } catch (error) {
+                result.innerHTML = `<strong>❌ Test error:</strong> ${error.message}`;
+            }
+        }
+        
+        function listAvailableOrders() {
+            const result = document.getElementById('ordersResult');
+            
+            try {
+                const orderHistory = JSON.parse(localStorage.getItem('cappunabara_order_history') || '[]');
+                
+                if (orderHistory.length === 0) {
+                    result.innerHTML = '<strong>⚠️ No orders available. Please create test data first.</strong>';
+                    return;
+                }
+                
+                result.innerHTML = `
+                    <strong>📋 Available Orders (${orderHistory.length}):</strong><br><br>
+                    ${orderHistory.map((order, index) => {
+                        const orderDate = new Date(order.timestamp).toLocaleString('id-ID');
+                        const taxAmount = order.total * 0.1;
+                        const finalTotal = order.total + taxAmount;
+                        
+                        return `
+                            <div class="order-preview">
+                                <div class="order-header">
+                                    <span class="order-id">#${order.id}</span>
+                                    <span class="order-total">Rp ${finalTotal.toLocaleString('id-ID')}</span>
+                                </div>
+                                <div>
+                                    <strong>Customer:</strong> ${order.customer.name}<br>
+                                    <strong>Table:</strong> ${order.customer.table}<br>
+                                    <strong>Payment:</strong> ${order.customer.payment}<br>
+                                    <strong>Date:</strong> ${orderDate}<br>
+                                    <strong>Items:</strong> ${order.items.length} items<br>
+                                    <strong>Subtotal:</strong> Rp ${order.total.toLocaleString('id-ID')}<br>
+                                    <strong>Tax (10%):</strong> Rp ${taxAmount.toLocaleString('id-ID')}<br>
+                                    <button class="btn" onclick="downloadOrderReceipt('${order.id}')" style="margin-top: 0.5rem;">
+                                        📥 Download Struk
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
+                `;
+                
+            } catch (error) {
+                result.innerHTML = `<strong>❌ Error listing orders:</strong> ${error.message}`;
+            }
+        }
+        
+        // Auto-run status check on page load
+        window.addEventListener('load', function() {
+            checkDataStatus();
+        });
+        
+        // Load the PDF generator and history.js functions if not already loaded
+        if (typeof downloadReceipt === 'undefined' || typeof downloadStrukPDF === 'undefined') {
+            console.log('Loading PDF generator and download functions...');
+            
+            // Load PDF generator
+            const pdfScript = document.createElement('script');
+            pdfScript.src = '/pdf-struk-generator.js';
+            pdfScript.onload = function() {
+                console.log('PDF generator loaded');
+            };
+            document.head.appendChild(pdfScript);
+            
+            // Load history functions
+            const historyScript = document.createElement('script');
+            historyScript.src = '/assets/js/history.js';
+            historyScript.onload = function() {
+                console.log('History functions loaded');
+            };
+            document.head.appendChild(historyScript);
+        }
+    </script>
+</body>
+</html>

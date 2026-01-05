@@ -1,0 +1,1675 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pesanan Baru - Cappunabara</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar-brand {
+            font-size: 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: background 0.3s ease;
+            font-size: 14px;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        .order-grid {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 30px;
+        }
+
+        .menu-section {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .cart-section {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+
+        .section-title {
+            font-size: 22px;
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Service Selection Styles */
+        .service-selection {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .service-description {
+            color: #666;
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+
+        .service-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .service-card {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .service-radio {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .service-label {
+            display: block;
+            padding: 25px;
+            border: 2px solid #e1e5e9;
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+            position: relative;
+        }
+
+        .service-label:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .service-radio:checked + .service-label {
+            border-color: #D2691E;
+            background: linear-gradient(135deg, #fff5f0 0%, #ffffff 100%);
+            box-shadow: 0 8px 25px rgba(210, 105, 30, 0.2);
+        }
+
+        .service-radio:checked + .service-label::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 20px;
+            height: 20px;
+            background: #D2691E;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .service-radio:checked + .service-label::after {
+            content: '✓';
+            position: absolute;
+            top: 19px;
+            right: 19px;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .service-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 32px;
+            color: white;
+        }
+
+        .dine-in-icon {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .take-away-icon {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .delivery-icon {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .service-name {
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .service-desc {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .service-status {
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .service-status.active {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .service-status.inactive {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .menu-content {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .menu-categories {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .category-btn {
+            padding: 8px 16px;
+            border: 2px solid #D2691E;
+            background: white;
+            color: #D2691E;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .category-btn.active {
+            background: #D2691E;
+            color: white;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .menu-item {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .menu-item-image {
+            width: 100%;
+            height: 180px;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+
+        .menu-item-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(139, 69, 19, 0.1), rgba(210, 105, 30, 0.1));
+        }
+
+        .menu-item-content {
+            padding: 20px;
+        }
+
+        .menu-item-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .menu-item-description {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.4;
+            margin-bottom: 15px;
+        }
+
+        .menu-item-price {
+            font-size: 16px;
+            font-weight: 700;
+            color: #D2691E;
+            margin-bottom: 15px;
+        }
+
+        .add-to-cart-btn {
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .add-to-cart-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(139, 69, 19, 0.3);
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-item-name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .cart-item-price {
+            color: #D2691E;
+            font-size: 14px;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .quantity-btn:hover {
+            background: #f8f9fa;
+            border-color: #D2691E;
+        }
+
+        .quantity-display {
+            font-weight: 600;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .cart-total {
+            border-top: 2px solid #eee;
+            padding-top: 20px;
+            margin-top: 20px;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .total-row.final {
+            font-size: 18px;
+            font-weight: 700;
+            color: #D2691E;
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+        }
+
+        .checkout-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #eee;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #D2691E;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+        }
+
+        .checkout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+        }
+
+        .checkout-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .empty-cart {
+            text-align: center;
+            color: #666;
+            padding: 40px 20px;
+        }
+
+        .empty-cart i {
+            font-size: 48px;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .payment-method {
+            padding: 8px 12px;
+            border: 2px solid #e1e5e9;
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-size: 12px;
+        }
+
+        .payment-method.selected {
+            border-color: #D2691E;
+            background: #fff5f0;
+            color: #D2691E;
+        }
+
+        @media (max-width: 1024px) {
+            .order-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .cart-section {
+                position: static;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .menu-categories {
+                justify-content: center;
+            }
+
+            .service-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .service-card {
+                margin-bottom: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-content">
+            <div class="navbar-brand">
+                <i class="fas fa-utensils"></i>
+                Menu Makanan & Minuman
+            </div>
+            <div class="nav-links">
+                <a href="modern-dashboard.html" class="nav-link">
+                    <i class="fas fa-home"></i> Dashboard
+                </a>
+                <a href="menu-management.html" class="nav-link">
+                    <i class="fas fa-utensils"></i> Kelola Menu
+                </a>
+                <a href="employees.html" class="nav-link">
+                    <i class="fas fa-users-cog"></i> Karyawan
+                </a>
+                <a href="reports.html" class="nav-link">
+                    <i class="fas fa-chart-bar"></i> Laporan
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="order-grid">
+            <div class="menu-section">
+                <!-- Service Selection Section -->
+                <div class="service-selection" id="service-selection">
+                    <h2 class="section-title">
+                        <i class="fas fa-concierge-bell"></i>
+                        Pilih Jenis Pelayanan:
+                    </h2>
+                    <p class="service-description">Silakan pilih jenis pelayanan untuk melanjutkan pemesanan.</p>
+                    
+                    <div class="service-cards">
+                        <div class="service-card" data-service="dine-in">
+                            <input type="radio" name="service-type" value="dine-in" id="dine-in" class="service-radio">
+                            <label for="dine-in" class="service-label">
+                                <div class="service-icon dine-in-icon">
+                                    <i class="fas fa-utensils"></i>
+                                </div>
+                                <h3 class="service-name">Dine In</h3>
+                                <p class="service-desc">Minum di tempat</p>
+                                <span class="service-status active">Aktif</span>
+                            </label>
+                        </div>
+
+                        <div class="service-card" data-service="take-away">
+                            <input type="radio" name="service-type" value="take-away" id="take-away" class="service-radio">
+                            <label for="take-away" class="service-label">
+                                <div class="service-icon take-away-icon">
+                                    <i class="fas fa-shopping-bag"></i>
+                                </div>
+                                <h3 class="service-name">Take Away</h3>
+                                <p class="service-desc">Dibawa pulang</p>
+                                <span class="service-status active">Aktif</span>
+                            </label>
+                        </div>
+
+                        <div class="service-card" data-service="delivery">
+                            <input type="radio" name="service-type" value="delivery" id="delivery" class="service-radio">
+                            <label for="delivery" class="service-label">
+                                <div class="service-icon delivery-icon">
+                                    <i class="fas fa-motorcycle"></i>
+                                </div>
+                                <h3 class="service-name">Delivery Order</h3>
+                                <p class="service-desc">Pesanan diantar</p>
+                                <span class="service-status active">Aktif</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Menu Selection Section (Initially Hidden) -->
+                <div class="menu-content" id="menu-content" style="display: none;">
+                    <h2 class="section-title">
+                        <i class="fas fa-utensils"></i>
+                        Pilih Menu Makanan & Minuman:
+                    </h2>
+
+                    <div class="menu-categories">
+                        <button class="category-btn active" onclick="filterByCategory('all')">Semua</button>
+                        <button class="category-btn" onclick="filterByCategory('makanan')">Makanan</button>
+                        <button class="category-btn" onclick="filterByCategory('minuman')">Minuman</button>
+                        <button class="category-btn" onclick="filterByCategory('snack')">Snack</button>
+                        <button class="category-btn" onclick="filterByCategory('dessert')">Dessert</button>
+                    </div>
+
+                    <div class="menu-grid" id="menuGrid">
+                        <!-- Menu items will be loaded here -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="cart-section">
+                <h2 class="section-title">
+                    <i class="fas fa-shopping-cart"></i>
+                    Keranjang Pesanan
+                </h2>
+
+                <div id="cartItems">
+                    <div class="empty-cart">
+                        <i class="fas fa-shopping-cart"></i>
+                        <p>Keranjang masih kosong</p>
+                        <small>Pilih menu untuk memulai pesanan</small>
+                    </div>
+                </div>
+
+                <div class="cart-total" id="cartTotal" style="display: none;">
+                    <div class="total-row">
+                        <span>Subtotal:</span>
+                        <span id="subtotal">Rp 0</span>
+                    </div>
+                    <div class="total-row">
+                        <span>Pajak (10%):</span>
+                        <span id="tax">Rp 0</span>
+                    </div>
+                    <div class="total-row final">
+                        <span>Total:</span>
+                        <span id="total">Rp 0</span>
+                    </div>
+                </div>
+
+                <div class="checkout-section" id="checkoutSection" style="display: none;">
+                    <div class="form-group">
+                        <label for="customerPhone">Nomor Telepon Pelanggan</label>
+                        <input type="tel" id="customerPhone" placeholder="08xxxxxxxxxx" onchange="searchCustomer()">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="customerName">Nama Pelanggan</label>
+                        <input type="text" id="customerName" placeholder="Nama pelanggan" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tableNumber">Nomor Meja</label>
+                        <select id="tableNumber" required>
+                            <option value="">Pilih Meja</option>
+                            <option value="1">Meja 1</option>
+                            <option value="2">Meja 2</option>
+                            <option value="3">Meja 3</option>
+                            <option value="4">Meja 4</option>
+                            <option value="5">Meja 5</option>
+                            <option value="6">Meja 6</option>
+                            <option value="7">Meja 7</option>
+                            <option value="8">Meja 8</option>
+                            <option value="9">Meja 9</option>
+                            <option value="10">Meja 10</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Metode Pembayaran</label>
+                        <div class="payment-methods">
+                            <div class="payment-method" onclick="selectPayment('cash')">
+                                <i class="fas fa-money-bill-wave"></i><br>Tunai
+                            </div>
+                            <div class="payment-method" onclick="selectPayment('debit')">
+                                <i class="fas fa-credit-card"></i><br>Kartu Debit
+                            </div>
+                            <div class="payment-method" onclick="selectPayment('credit')">
+                                <i class="fas fa-credit-card"></i><br>Kartu Kredit
+                            </div>
+                            <div class="payment-method" onclick="selectPayment('qris')">
+                                <i class="fas fa-qrcode"></i><br>QRIS
+                            </div>
+                            <div class="payment-method" onclick="selectPayment('gopay')">
+                                <i class="fas fa-mobile-alt"></i><br>GoPay
+                            </div>
+                            <div class="payment-method" onclick="selectPayment('ovo')">
+                                <i class="fas fa-mobile-alt"></i><br>OVO
+                            </div>
+                            <div class="payment-method" onclick="selectPayment('dana')">
+                                <i class="fas fa-mobile-alt"></i><br>DANA
+                            </div>
+                            <div class="payment-method" onclick="selectPayment('shopeepay')">
+                                <i class="fas fa-mobile-alt"></i><br>ShopeePay
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="checkout-btn" onclick="processOrder()" disabled>
+                        <i class="fas fa-check"></i> Proses Pesanan
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Extended menu items with real food images (same as menu management)
+        let menuItems = [
+            // MAKANAN
+            {
+                id: 1,
+                name: 'Nasi Gudeg Special',
+                description: 'Nasi gudeg dengan ayam, telur dan sambal krecek',
+                price: 25000,
+                category: 'makanan',
+                image: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=400&h=300&fit=crop'
+            },
+            {
+                id: 2,
+                name: 'Ayam Bakar Madu',
+                description: 'Ayam bakar dengan bumbu madu dan rempah pilihan',
+                price: 30000,
+                category: 'makanan',
+                image: 'https://images.unsplash.com/photo-1598103442097-8b74394b95c6?w=400&h=300&fit=crop'
+            },
+            {
+                id: 3,
+                name: 'Soto Ayam Lamongan',
+                description: 'Soto ayam khas Lamongan dengan kuah bening',
+                price: 18000,
+                category: 'makanan',
+                image: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=400&h=300&fit=crop'
+            },
+            {
+                id: 4,
+                name: 'Rendang Daging',
+                description: 'Rendang daging sapi dengan bumbu rempah Padang',
+                price: 35000,
+                category: 'makanan',
+                image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=300&fit=crop'
+            },
+            {
+                id: 5,
+                name: 'Gado-gado',
+                description: 'Sayuran segar dengan bumbu kacang khas Indonesia',
+                price: 15000,
+                category: 'makanan',
+                image: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=400&h=300&fit=crop'
+            },
+            {
+                id: 6,
+                name: 'Nasi Liwet',
+                description: 'Nasi liwet dengan lauk pauk tradisional',
+                price: 22000,
+                category: 'makanan',
+                image: 'https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=400&h=300&fit=crop'
+            },
+            {
+                id: 7,
+                name: 'Pecel Lele',
+                description: 'Lele goreng dengan sambal pecel dan lalapan',
+                price: 16000,
+                category: 'makanan',
+                image: 'https://images.unsplash.com/photo-1565299507177-b0ac66763828?w=400&h=300&fit=crop'
+            },
+            {
+                id: 8,
+                name: 'Rawon',
+                description: 'Rawon daging sapi dengan kuah hitam khas Jawa Timur',
+                price: 28000,
+                category: 'makanan',
+                image: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=400&h=300&fit=crop'
+            },
+
+            // MINUMAN
+            {
+                id: 9,
+                name: 'Es Teh Manis',
+                description: 'Es teh manis segar dengan gula aren',
+                price: 5000,
+                category: 'minuman',
+                image: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&h=300&fit=crop'
+            },
+            {
+                id: 10,
+                name: 'Kopi Tubruk',
+                description: 'Kopi tubruk tradisional dengan gula batu',
+                price: 10000,
+                category: 'minuman',
+                image: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=400&h=300&fit=crop'
+            },
+            {
+                id: 11,
+                name: 'Cappuccino',
+                description: 'Minuman kopi Italia yang lembut dan creamy',
+                price: 25000,
+                category: 'minuman',
+                image: 'https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=400&h=300&fit=crop'
+            },
+            {
+                id: 12,
+                name: 'Espresso',
+                description: 'Espresso dengan aroma kopi yang kuat dan pekat',
+                price: 15000,
+                category: 'minuman',
+                image: 'https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?w=400&h=300&fit=crop'
+            },
+            {
+                id: 13,
+                name: 'Americano',
+                description: 'Espresso dengan tambahan air panas, rasa kuat',
+                price: 18000,
+                category: 'minuman',
+                image: 'https://images.unsplash.com/photo-1551030173-122aabc4489c?w=400&h=300&fit=crop'
+            },
+            {
+                id: 14,
+                name: 'Jus Jeruk',
+                description: 'Jus jeruk segar tanpa gula tambahan',
+                price: 12000,
+                category: 'minuman',
+                image: 'https://images.unsplash.com/photo-1621506289937-a8e4df240d0b?w=400&h=300&fit=crop'
+            },
+            {
+                id: 15,
+                name: 'Es Kelapa Muda',
+                description: 'Air kelapa muda segar dengan daging kelapa',
+                price: 8000,
+                category: 'minuman',
+                image: 'https://images.unsplash.com/photo-1559181567-c3190ca9959b?w=400&h=300&fit=crop'
+            },
+            {
+                id: 16,
+                name: 'Wedang Jahe',
+                description: 'Minuman jahe hangat dengan gula merah',
+                price: 7000,
+                category: 'minuman',
+                image: 'https://images.unsplash.com/photo-1571934811356-5cc061b6821f?w=400&h=300&fit=crop'
+            },
+
+            // SNACK
+            {
+                id: 17,
+                name: 'Tempe Mendoan',
+                description: 'Tempe goreng tepung khas Banyumas yang renyah',
+                price: 8000,
+                category: 'snack',
+                image: 'https://images.unsplash.com/photo-1565299507177-b0ac66763828?w=400&h=300&fit=crop'
+            },
+            {
+                id: 18,
+                name: 'Kerupuk Udang',
+                description: 'Kerupuk udang renyah sebagai pelengkap',
+                price: 5000,
+                category: 'snack',
+                image: 'https://images.unsplash.com/photo-1599490659213-e2b9527bd087?w=400&h=300&fit=crop'
+            },
+            {
+                id: 19,
+                name: 'Pisang Goreng',
+                description: 'Pisang goreng crispy dengan tepung renyah',
+                price: 6000,
+                category: 'snack',
+                image: 'https://images.unsplash.com/photo-1587132137056-bfbf0166836e?w=400&h=300&fit=crop'
+            },
+            {
+                id: 20,
+                name: 'Tahu Isi',
+                description: 'Tahu goreng isi sayuran dengan saus kacang',
+                price: 7000,
+                category: 'snack',
+                image: 'https://images.unsplash.com/photo-1565299507177-b0ac66763828?w=400&h=300&fit=crop'
+            },
+            {
+                id: 21,
+                name: 'Bakwan Jagung',
+                description: 'Bakwan jagung goreng renyah dengan cabai',
+                price: 6000,
+                category: 'snack',
+                image: 'https://images.unsplash.com/photo-1599490659213-e2b9527bd087?w=400&h=300&fit=crop'
+            },
+            {
+                id: 22,
+                name: 'Cireng',
+                description: 'Cireng aci digoreng dengan bumbu rujak',
+                price: 5000,
+                category: 'snack',
+                image: 'https://images.unsplash.com/photo-1587132137056-bfbf0166836e?w=400&h=300&fit=crop'
+            },
+
+            // DESSERT
+            {
+                id: 23,
+                name: 'Es Cendol',
+                description: 'Minuman segar dengan cendol, santan dan gula merah',
+                price: 12000,
+                category: 'dessert',
+                image: 'https://images.unsplash.com/photo-1563379091339-03246963d96c?w=400&h=300&fit=crop'
+            },
+            {
+                id: 24,
+                name: 'Es Campur',
+                description: 'Es campur dengan berbagai topping segar',
+                price: 15000,
+                category: 'dessert',
+                image: 'https://images.unsplash.com/photo-1551024506-0bccd828d307?w=400&h=300&fit=crop'
+            },
+            {
+                id: 25,
+                name: 'Klepon',
+                description: 'Klepon isi gula merah dengan kelapa parut',
+                price: 10000,
+                category: 'dessert',
+                image: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop'
+            },
+            {
+                id: 26,
+                name: 'Puding Coklat',
+                description: 'Puding coklat lembut dengan topping krim',
+                price: 13000,
+                category: 'dessert',
+                image: 'https://images.unsplash.com/photo-1551024506-0bccd828d307?w=400&h=300&fit=crop'
+            },
+            {
+                id: 27,
+                name: 'Kolak Pisang',
+                description: 'Kolak pisang dengan santan dan gula merah',
+                price: 9000,
+                category: 'dessert',
+                image: 'https://images.unsplash.com/photo-1563379091339-03246963d96c?w=400&h=300&fit=crop'
+            },
+            {
+                id: 28,
+                name: 'Es Krim Vanilla',
+                description: 'Es krim vanilla premium dengan topping',
+                price: 14000,
+                category: 'dessert',
+                image: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop'
+            }
+        ];
+
+        let cart = [];
+        let currentCategory = 'all';
+        let selectedPayment = '';
+        let selectedService = '';
+
+        // Load menu from localStorage if available
+        function loadMenuFromStorage() {
+            const storedMenu = localStorage.getItem('menuItems');
+            if (storedMenu) {
+                try {
+                    const parsed = JSON.parse(storedMenu);
+                    if (parsed.length > 0) {
+                        menuItems = parsed;
+                    }
+                } catch (e) {
+                    console.error('Error loading menu from storage:', e);
+                }
+            }
+        }
+
+        // Handle service selection
+        function handleServiceSelection() {
+            const serviceRadios = document.querySelectorAll('input[name="service-type"]');
+            const menuContent = document.getElementById('menu-content');
+            
+            serviceRadios.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    if (this.checked) {
+                        selectedService = this.value;
+                        
+                        // Show menu content with animation
+                        menuContent.style.display = 'block';
+                        setTimeout(() => {
+                            menuContent.style.opacity = '1';
+                            menuContent.style.transform = 'translateY(0)';
+                        }, 100);
+                        
+                        // Scroll to menu section
+                        menuContent.scrollIntoView({ 
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                        
+                        // Update checkout section based on service type
+                        updateCheckoutForService(this.value);
+                        
+                        // Update checkout button state
+                        updateCheckoutButton();
+                        
+                        console.log('Selected service:', this.value);
+                    }
+                });
+            });
+        }
+
+        // Update checkout section based on service type
+        function updateCheckoutForService(serviceType) {
+            const tableNumberGroup = document.querySelector('.form-group:has(#tableNumber)');
+            const tableLabel = document.querySelector('label[for="tableNumber"]');
+            const tableSelect = document.getElementById('tableNumber');
+            
+            if (serviceType === 'dine-in') {
+                // Remove delivery address field if exists
+                removeDeliveryAddressField();
+                
+                // Show table selection for dine-in
+                if (tableNumberGroup) {
+                    tableNumberGroup.style.display = 'block';
+                    tableLabel.textContent = 'Nomor Meja';
+                    tableSelect.innerHTML = `
+                        <option value="">Pilih Meja</option>
+                        <option value="1">Meja 1</option>
+                        <option value="2">Meja 2</option>
+                        <option value="3">Meja 3</option>
+                        <option value="4">Meja 4</option>
+                        <option value="5">Meja 5</option>
+                        <option value="6">Meja 6</option>
+                        <option value="7">Meja 7</option>
+                        <option value="8">Meja 8</option>
+                        <option value="9">Meja 9</option>
+                        <option value="10">Meja 10</option>
+                    `;
+                }
+            } else if (serviceType === 'take-away') {
+                // Remove delivery address field if exists
+                removeDeliveryAddressField();
+                
+                // Show pickup number for take away
+                if (tableNumberGroup) {
+                    tableNumberGroup.style.display = 'block';
+                    tableLabel.textContent = 'Nomor Antrian';
+                    
+                    // Generate A001-A050 options
+                    let queueOptions = '<option value="">Pilih Nomor Antrian</option>';
+                    for (let i = 1; i <= 50; i++) {
+                        const queueNumber = 'A' + String(i).padStart(3, '0');
+                        queueOptions += `<option value="${queueNumber}">${queueNumber}</option>`;
+                    }
+                    
+                    tableSelect.innerHTML = queueOptions;
+                }
+            } else if (serviceType === 'delivery') {
+                // Hide table/queue selection for delivery
+                if (tableNumberGroup) {
+                    tableNumberGroup.style.display = 'none';
+                }
+                
+                // Add delivery address field if not exists
+                addDeliveryAddressField();
+            }
+        }
+
+        // Add delivery address field
+        function addDeliveryAddressField() {
+            const checkoutSection = document.getElementById('checkoutSection');
+            const existingAddressField = document.getElementById('deliveryAddress');
+            
+            if (!existingAddressField && checkoutSection) {
+                const addressFieldHTML = `
+                    <div class="form-group" id="delivery-address-group">
+                        <label for="deliveryAddress">Alamat Pengiriman</label>
+                        <textarea id="deliveryAddress" placeholder="Masukkan alamat lengkap untuk pengiriman" rows="3" required></textarea>
+                    </div>
+                `;
+                
+                // Insert before payment methods
+                const paymentGroup = checkoutSection.querySelector('.form-group:has(.payment-methods)');
+                if (paymentGroup) {
+                    paymentGroup.insertAdjacentHTML('beforebegin', addressFieldHTML);
+                    
+                    // Add event listener to the newly created field
+                    const newAddressField = document.getElementById('deliveryAddress');
+                    if (newAddressField) {
+                        newAddressField.addEventListener('input', updateCheckoutButton);
+                    }
+                }
+            }
+        }
+
+        // Remove delivery address field
+        function removeDeliveryAddressField() {
+            const addressGroup = document.getElementById('delivery-address-group');
+            if (addressGroup) {
+                addressGroup.remove();
+            }
+        }
+
+        // Display menu items
+        function displayMenu() {
+            const menuGrid = document.getElementById('menuGrid');
+            
+            let filteredItems = menuItems.filter(item => {
+                const matchesCategory = currentCategory === 'all' || item.category === currentCategory;
+                return matchesCategory;
+            });
+
+            menuGrid.innerHTML = filteredItems.map(item => `
+                <div class="menu-item">
+                    <div class="menu-item-image" style="background-image: url('${item.image}')"></div>
+                    <div class="menu-item-content">
+                        <div class="menu-item-name">${item.name}</div>
+                        <div class="menu-item-description">${item.description}</div>
+                        <div class="menu-item-price">Rp ${item.price.toLocaleString('id-ID')}</div>
+                        <button class="add-to-cart-btn" onclick="addToCart(${item.id})">
+                            <i class="fas fa-plus"></i> Tambah ke Keranjang
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Filter by category
+        function filterByCategory(category) {
+            currentCategory = category;
+            
+            // Update active button
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            displayMenu();
+        }
+
+        // Add item to cart
+        function addToCart(itemId) {
+            const item = menuItems.find(m => m.id === itemId);
+            if (!item) return;
+
+            const existingItem = cart.find(c => c.id === itemId);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({ ...item, quantity: 1 });
+            }
+
+            updateCartDisplay();
+        }
+
+        // Update cart display
+        function updateCartDisplay() {
+            const cartItems = document.getElementById('cartItems');
+            const cartTotal = document.getElementById('cartTotal');
+            const checkoutSection = document.getElementById('checkoutSection');
+
+            if (cart.length === 0) {
+                cartItems.innerHTML = `
+                    <div class="empty-cart">
+                        <i class="fas fa-shopping-cart"></i>
+                        <p>Keranjang masih kosong</p>
+                        <small>Pilih layanan dan menu untuk memulai pesanan</small>
+                    </div>
+                `;
+                cartTotal.style.display = 'none';
+                checkoutSection.style.display = 'none';
+                return;
+            }
+
+            cartItems.innerHTML = cart.map(item => `
+                <div class="cart-item">
+                    <div class="cart-item-info">
+                        <div class="cart-item-name">${item.name}</div>
+                        <div class="cart-item-price">Rp ${item.price.toLocaleString('id-ID')}</div>
+                        <div class="quantity-controls">
+                            <button class="quantity-btn" onclick="updateQuantity(${item.id}, -1)">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <span class="quantity-display">${item.quantity}</span>
+                            <button class="quantity-btn" onclick="updateQuantity(${item.id}, 1)">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            // Calculate totals
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const tax = subtotal * 0.1;
+            const deliveryFee = selectedService === 'delivery' ? 5000 : 0;
+            const total = subtotal + tax + deliveryFee;
+
+            // Update total display
+            let totalHTML = `
+                <div class="total-row">
+                    <span>Subtotal:</span>
+                    <span>Rp ${subtotal.toLocaleString('id-ID')}</span>
+                </div>
+                <div class="total-row">
+                    <span>Pajak (10%):</span>
+                    <span>Rp ${tax.toLocaleString('id-ID')}</span>
+                </div>
+            `;
+
+            if (deliveryFee > 0) {
+                totalHTML += `
+                    <div class="total-row">
+                        <span>Biaya Pengiriman:</span>
+                        <span>Rp ${deliveryFee.toLocaleString('id-ID')}</span>
+                    </div>
+                `;
+            }
+
+            totalHTML += `
+                <div class="total-row final">
+                    <span>Total:</span>
+                    <span>Rp ${total.toLocaleString('id-ID')}</span>
+                </div>
+            `;
+
+            document.getElementById('cartTotal').innerHTML = totalHTML;
+            cartTotal.style.display = 'block';
+            checkoutSection.style.display = 'block';
+            
+            // Update checkout button state
+            updateCheckoutButton();
+        }
+
+        // Update quantity
+        function updateQuantity(itemId, change) {
+            const item = cart.find(c => c.id === itemId);
+            if (!item) return;
+
+            item.quantity += change;
+            if (item.quantity <= 0) {
+                cart = cart.filter(c => c.id !== itemId);
+            }
+
+            updateCartDisplay();
+        }
+
+        // Search customer by phone
+        function searchCustomer() {
+            const phone = document.getElementById('customerPhone').value;
+            if (phone.length < 10) return;
+
+            const customers = JSON.parse(localStorage.getItem('customersData') || '[]');
+            const customer = customers.find(c => c.phone === phone);
+            
+            if (customer) {
+                document.getElementById('customerName').value = customer.name;
+            }
+        }
+
+        // Select payment method
+        function selectPayment(method) {
+            selectedPayment = method;
+            
+            document.querySelectorAll('.payment-method').forEach(pm => {
+                pm.classList.remove('selected');
+            });
+            event.target.classList.add('selected');
+            
+            updateCheckoutButton();
+        }
+
+        // Update checkout button state
+        function updateCheckoutButton() {
+            try {
+                const phone = document.getElementById('customerPhone')?.value || '';
+                const name = document.getElementById('customerName')?.value || '';
+                const table = document.getElementById('tableNumber')?.value || '';
+                const deliveryAddress = document.getElementById('deliveryAddress');
+                
+                // Debug logging
+                console.log('=== Checkout Validation Debug ===');
+                console.log('Phone:', phone);
+                console.log('Name:', name);
+                console.log('Selected Service:', selectedService);
+                console.log('Selected Payment:', selectedPayment);
+                console.log('Cart Length:', cart.length);
+                console.log('Table/Queue:', table);
+                
+                let isValid = phone.length > 0 && name.length > 0 && selectedPayment && cart.length > 0 && selectedService;
+                console.log('Basic validation:', isValid);
+                
+                // Additional validation based on service type
+                if (selectedService === 'delivery') {
+                    // For delivery, need address instead of table
+                    const addressValue = deliveryAddress ? deliveryAddress.value.trim() : '';
+                    isValid = isValid && addressValue.length > 0;
+                    console.log('Delivery address:', addressValue);
+                    console.log('Delivery validation:', isValid);
+                } else if (selectedService === 'dine-in' || selectedService === 'take-away') {
+                    // For dine-in and take-away, need table/queue number
+                    isValid = isValid && table.length > 0;
+                    console.log('Table/Queue validation:', isValid);
+                }
+                
+                console.log('Final validation result:', isValid);
+                console.log('=== End Debug ===');
+                
+                const checkoutBtn = document.querySelector('.checkout-btn');
+                if (checkoutBtn) {
+                    checkoutBtn.disabled = !isValid;
+                    
+                    // Visual feedback
+                    if (isValid) {
+                        checkoutBtn.style.opacity = '1';
+                        checkoutBtn.style.cursor = 'pointer';
+                        checkoutBtn.style.background = 'linear-gradient(135deg, #28a745 0%, #20c997 100%)';
+                        console.log('✅ Button ENABLED');
+                    } else {
+                        checkoutBtn.style.opacity = '0.6';
+                        checkoutBtn.style.cursor = 'not-allowed';
+                        checkoutBtn.style.background = '#6c757d';
+                        console.log('❌ Button DISABLED');
+                    }
+                } else {
+                    console.error('Checkout button not found!');
+                }
+            } catch (error) {
+                console.error('Error in updateCheckoutButton:', error);
+            }
+        }
+
+        // Get current cashier information
+        function getCurrentCashier() {
+            // Try to get from modern auth system
+            try {
+                if (typeof getCurrentUser === 'function') {
+                    const currentUser = getCurrentUser();
+                    if (currentUser && currentUser.name) {
+                        return currentUser.name;
+                    }
+                }
+            } catch (e) {
+                console.log('getCurrentUser not available:', e);
+            }
+            
+            // Try to get from localStorage
+            const loggedInUser = localStorage.getItem('loggedInUser');
+            if (loggedInUser) {
+                try {
+                    const user = JSON.parse(loggedInUser);
+                    return user.name || user.username || 'Kasir';
+                } catch (e) {
+                    // If parsing fails, use the string directly
+                    return loggedInUser;
+                }
+            }
+            
+            // Default cashier names based on time or random
+            const defaultCashiers = ['Kasir 1', 'Kasir 2', 'Kasir 3'];
+            const hour = new Date().getHours();
+            
+            if (hour >= 6 && hour < 14) {
+                return 'Kasir 1 (Pagi)';
+            } else if (hour >= 14 && hour < 22) {
+                return 'Kasir 2 (Siang)';
+            } else {
+                return 'Kasir 3 (Malam)';
+            }
+        }
+
+        // Process order
+        function processOrder() {
+            const phone = document.getElementById('customerPhone').value;
+            const name = document.getElementById('customerName').value;
+            const table = document.getElementById('tableNumber').value;
+
+            if (!selectedService) {
+                alert('Mohon pilih jenis pelayanan terlebih dahulu!');
+                return;
+            }
+
+            if (!phone || !name || !selectedPayment) {
+                alert('Mohon lengkapi semua data pesanan!');
+                return;
+            }
+
+            // Validate based on service type
+            if (selectedService === 'dine-in' && !table) {
+                alert('Mohon pilih nomor meja untuk layanan Dine In!');
+                return;
+            }
+
+            if (selectedService === 'delivery') {
+                const deliveryAddress = document.getElementById('deliveryAddress');
+                if (!deliveryAddress || !deliveryAddress.value.trim()) {
+                    alert('Mohon masukkan alamat pengiriman untuk layanan Delivery!');
+                    return;
+                }
+            }
+
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const tax = subtotal * 0.1;
+            const total = subtotal + tax;
+
+            // Add delivery fee for delivery orders
+            let deliveryFee = 0;
+            if (selectedService === 'delivery') {
+                deliveryFee = 5000; // Rp 5,000 delivery fee
+            }
+
+            const finalTotal = total + deliveryFee;
+
+            const order = {
+                orderId: 'ORD-' + Date.now(),
+                date: new Date().toISOString(),
+                serviceType: selectedService,
+                customerName: name,
+                customerPhone: phone,
+                tableNumber: selectedService === 'dine-in' ? table : (selectedService === 'take-away' ? table || 'A' + String(Date.now()).slice(-3) : null),
+                deliveryAddress: selectedService === 'delivery' ? document.getElementById('deliveryAddress').value : null,
+                paymentMethod: selectedPayment,
+                items: [...cart],
+                subtotal: subtotal,
+                tax: tax,
+                deliveryFee: deliveryFee,
+                totalPrice: finalTotal,
+                status: 'completed'
+            };
+
+            // Save to sales data
+            const salesData = JSON.parse(localStorage.getItem('salesData') || '[]');
+            
+            // Add individual items to sales data
+            cart.forEach(item => {
+                salesData.push({
+                    orderId: order.orderId,
+                    date: order.date,
+                    serviceType: selectedService,
+                    customerName: name,
+                    customerPhone: phone,
+                    tableNumber: order.tableNumber,
+                    deliveryAddress: order.deliveryAddress,
+                    paymentMethod: selectedPayment,
+                    menuName: item.name,
+                    quantity: item.quantity,
+                    price: item.price,
+                    totalPrice: item.price * item.quantity,
+                    cashier: getCurrentCashier() // Add cashier information
+                });
+            });
+
+            localStorage.setItem('salesData', JSON.stringify(salesData));
+
+            // Update customer data
+            updateCustomerData(name, phone, finalTotal);
+
+            // Store order data for success page
+            localStorage.setItem('lastOrder', JSON.stringify(order));
+
+            // Reset form
+            cart = [];
+            selectedPayment = '';
+            selectedService = '';
+            document.getElementById('customerPhone').value = '';
+            document.getElementById('customerName').value = '';
+            document.getElementById('tableNumber').value = '';
+            document.querySelectorAll('input[name="service-type"]').forEach(radio => {
+                radio.checked = false;
+            });
+            document.querySelectorAll('.payment-method').forEach(pm => {
+                pm.classList.remove('selected');
+            });
+
+            // Hide menu content and show service selection again
+            document.getElementById('menu-content').style.display = 'none';
+            document.getElementById('service-selection').style.display = 'block';
+
+            updateCartDisplay();
+            
+            // Redirect to success page
+            window.location.href = `order-success.html?orderId=${order.orderId}`;
+        }
+
+        // Update customer data
+        function updateCustomerData(name, phone, orderTotal) {
+            let customers = JSON.parse(localStorage.getItem('customersData') || '[]');
+            let customer = customers.find(c => c.phone === phone);
+
+            if (customer) {
+                customer.totalOrders += 1;
+                customer.totalSpent += orderTotal;
+                customer.lastOrder = new Date().toISOString();
+                customer.status = 'active'; // Always set to active when ordering
+            } else {
+                customers.push({
+                    id: Date.now(),
+                    name: name,
+                    phone: phone,
+                    email: '',
+                    address: '',
+                    totalOrders: 1,
+                    totalSpent: orderTotal,
+                    status: 'active', // New customers are always active
+                    joinDate: new Date().toISOString(),
+                    lastOrder: new Date().toISOString()
+                });
+            }
+
+            localStorage.setItem('customersData', JSON.stringify(customers));
+        }
+
+        // Get service type name
+        function getServiceTypeName(serviceType) {
+            const serviceTypes = {
+                'dine-in': 'Dine In (Makan di Tempat)',
+                'take-away': 'Take Away (Dibawa Pulang)',
+                'delivery': 'Delivery Order (Diantar)'
+            };
+            return serviceTypes[serviceType] || serviceType;
+        }
+
+        // Generate PDF receipt
+        function generateReceipt(order) {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            // Header - compact
+            doc.setFontSize(16);
+            doc.text('CAPPUNABARA RESTAURANT', 105, 15, { align: 'center' });
+            doc.setFontSize(10);
+            doc.text('Jl. Malioboro No. 123, Yogyakarta', 105, 22, { align: 'center' });
+            doc.text('Telp: (0274) 123456', 105, 28, { align: 'center' });
+
+            // Order info - compact
+            doc.setFontSize(9);
+            doc.text('='.repeat(60), 15, 35);
+            
+            let yPos = 42;
+            doc.text(`Order ID: ${order.orderId}`, 15, yPos);
+            doc.text(`Tanggal: ${new Date(order.date).toLocaleString('id-ID')}`, 15, yPos + 6);
+            doc.text(`Jenis Layanan: ${getServiceTypeName(order.serviceType)}`, 15, yPos + 12);
+            doc.text(`Pelanggan: ${order.customerName}`, 15, yPos + 18);
+            
+            // Dynamic info based on service type
+            if (order.serviceType === 'delivery') {
+                doc.text(`Alamat: ${order.deliveryAddress || 'Tidak ada alamat'}`, 15, yPos + 24);
+                doc.text(`Pembayaran: ${order.paymentMethod.toUpperCase()}`, 15, yPos + 30);
+                yPos += 6; // Add extra space for delivery address
+            } else if (order.serviceType === 'take-away') {
+                doc.text(`Nomor Antrian: ${order.tableNumber}`, 15, yPos + 24);
+                doc.text(`Pembayaran: ${order.paymentMethod.toUpperCase()}`, 15, yPos + 30);
+            } else {
+                doc.text(`Meja: ${order.tableNumber}`, 15, yPos + 24);
+                doc.text(`Pembayaran: ${order.paymentMethod.toUpperCase()}`, 15, yPos + 30);
+            }
+            
+            yPos += 30;
+            doc.text('='.repeat(60), 15, yPos);
+
+            // Items - compact
+            yPos += 8;
+            doc.setFontSize(10);
+            doc.text('DETAIL PESANAN:', 15, yPos);
+            yPos += 6;
+            
+            doc.setFontSize(8);
+            order.items.forEach(item => {
+                doc.text(`${item.name}`, 15, yPos);
+                doc.text(`${item.quantity} x Rp ${item.price.toLocaleString('id-ID')}`, 110, yPos);
+                doc.text(`Rp ${(item.price * item.quantity).toLocaleString('id-ID')}`, 160, yPos);
+                yPos += 5;
+            });
+
+            // Totals - compact
+            yPos += 3;
+            doc.text('-'.repeat(60), 15, yPos);
+            yPos += 6;
+            
+            doc.setFontSize(9);
+            doc.text(`Subtotal:`, 110, yPos);
+            doc.text(`Rp ${order.subtotal.toLocaleString('id-ID')}`, 160, yPos);
+            yPos += 5;
+            
+            doc.text(`Pajak (10%):`, 110, yPos);
+            doc.text(`Rp ${order.tax.toLocaleString('id-ID')}`, 160, yPos);
+            yPos += 5;
+            
+            // Add delivery fee if applicable
+            if (order.deliveryFee && order.deliveryFee > 0) {
+                doc.text(`Biaya Pengiriman:`, 110, yPos);
+                doc.text(`Rp ${order.deliveryFee.toLocaleString('id-ID')}`, 160, yPos);
+                yPos += 5;
+            }
+            
+            doc.setFontSize(11);
+            doc.setFont(undefined, 'bold');
+            doc.text(`TOTAL:`, 110, yPos);
+            doc.text(`Rp ${order.totalPrice.toLocaleString('id-ID')}`, 160, yPos);
+
+            // Footer - compact
+            yPos += 15;
+            doc.setFontSize(8);
+            doc.setFont(undefined, 'normal');
+            doc.text('Terima kasih atas kunjungan Anda!', 105, yPos, { align: 'center' });
+
+            // Save PDF
+            doc.save(`struk-${order.orderId}.pdf`);
+        }
+
+        // Add event listeners
+        document.getElementById('customerPhone').addEventListener('input', updateCheckoutButton);
+        document.getElementById('customerName').addEventListener('input', updateCheckoutButton);
+        document.getElementById('tableNumber').addEventListener('change', updateCheckoutButton);
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Auto-fix inactive customers when order system loads
+            autoFixInactiveCustomers();
+            
+            loadMenuFromStorage();
+            displayMenu();
+            handleServiceSelection();
+            
+            // Initialize checkout button state
+            updateCheckoutButton();
+            
+            // Add CSS for smooth transitions
+            const menuContent = document.getElementById('menu-content');
+            if (menuContent) {
+                menuContent.style.opacity = '0';
+                menuContent.style.transform = 'translateY(20px)';
+                menuContent.style.transition = 'all 0.5s ease';
+            }
+        });
+
+        // Automatically fix inactive customers
+        function autoFixInactiveCustomers() {
+            let customers = JSON.parse(localStorage.getItem('customersData') || '[]');
+            let hasChanges = false;
+            
+            customers.forEach(customer => {
+                if (customer.status === 'inactive' || !customer.status) {
+                    customer.status = 'active';
+                    hasChanges = true;
+                }
+            });
+            
+            if (hasChanges) {
+                localStorage.setItem('customersData', JSON.stringify(customers));
+                console.log('Auto-activated all inactive customers');
+            }
+        }
+    </script>
+</body>
+</html>

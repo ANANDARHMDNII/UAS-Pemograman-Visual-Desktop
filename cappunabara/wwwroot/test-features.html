@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Café Luna Features</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            padding: 2rem;
+            background: linear-gradient(135deg, #FFF8E7 0%, #F7E7CE 50%, #F5EBE0 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 16px rgba(139, 111, 71, 0.16);
+        }
+        h1 {
+            color: #8B6F47;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .test-section {
+            margin-bottom: 2rem;
+            padding: 1rem;
+            border: 2px solid #F7E7CE;
+            border-radius: 8px;
+        }
+        .test-button {
+            background: linear-gradient(135deg, #8B6F47 0%, #A67B5B 100%);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 0.5rem;
+            font-weight: 600;
+        }
+        .test-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(139, 111, 71, 0.3);
+        }
+        .save-button {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+        }
+        .result {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #f9f9f9;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>☕ Test Café Luna Features</h1>
+        
+        <div class="test-section">
+            <h3>🧪 Test localStorage Functions</h3>
+            <button class="test-button" onclick="testLocalStorage()">Test localStorage</button>
+            <button class="test-button save-button" onclick="testSaveData()">Test Save Data</button>
+            <button class="test-button" onclick="testLoadData()">Test Load Data</button>
+            <div id="localStorageResult" class="result"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>📋 Test Order Creation</h3>
+            <button class="test-button" onclick="createTestOrder()">Create Test Order</button>
+            <button class="test-button save-button" onclick="saveTestOrder()">Save Test Order</button>
+            <div id="orderResult" class="result"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>🔄 Test Data Sync</h3>
+            <button class="test-button" onclick="testDataSync()">Test Data Sync</button>
+            <button class="test-button" onclick="clearAllData()">Clear All Data</button>
+            <div id="syncResult" class="result"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>🔗 Navigation Links</h3>
+            <a href="/Order" class="test-button" style="text-decoration: none; display: inline-block;">🛒 Order Page</a>
+            <a href="/RiwayatPesanan" class="test-button" style="text-decoration: none; display: inline-block;">📜 History Page</a>
+            <a href="/DataPesanan" class="test-button" style="text-decoration: none; display: inline-block;">📊 Admin Orders</a>
+            <a href="/DataPembayaran" class="test-button" style="text-decoration: none; display: inline-block;">💳 Admin Payments</a>
+        </div>
+    </div>
+
+    <script>
+        function testLocalStorage() {
+            const result = document.getElementById('localStorageResult');
+            try {
+                // Test localStorage availability
+                localStorage.setItem('test', 'working');
+                const test = localStorage.getItem('test');
+                localStorage.removeItem('test');
+                
+                // Check existing data
+                const orderHistory = localStorage.getItem('cappunabara_order_history');
+                const customerData = localStorage.getItem('cappunabara_customer_data');
+                
+                result.innerHTML = `
+                    <strong>✅ localStorage Test Results:</strong><br>
+                    - localStorage available: ${test === 'working' ? 'YES' : 'NO'}<br>
+                    - Order history exists: ${orderHistory ? 'YES (' + JSON.parse(orderHistory).length + ' orders)' : 'NO'}<br>
+                    - Customer data exists: ${customerData ? 'YES' : 'NO'}<br>
+                    - Current timestamp: ${new Date().toISOString()}
+                `;
+            } catch (error) {
+                result.innerHTML = `<strong>❌ Error:</strong> ${error.message}`;
+            }
+        }
+        
+        function testSaveData() {
+            const result = document.getElementById('localStorageResult');
+            try {
+                const testOrder = {
+                    id: 'TEST' + Date.now().toString().slice(-6),
+                    customer: {
+                        name: 'Test Customer',
+                        table: 'A1',
+                        phone: '081234567890',
+                        payment: 'cash',
+                        notes: 'Test order'
+                    },
+                    items: [
+                        { id: 1, name: 'Cappuccino Signature', price: 35000, quantity: 1, image: '☕' }
+                    ],
+                    timestamp: new Date().toISOString(),
+                    total: 35000,
+                    status: 'completed'
+                };
+                
+                const testCustomer = {
+                    name: 'Test Customer',
+                    phone: '081234567890',
+                    lastOrderDate: new Date().toISOString(),
+                    totalOrders: 1,
+                    totalSpent: 35000
+                };
+                
+                // Get existing data
+                let orderHistory = JSON.parse(localStorage.getItem('cappunabara_order_history') || '[]');
+                
+                // Add test order
+                orderHistory.unshift(testOrder);
+                
+                // Save to localStorage
+                localStorage.setItem('cappunabara_order_history', JSON.stringify(orderHistory));
+                localStorage.setItem('cappunabara_customer_data', JSON.stringify(testCustomer));
+                
+                result.innerHTML = `
+                    <strong>✅ Save Test Results:</strong><br>
+                    - Test order created: ${testOrder.id}<br>
+                    - Saved to localStorage: YES<br>
+                    - Total orders now: ${orderHistory.length}<br>
+                    - Customer data updated: YES<br>
+                    - Timestamp: ${testOrder.timestamp}
+                `;
+            } catch (error) {
+                result.innerHTML = `<strong>❌ Save Error:</strong> ${error.message}`;
+            }
+        }
+        
+        function testLoadData() {
+            const result = document.getElementById('localStorageResult');
+            try {
+                const orderHistory = JSON.parse(localStorage.getItem('cappunabara_order_history') || '[]');
+                const customerData = JSON.parse(localStorage.getItem('cappunabara_customer_data') || '{}');
+                
+                result.innerHTML = `
+                    <strong>📊 Load Test Results:</strong><br>
+                    - Orders loaded: ${orderHistory.length}<br>
+                    - Customer name: ${customerData.name || 'N/A'}<br>
+                    - Total spent: Rp ${(customerData.totalSpent || 0).toLocaleString('id-ID')}<br>
+                    - Last order: ${customerData.lastOrderDate ? new Date(customerData.lastOrderDate).toLocaleString('id-ID') : 'N/A'}<br>
+                    - Latest order ID: ${orderHistory.length > 0 ? orderHistory[0].id : 'N/A'}
+                `;
+            } catch (error) {
+                result.innerHTML = `<strong>❌ Load Error:</strong> ${error.message}`;
+            }
+        }
+        
+        function createTestOrder() {
+            const result = document.getElementById('orderResult');
+            const testOrder = {
+                id: 'CAF' + Date.now().toString().slice(-6),
+                customer: {
+                    name: 'John Doe',
+                    table: 'B5',
+                    phone: '081234567891',
+                    payment: 'transfer',
+                    notes: 'Extra hot please'
+                },
+                items: [
+                    { id: 1, name: 'Cappuccino Signature', price: 35000, quantity: 2, image: '☕' },
+                    { id: 19, name: 'Tiramisu Slice', price: 45000, quantity: 1, image: '🍰' }
+                ],
+                timestamp: new Date().toISOString(),
+                total: 115000,
+                status: 'completed'
+            };
+            
+            window.testOrderData = testOrder;
+            
+            result.innerHTML = `
+                <strong>🛒 Test Order Created:</strong><br>
+                - Order ID: ${testOrder.id}<br>
+                - Customer: ${testOrder.customer.name}<br>
+                - Items: ${testOrder.items.length}<br>
+                - Total: Rp ${testOrder.total.toLocaleString('id-ID')}<br>
+                - Ready to save: YES
+            `;
+        }
+        
+        function saveTestOrder() {
+            const result = document.getElementById('orderResult');
+            if (!window.testOrderData) {
+                result.innerHTML = '<strong>❌ Error:</strong> Create test order first!';
+                return;
+            }
+            
+            try {
+                let orderHistory = JSON.parse(localStorage.getItem('cappunabara_order_history') || '[]');
+                let customerData = JSON.parse(localStorage.getItem('cappunabara_customer_data') || '{}');
+                
+                // Add order to history
+                orderHistory.unshift(window.testOrderData);
+                
+                // Update customer data
+                customerData = {
+                    ...customerData,
+                    name: window.testOrderData.customer.name,
+                    phone: window.testOrderData.customer.phone,
+                    lastOrderDate: new Date().toISOString(),
+                    totalOrders: (customerData.totalOrders || 0) + 1,
+                    totalSpent: (customerData.totalSpent || 0) + window.testOrderData.total
+                };
+                
+                // Save to localStorage
+                localStorage.setItem('cappunabara_order_history', JSON.stringify(orderHistory));
+                localStorage.setItem('cappunabara_customer_data', JSON.stringify(customerData));
+                
+                result.innerHTML = `
+                    <strong>✅ Order Saved Successfully:</strong><br>
+                    - Order ID: ${window.testOrderData.id}<br>
+                    - Total orders: ${orderHistory.length}<br>
+                    - Customer updated: YES<br>
+                    - Last order date: ${new Date(customerData.lastOrderDate).toLocaleString('id-ID')}
+                `;
+                
+                // Trigger storage event
+                window.dispatchEvent(new StorageEvent('storage', {
+                    key: 'cappunabara_order_history',
+                    newValue: JSON.stringify(orderHistory)
+                }));
+                
+            } catch (error) {
+                result.innerHTML = `<strong>❌ Save Error:</strong> ${error.message}`;
+            }
+        }
+        
+        function testDataSync() {
+            const result = document.getElementById('syncResult');
+            try {
+                // Trigger storage events to test sync
+                const orderHistory = JSON.parse(localStorage.getItem('cappunabara_order_history') || '[]');
+                const customerData = JSON.parse(localStorage.getItem('cappunabara_customer_data') || '{}');
+                
+                window.dispatchEvent(new StorageEvent('storage', {
+                    key: 'cappunabara_order_history',
+                    newValue: JSON.stringify(orderHistory)
+                }));
+                
+                window.dispatchEvent(new StorageEvent('storage', {
+                    key: 'cappunabara_customer_data',
+                    newValue: JSON.stringify(customerData)
+                }));
+                
+                result.innerHTML = `
+                    <strong>🔄 Sync Test Results:</strong><br>
+                    - Storage events triggered: YES<br>
+                    - Orders to sync: ${orderHistory.length}<br>
+                    - Customer data to sync: ${customerData.name ? 'YES' : 'NO'}<br>
+                    - Sync timestamp: ${new Date().toLocaleString('id-ID')}
+                `;
+            } catch (error) {
+                result.innerHTML = `<strong>❌ Sync Error:</strong> ${error.message}`;
+            }
+        }
+        
+        function clearAllData() {
+            const result = document.getElementById('syncResult');
+            if (confirm('Are you sure you want to clear all data?')) {
+                localStorage.removeItem('cappunabara_order_history');
+                localStorage.removeItem('cappunabara_customer_data');
+                
+                result.innerHTML = `
+                    <strong>🗑️ Data Cleared:</strong><br>
+                    - Order history: CLEARED<br>
+                    - Customer data: CLEARED<br>
+                    - localStorage: EMPTY<br>
+                    - Cleared at: ${new Date().toLocaleString('id-ID')}
+                `;
+            }
+        }
+        
+        // Auto-run basic test on page load
+        window.addEventListener('load', function() {
+            testLocalStorage();
+        });
+    </script>
+</body>
+</html>

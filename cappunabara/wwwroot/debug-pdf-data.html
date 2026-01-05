@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug PDF Data - Cappunabara</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            padding: 2rem;
+            background: #f5f5f5;
+            margin: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #8B6F47;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .debug-section {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .debug-title {
+            font-weight: bold;
+            color: #495057;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        .debug-content {
+            background: #ffffff;
+            border: 1px solid #ced4da;
+            border-radius: 3px;
+            padding: 10px;
+            font-size: 12px;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 5px;
+        }
+        .btn:hover {
+            background: #0056b3;
+        }
+        .btn-success {
+            background: #28a745;
+        }
+        .btn-success:hover {
+            background: #1e7e34;
+        }
+        .btn-danger {
+            background: #dc3545;
+        }
+        .btn-danger:hover {
+            background: #c82333;
+        }
+        .alert {
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .alert-info {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+        }
+        .alert-warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Debug PDF Data</h1>
+        
+        <div class="alert alert-info">
+            <strong>Info:</strong> Halaman ini untuk debug data localStorage dan memperbaiki masalah "undefined" di PDF.
+        </div>
+        
+        <div style="text-align: center; margin-bottom: 30px;">
+            <button class="btn btn-success" onclick="createValidTestData()">✅ CREATE VALID TEST DATA</button>
+            <button class="btn" onclick="debugLocalStorage()">🔍 DEBUG LOCALSTORAGE</button>
+            <button class="btn" onclick="testPDFGeneration()">📄 TEST PDF GENERATION</button>
+            <button class="btn btn-danger" onclick="clearAllData()">🗑️ CLEAR ALL DATA</button>
+        </div>
+        
+        <div class="debug-section">
+            <div class="debug-title">📊 Order History Data:</div>
+            <div class="debug-content" id="orderHistoryDebug">Click "DEBUG LOCALSTORAGE" to see data...</div>
+        </div>
+        
+        <div class="debug-section">
+            <div class="debug-title">👤 Customer Data:</div>
+            <div class="debug-content" id="customerDataDebug">Click "DEBUG LOCALSTORAGE" to see data...</div>
+        </div>
+        
+        <div class="debug-section">
+            <div class="debug-title">🧪 Test Results:</div>
+            <div class="debug-content" id="testResults">No tests run yet...</div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 30px;">
+            <a href="http://localhost:5140/test-working-pdf.html" target="_blank" class="btn">🧪 Open Test Page</a>
+            <a href="http://localhost:5140/RiwayatPesanan" target="_blank" class="btn">📜 Open Riwayat Pesanan</a>
+            <a href="http://localhost:5140/test-fix-undefined.html" target="_blank" class="btn">🔧 Fix Undefined</a>
+        </div>
+    </div>
+
+    <script src="working-pdf-download.js"></script>
+    
+    <script>
+        function createValidTestData() {
+            try {
+                // Create comprehensive test data
+                const validTestOrder = {
+                    id: 'CPB' + Date.now().toString().slice(-6),
+                    customer: {
+                        name: 'Mala Sari',
+                        table: 'A8',
+                        phone: '081234567890',
+                        payment: 'ewallet',
+                        notes: 'Test order dengan data lengkap'
+                    },
+                    items: [
+                        {
+                            id: 1,
+                            name: 'Mocha Delight',
+                            price: 38000,
+                            quantity: 2,
+                            image: '☕',
+                            category: 'coffee'
+                        },
+                        {
+                            id: 2,
+                            name: 'Chicken Wrap',
+                            price: 40000,
+                            quantity: 1,
+                            image: '🌯',
+                            category: 'food'
+                        }
+                    ],
+                    timestamp: new Date().toISOString(),
+                    total: 116000,
+                    status: 'completed',
+                    createdAt: new Date().toISOString()
+                };
+                
+                const validCustomerData = {
+                    name: 'Mala Sari',
+                    phone: '081234567890',
+                    lastOrderDate: new Date().toISOString(),
+                    totalOrders: 1,
+                    totalSpent: 116000
+                };
+                
+                // Save to localStorage
+                localStorage.setItem('cappunabara_order_history', JSON.stringify([validTestOrder]));
+                localStorage.setItem('cappunabara_customer_data', JSON.stringify(validCustomerData));
+                
+                // Update debug display
+                debugLocalStorage();
+                
+                document.getElementById('testResults').textContent = 
+                    '✅ VALID TEST DATA CREATED SUCCESSFULLY!\n\n' +
+                    'Order ID: ' + validTestOrder.id + '\n' +
+                    'Customer: ' + validTestOrder.customer.name + '\n' +
+                    'Items: ' + validTestOrder.items.length + ' items\n' +
+                    'Total: Rp ' + validTestOrder.total.toLocaleString('id-ID') + '\n' +
+                    'All fields validated and complete.';
+                
+            } catch (error) {
+                document.getElementById('testResults').textContent = '❌ Error creating test data: ' + error.message;
+            }
+        }
+        
+        function debugLocalStorage() {
+            try {
+                // Get data from localStorage
+                const orderHistoryRaw = localStorage.getItem('cappunabara_order_history');
+                const customerDataRaw = localStorage.getItem('cappunabara_customer_data');
+                
+                // Parse data
+                const orderHistory = orderHistoryRaw ? JSON.parse(orderHistoryRaw) : null;
+                const customerData = customerDataRaw ? JSON.parse(customerDataRaw) : null;
+                
+                // Display order history
+                document.getElementById('orderHistoryDebug').textContent = 
+                    'Raw Data: ' + (orderHistoryRaw || 'NULL') + '\n\n' +
+                    'Parsed Data: ' + JSON.stringify(orderHistory, null, 2) + '\n\n' +
+                    'Length: ' + (orderHistory ? orderHistory.length : 0) + '\n' +
+                    'Type: ' + typeof orderHistory;
+                
+                // Display customer data
+                document.getElementById('customerDataDebug').textContent = 
+                    'Raw Data: ' + (customerDataRaw || 'NULL') + '\n\n' +
+                    'Parsed Data: ' + JSON.stringify(customerData, null, 2) + '\n\n' +
+                    'Type: ' + typeof customerData;
+                
+                // Validate data
+                let validationResults = 'VALIDATION RESULTS:\n\n';
+                
+                if (!orderHistory || orderHistory.length === 0) {
+                    validationResults += '❌ No order history found\n';
+                } else {
+                    const order = orderHistory[0];
+                    validationResults += '✅ Order history found: ' + orderHistory.length + ' orders\n';
+                    validationResults += '✅ Latest order ID: ' + (order.id || 'MISSING') + '\n';
+                    validationResults += '✅ Customer name: ' + (order.customer?.name || 'MISSING') + '\n';
+                    validationResults += '✅ Customer table: ' + (order.customer?.table || 'MISSING') + '\n';
+                    validationResults += '✅ Customer payment: ' + (order.customer?.payment || 'MISSING') + '\n';
+                    validationResults += '✅ Items count: ' + (order.items?.length || 0) + '\n';
+                    validationResults += '✅ Total: ' + (order.total || 'MISSING') + '\n';
+                    
+                    if (order.items && order.items.length > 0) {
+                        validationResults += '\nITEMS VALIDATION:\n';
+                        order.items.forEach((item, index) => {
+                            validationResults += `Item ${index + 1}: ${item.name || 'MISSING NAME'} x${item.quantity || 0} = Rp ${(item.price * item.quantity) || 0}\n`;
+                        });
+                    }
+                }
+                
+                document.getElementById('testResults').textContent = validationResults;
+                
+            } catch (error) {
+                document.getElementById('testResults').textContent = '❌ Error debugging localStorage: ' + error.message;
+            }
+        }
+        
+        function testPDFGeneration() {
+            try {
+                const orderHistory = JSON.parse(localStorage.getItem('cappunabara_order_history') || '[]');
+                
+                if (orderHistory.length === 0) {
+                    document.getElementById('testResults').textContent = '❌ No orders found! Create test data first.';
+                    return;
+                }
+                
+                const order = orderHistory[0];
+                
+                // Validate order data before PDF generation
+                if (!order.id) {
+                    document.getElementById('testResults').textContent = '❌ Order missing ID';
+                    return;
+                }
+                
+                if (!order.customer || !order.customer.name) {
+                    document.getElementById('testResults').textContent = '❌ Order missing customer data';
+                    return;
+                }
+                
+                if (!order.items || order.items.length === 0) {
+                    document.getElementById('testResults').textContent = '❌ Order missing items';
+                    return;
+                }
+                
+                // Test PDF generation
+                if (typeof createWorkingPDF === 'function') {
+                    createWorkingPDF(order);
+                    document.getElementById('testResults').textContent = 
+                        '✅ PDF GENERATION TEST SUCCESSFUL!\n\n' +
+                        'Order validated and PDF generation called.\n' +
+                        'Check if new tab opened with PDF.';
+                } else {
+                    document.getElementById('testResults').textContent = '❌ createWorkingPDF function not found!';
+                }
+                
+            } catch (error) {
+                document.getElementById('testResults').textContent = '❌ Error testing PDF generation: ' + error.message;
+            }
+        }
+        
+        function clearAllData() {
+            if (confirm('Are you sure you want to clear all localStorage data?')) {
+                localStorage.removeItem('cappunabara_order_history');
+                localStorage.removeItem('cappunabara_customer_data');
+                
+                document.getElementById('orderHistoryDebug').textContent = 'Data cleared...';
+                document.getElementById('customerDataDebug').textContent = 'Data cleared...';
+                document.getElementById('testResults').textContent = '✅ All localStorage data cleared.';
+            }
+        }
+        
+        // Auto-debug on page load
+        setTimeout(function() {
+            debugLocalStorage();
+        }, 1000);
+    </script>
+</body>
+</html>

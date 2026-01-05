@@ -1,0 +1,1275 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manajemen Karyawan - Cappunabara</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8f9fa;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar-brand {
+            font-size: 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: background 0.3s ease;
+            font-size: 14px;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        .page-header {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .page-title {
+            font-size: 28px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .search-bar {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .search-input {
+            padding: 10px 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 25px;
+            width: 300px;
+            font-size: 14px;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #D2691E;
+        }
+
+        .filter-select {
+            padding: 10px 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 14px;
+            min-width: 150px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            margin: 0 auto 15px;
+        }
+
+        .stat-card:nth-child(1) .stat-icon { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .stat-card:nth-child(2) .stat-icon { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .stat-card:nth-child(3) .stat-icon { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .stat-card:nth-child(4) .stat-icon { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+
+        .stat-number {
+            font-size: 32px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .employees-table {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            overflow-x: auto;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .table th,
+        .table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #333;
+            position: sticky;
+            top: 0;
+        }
+
+        .table tbody tr:hover {
+            background: #f8f9fa;
+        }
+
+        .employee-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #D2691E 0%, #8B4513 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            margin-right: 10px;
+        }
+
+        .employee-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .employee-details h4 {
+            margin: 0;
+            color: #333;
+            font-size: 16px;
+        }
+
+        .employee-details p {
+            margin: 0;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-active {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-inactive {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .shift-badge {
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .shift-pagi {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .shift-siang {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .shift-malam {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .position-badge {
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 11px;
+            font-weight: 600;
+            background: #e2e3e5;
+            color: #495057;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        .btn-info {
+            background: #17a2b8;
+            color: white;
+        }
+
+        .btn-warning {
+            background: #ffc107;
+            color: #333;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 15px 15px 0 0;
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #D2691E;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .page-header {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+            
+            .search-bar {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .search-input {
+                width: 100%;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-content">
+            <div class="navbar-brand">
+                <i class="fas fa-users-cog"></i>
+                Cappunabara - Manajemen Karyawan
+            </div>
+            <div class="nav-links">
+                <a href="modern-dashboard.html" class="nav-link">
+                    <i class="fas fa-home"></i> Dashboard
+                </a>
+                <a href="order-system.html" class="nav-link">
+                    <i class="fas fa-plus-circle"></i> Pesanan Baru
+                </a>
+                <a href="customers.html" class="nav-link">
+                    <i class="fas fa-users"></i> Pelanggan
+                </a>
+                <a href="reports.html" class="nav-link">
+                    <i class="fas fa-chart-bar"></i> Laporan
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">
+                <i class="fas fa-users-cog"></i>
+                Manajemen Karyawan
+            </h1>
+            <div class="search-bar">
+                <input type="text" class="search-input" placeholder="Cari karyawan..." id="search-input">
+                <select class="filter-select" id="position-filter">
+                    <option value="">Semua Jabatan</option>
+                    <option value="barista">Barista</option>
+                    <option value="kasir">Kasir</option>
+                    <option value="supervisor">Supervisor</option>
+                    <option value="admin">Admin</option>
+                    <option value="manager">Manager</option>
+                </select>
+                <select class="filter-select" id="shift-filter">
+                    <option value="">Semua Shift</option>
+                    <option value="pagi">Pagi</option>
+                    <option value="siang">Siang</option>
+                    <option value="malam">Malam</option>
+                </select>
+                <button class="btn btn-primary" onclick="showAddModal()">
+                    <i class="fas fa-plus"></i> Tambah Karyawan
+                </button>
+                <button class="btn" onclick="updateToModernNames()" style="background: #28a745; color: white;">
+                    <i class="fas fa-sync-alt"></i> Update Nama Modern
+                </button>
+                <a href="update-modern-names.html" class="btn" style="background: #17a2b8; color: white; text-decoration: none;">
+                    <i class="fas fa-magic"></i> Tool Update
+                </a>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-number" id="total-employees">0</div>
+                <div class="stat-label">Total Karyawan</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-user-check"></i>
+                </div>
+                <div class="stat-number" id="active-employees">0</div>
+                <div class="stat-label">Karyawan Aktif</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="stat-number" id="shift-count">3</div>
+                <div class="stat-label">Shift Kerja</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-briefcase"></i>
+                </div>
+                <div class="stat-number" id="position-count">5</div>
+                <div class="stat-label">Jabatan</div>
+            </div>
+        </div>
+
+        <div class="employees-table">
+            <h3 style="margin-bottom: 20px; color: #333;">
+                <i class="fas fa-list"></i> Daftar Karyawan
+            </h3>
+            <table class="table" id="employees-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nama</th>
+                        <th>Jabatan</th>
+                        <th>Shift</th>
+                        <th>No. HP</th>
+                        <th>Tanggal Masuk</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="employees-tbody">
+                    <!-- Data will be populated by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Add/Edit Employee Modal -->
+    <div class="modal" id="employee-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close-btn" onclick="hideModal()">&times;</button>
+                <h3 id="modal-title">Tambah Karyawan Baru</h3>
+                <p>Masukkan data karyawan</p>
+            </div>
+            <div class="modal-body">
+                <form id="employee-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="employee-id">ID Karyawan *</label>
+                            <input type="text" id="employee-id" name="employeeId" required placeholder="K001">
+                        </div>
+                        <div class="form-group">
+                            <label for="employee-name">Nama Lengkap *</label>
+                            <input type="text" id="employee-name" name="employeeName" required placeholder="Nama lengkap karyawan">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="employee-position">Jabatan *</label>
+                            <select id="employee-position" name="employeePosition" required>
+                                <option value="">Pilih Jabatan</option>
+                                <option value="barista">Barista</option>
+                                <option value="kasir">Kasir</option>
+                                <option value="supervisor">Supervisor</option>
+                                <option value="admin">Admin</option>
+                                <option value="manager">Manager</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="employee-shift">Shift Kerja *</label>
+                            <select id="employee-shift" name="employeeShift" required>
+                                <option value="">Pilih Shift</option>
+                                <option value="pagi">Pagi (06:00 - 14:00)</option>
+                                <option value="siang">Siang (14:00 - 22:00)</option>
+                                <option value="malam">Malam (22:00 - 06:00)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="employee-phone">No. HP *</label>
+                            <input type="tel" id="employee-phone" name="employeePhone" required placeholder="081234567890">
+                        </div>
+                        <div class="form-group">
+                            <label for="employee-join-date">Tanggal Masuk *</label>
+                            <input type="date" id="employee-join-date" name="employeeJoinDate" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="employee-address">Alamat</label>
+                        <textarea id="employee-address" name="employeeAddress" placeholder="Alamat lengkap karyawan" rows="3"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="employee-status">Status *</label>
+                        <select id="employee-status" name="employeeStatus" required>
+                            <option value="aktif">Aktif</option>
+                            <option value="nonaktif">Nonaktif</option>
+                        </select>
+                    </div>
+
+                    <div style="display: flex; gap: 15px; justify-content: flex-end; margin-top: 30px;">
+                        <button type="button" class="btn" onclick="hideModal()" style="background: #6c757d; color: white;">
+                            <i class="fas fa-times"></i> Batal
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Simpan
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Employee Detail Modal -->
+    <div class="modal" id="detail-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close-btn" onclick="hideDetailModal()">&times;</button>
+                <h3>Detail Karyawan</h3>
+                <p>Informasi lengkap karyawan</p>
+            </div>
+            <div class="modal-body" id="detail-content">
+                <!-- Detail content will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample employee data
+        let employeesData = JSON.parse(localStorage.getItem('employeesData') || JSON.stringify([
+            {
+                id: 'K001',
+                name: 'Alya Putri Maharani',
+                position: 'barista',
+                shift: 'pagi',
+                phone: '081234567890',
+                address: 'Jl. Malioboro No. 45, Yogyakarta',
+                joinDate: '2023-01-15',
+                status: 'aktif'
+            },
+            {
+                id: 'K002',
+                name: 'Kenzo Aditya Pratama',
+                position: 'kasir',
+                shift: 'siang',
+                phone: '081234567891',
+                address: 'Jl. Sudirman No. 123, Yogyakarta',
+                joinDate: '2023-02-20',
+                status: 'aktif'
+            },
+            {
+                id: 'K003',
+                name: 'Naira Safira Azzahra',
+                position: 'supervisor',
+                shift: 'pagi',
+                phone: '081234567892',
+                address: 'Jl. Tugu No. 67, Yogyakarta',
+                joinDate: '2022-11-10',
+                status: 'aktif'
+            },
+            {
+                id: 'K004',
+                name: 'Rafa Mahendra Putra',
+                position: 'admin',
+                shift: 'siang',
+                phone: '081234567893',
+                address: 'Jl. Kaliurang No. 89, Yogyakarta',
+                joinDate: '2023-03-05',
+                status: 'aktif'
+            },
+            {
+                id: 'K005',
+                name: 'Zara Amelia Salsabila',
+                position: 'barista',
+                shift: 'malam',
+                phone: '081234567894',
+                address: 'Jl. Gejayan No. 234, Yogyakarta',
+                joinDate: '2023-04-12',
+                status: 'nonaktif'
+            },
+            {
+                id: 'K006',
+                name: 'Arjuna Bayu Saputra',
+                position: 'kasir',
+                shift: 'malam',
+                phone: '081234567895',
+                address: 'Jl. Affandi No. 156, Yogyakarta',
+                joinDate: '2023-05-18',
+                status: 'aktif'
+            },
+            {
+                id: 'K007',
+                name: 'Kiara Aulia Ramadhani',
+                position: 'manager',
+                shift: 'siang',
+                phone: '081234567896',
+                address: 'Jl. Solo No. 78, Yogyakarta',
+                joinDate: '2022-08-22',
+                status: 'aktif'
+            }
+        ]));
+
+        let filteredEmployees = [...employeesData];
+        let editingId = null;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Force update to modern names - clear old data first
+            localStorage.removeItem('employeesData');
+            
+            // Save modern employee data to localStorage
+            const modernEmployeesData = [
+                {
+                    id: 'K001',
+                    name: 'Alya Putri Maharani',
+                    position: 'barista',
+                    shift: 'pagi',
+                    phone: '081234567890',
+                    address: 'Jl. Malioboro No. 45, Yogyakarta',
+                    joinDate: '2023-01-15',
+                    status: 'aktif'
+                },
+                {
+                    id: 'K002',
+                    name: 'Kenzo Aditya Pratama',
+                    position: 'kasir',
+                    shift: 'siang',
+                    phone: '081234567891',
+                    address: 'Jl. Sudirman No. 123, Yogyakarta',
+                    joinDate: '2023-02-20',
+                    status: 'aktif'
+                },
+                {
+                    id: 'K003',
+                    name: 'Naira Safira Azzahra',
+                    position: 'supervisor',
+                    shift: 'pagi',
+                    phone: '081234567892',
+                    address: 'Jl. Tugu No. 67, Yogyakarta',
+                    joinDate: '2022-11-10',
+                    status: 'aktif'
+                },
+                {
+                    id: 'K004',
+                    name: 'Rafa Mahendra Putra',
+                    position: 'admin',
+                    shift: 'siang',
+                    phone: '081234567893',
+                    address: 'Jl. Kaliurang No. 89, Yogyakarta',
+                    joinDate: '2023-03-05',
+                    status: 'aktif'
+                },
+                {
+                    id: 'K005',
+                    name: 'Zara Amelia Salsabila',
+                    position: 'barista',
+                    shift: 'malam',
+                    phone: '081234567894',
+                    address: 'Jl. Gejayan No. 234, Yogyakarta',
+                    joinDate: '2023-04-12',
+                    status: 'nonaktif'
+                },
+                {
+                    id: 'K006',
+                    name: 'Arjuna Bayu Saputra',
+                    position: 'kasir',
+                    shift: 'malam',
+                    phone: '081234567895',
+                    address: 'Jl. Affandi No. 156, Yogyakarta',
+                    joinDate: '2023-05-18',
+                    status: 'aktif'
+                },
+                {
+                    id: 'K007',
+                    name: 'Kiara Aulia Ramadhani',
+                    position: 'manager',
+                    shift: 'siang',
+                    phone: '081234567896',
+                    address: 'Jl. Solo No. 78, Yogyakarta',
+                    joinDate: '2022-08-22',
+                    status: 'aktif'
+                }
+            ];
+            
+            // Force save modern data
+            localStorage.setItem('employeesData', JSON.stringify(modernEmployeesData));
+            employeesData = modernEmployeesData;
+            
+            renderEmployeesTable();
+            setupSearch();
+            updateStats();
+
+            // Set default join date to today
+            document.getElementById('employee-join-date').value = new Date().toISOString().split('T')[0];
+
+            // Add form handler
+            document.getElementById('employee-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                saveEmployee();
+            });
+        });
+
+        // Update statistics
+        function updateStats() {
+            const totalEmployees = employeesData.length;
+            const activeEmployees = employeesData.filter(e => e.status === 'aktif').length;
+            
+            document.getElementById('total-employees').textContent = totalEmployees;
+            document.getElementById('active-employees').textContent = activeEmployees;
+        }
+
+        // Render employees table
+        function renderEmployeesTable() {
+            const tbody = document.getElementById('employees-tbody');
+            
+            tbody.innerHTML = filteredEmployees.map(employee => `
+                <tr>
+                    <td><strong>${employee.id}</strong></td>
+                    <td>
+                        <div class="employee-info">
+                            <div class="employee-avatar">
+                                ${employee.name.charAt(0).toUpperCase()}
+                            </div>
+                            <div class="employee-details">
+                                <h4>${employee.name}</h4>
+                                <p>${employee.phone}</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="position-badge">
+                            ${getPositionName(employee.position)}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="shift-badge shift-${employee.shift}">
+                            ${getShiftName(employee.shift)}
+                        </span>
+                    </td>
+                    <td>${employee.phone}</td>
+                    <td>${new Date(employee.joinDate).toLocaleDateString('id-ID')}</td>
+                    <td>
+                        <span class="status-badge ${employee.status === 'aktif' ? 'status-active' : 'status-inactive'}">
+                            ${employee.status === 'aktif' ? 'Aktif' : 'Nonaktif'}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-sm btn-info" onclick="viewEmployee('${employee.id}')" title="Lihat Detail">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="btn btn-sm btn-warning" onclick="editEmployee('${employee.id}')" title="Edit">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteEmployee('${employee.id}')" title="Hapus">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Setup search functionality
+        function setupSearch() {
+            const searchInput = document.getElementById('search-input');
+            const positionFilter = document.getElementById('position-filter');
+            const shiftFilter = document.getElementById('shift-filter');
+            
+            function filterEmployees() {
+                const searchTerm = searchInput.value.toLowerCase();
+                const positionValue = positionFilter.value;
+                const shiftValue = shiftFilter.value;
+                
+                filteredEmployees = employeesData.filter(employee => {
+                    const matchesSearch = employee.name.toLowerCase().includes(searchTerm) ||
+                                        employee.id.toLowerCase().includes(searchTerm) ||
+                                        employee.phone.includes(searchTerm);
+                    const matchesPosition = !positionValue || employee.position === positionValue;
+                    const matchesShift = !shiftValue || employee.shift === shiftValue;
+                    
+                    return matchesSearch && matchesPosition && matchesShift;
+                });
+                
+                renderEmployeesTable();
+            }
+
+            searchInput.addEventListener('input', filterEmployees);
+            positionFilter.addEventListener('change', filterEmployees);
+            shiftFilter.addEventListener('change', filterEmployees);
+        }
+
+        // Get position name
+        function getPositionName(position) {
+            const positions = {
+                'barista': 'Barista',
+                'kasir': 'Kasir',
+                'supervisor': 'Supervisor',
+                'admin': 'Admin',
+                'manager': 'Manager'
+            };
+            return positions[position] || position;
+        }
+
+        // Get shift name
+        function getShiftName(shift) {
+            const shifts = {
+                'pagi': 'Pagi',
+                'siang': 'Siang',
+                'malam': 'Malam'
+            };
+            return shifts[shift] || shift;
+        }
+
+        // Show add modal
+        function showAddModal() {
+            editingId = null;
+            document.getElementById('modal-title').textContent = 'Tambah Karyawan Baru';
+            document.getElementById('employee-form').reset();
+            document.getElementById('employee-join-date').value = new Date().toISOString().split('T')[0];
+            document.getElementById('employee-status').value = 'aktif';
+            document.getElementById('employee-modal').style.display = 'flex';
+        }
+
+        // Hide modal
+        function hideModal() {
+            document.getElementById('employee-modal').style.display = 'none';
+        }
+
+        // Hide detail modal
+        function hideDetailModal() {
+            document.getElementById('detail-modal').style.display = 'none';
+        }
+
+        // View employee details
+        function viewEmployee(id) {
+            const employee = employeesData.find(e => e.id === id);
+            if (!employee) return;
+
+            const detailContent = document.getElementById('detail-content');
+            detailContent.innerHTML = `
+                <div style="display: grid; gap: 20px;">
+                    <div style="text-align: center; padding: 20px; background: #f8f9fa; border-radius: 10px;">
+                        <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #D2691E 0%, #8B4513 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 32px; font-weight: bold; margin: 0 auto 15px;">
+                            ${employee.name.charAt(0).toUpperCase()}
+                        </div>
+                        <h3 style="color: #333; margin-bottom: 5px;">${employee.name}</h3>
+                        <p style="color: #666;">${getPositionName(employee.position)}</p>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                        <div style="padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                            <strong style="color: #333;">ID Karyawan:</strong><br>
+                            <span style="color: #666;">${employee.id}</span>
+                        </div>
+                        <div style="padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                            <strong style="color: #333;">Jabatan:</strong><br>
+                            <span style="color: #666;">${getPositionName(employee.position)}</span>
+                        </div>
+                        <div style="padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                            <strong style="color: #333;">Shift Kerja:</strong><br>
+                            <span style="color: #666;">${getShiftName(employee.shift)}</span>
+                        </div>
+                        <div style="padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                            <strong style="color: #333;">No. HP:</strong><br>
+                            <span style="color: #666;">${employee.phone}</span>
+                        </div>
+                        <div style="padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                            <strong style="color: #333;">Tanggal Masuk:</strong><br>
+                            <span style="color: #666;">${new Date(employee.joinDate).toLocaleDateString('id-ID')}</span>
+                        </div>
+                        <div style="padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                            <strong style="color: #333;">Status:</strong><br>
+                            <span class="status-badge ${employee.status === 'aktif' ? 'status-active' : 'status-inactive'}">
+                                ${employee.status === 'aktif' ? 'Aktif' : 'Nonaktif'}
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div style="padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                        <strong style="color: #333;">Alamat:</strong><br>
+                        <span style="color: #666;">${employee.address || 'Tidak ada alamat'}</span>
+                    </div>
+                    
+                    <div style="display: flex; gap: 10px; justify-content: center; margin-top: 20px;">
+                        <button class="btn btn-warning" onclick="editEmployee('${employee.id}'); hideDetailModal();">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        <button class="btn" onclick="hideDetailModal();" style="background: #6c757d; color: white;">
+                            <i class="fas fa-times"></i> Tutup
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('detail-modal').style.display = 'flex';
+        }
+
+        // Edit employee
+        function editEmployee(id) {
+            const employee = employeesData.find(e => e.id === id);
+            if (!employee) return;
+
+            editingId = id;
+            document.getElementById('modal-title').textContent = 'Edit Karyawan';
+            
+            // Fill form with employee data
+            document.getElementById('employee-id').value = employee.id;
+            document.getElementById('employee-name').value = employee.name;
+            document.getElementById('employee-position').value = employee.position;
+            document.getElementById('employee-shift').value = employee.shift;
+            document.getElementById('employee-phone').value = employee.phone;
+            document.getElementById('employee-join-date').value = employee.joinDate;
+            document.getElementById('employee-address').value = employee.address || '';
+            document.getElementById('employee-status').value = employee.status;
+            
+            // Disable ID field for editing
+            document.getElementById('employee-id').disabled = true;
+            
+            document.getElementById('employee-modal').style.display = 'flex';
+        }
+
+        // Save employee
+        function saveEmployee() {
+            const formData = new FormData(document.getElementById('employee-form'));
+            const employeeData = {
+                id: formData.get('employeeId'),
+                name: formData.get('employeeName'),
+                position: formData.get('employeePosition'),
+                shift: formData.get('employeeShift'),
+                phone: formData.get('employeePhone'),
+                address: formData.get('employeeAddress'),
+                joinDate: formData.get('employeeJoinDate'),
+                status: formData.get('employeeStatus')
+            };
+
+            if (editingId) {
+                // Update existing employee
+                const index = employeesData.findIndex(e => e.id === editingId);
+                if (index !== -1) {
+                    employeesData[index] = { ...employeesData[index], ...employeeData };
+                    showNotification(`Karyawan "${employeeData.name}" berhasil diupdate!`, 'success');
+                }
+            } else {
+                // Check if ID already exists
+                if (employeesData.find(e => e.id === employeeData.id)) {
+                    showNotification('ID Karyawan sudah digunakan!', 'error');
+                    return;
+                }
+                
+                // Add new employee
+                employeesData.push(employeeData);
+                showNotification(`Karyawan "${employeeData.name}" berhasil ditambahkan!`, 'success');
+            }
+
+            // Save to localStorage
+            localStorage.setItem('employeesData', JSON.stringify(employeesData));
+            
+            // Update display
+            filteredEmployees = [...employeesData];
+            renderEmployeesTable();
+            updateStats();
+            
+            // Reset form and close modal
+            document.getElementById('employee-id').disabled = false;
+            hideModal();
+        }
+
+        // Delete employee
+        function deleteEmployee(id) {
+            const employee = employeesData.find(e => e.id === id);
+            if (!employee) return;
+
+            if (confirm(`Hapus karyawan "${employee.name}"?\n\nData karyawan akan dihapus permanen.`)) {
+                employeesData = employeesData.filter(e => e.id !== id);
+                
+                // Save to localStorage
+                localStorage.setItem('employeesData', JSON.stringify(employeesData));
+                
+                // Update display
+                filteredEmployees = [...employeesData];
+                renderEmployeesTable();
+                updateStats();
+                
+                showNotification(`Karyawan "${employee.name}" berhasil dihapus!`, 'success');
+            }
+        }
+
+        // Show notification
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? '#28a745' : type === 'error' ? '#dc3545' : '#17a2b8'};
+                color: white;
+                padding: 15px 20px;
+                border-radius: 8px;
+                z-index: 1001;
+                animation: slideIn 0.3s ease;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            `;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Update to modern names
+        function updateToModernNames() {
+            if (confirm('Update semua nama karyawan ke nama modern?\n\nData lama akan diganti dengan nama-nama kekinian.')) {
+                const modernEmployeesData = [
+                    {
+                        id: 'K001',
+                        name: 'Alya Putri Maharani',
+                        position: 'barista',
+                        shift: 'pagi',
+                        phone: '081234567890',
+                        address: 'Jl. Malioboro No. 45, Yogyakarta',
+                        joinDate: '2023-01-15',
+                        status: 'aktif'
+                    },
+                    {
+                        id: 'K002',
+                        name: 'Kenzo Aditya Pratama',
+                        position: 'kasir',
+                        shift: 'siang',
+                        phone: '081234567891',
+                        address: 'Jl. Sudirman No. 123, Yogyakarta',
+                        joinDate: '2023-02-20',
+                        status: 'aktif'
+                    },
+                    {
+                        id: 'K003',
+                        name: 'Naira Safira Azzahra',
+                        position: 'supervisor',
+                        shift: 'pagi',
+                        phone: '081234567892',
+                        address: 'Jl. Tugu No. 67, Yogyakarta',
+                        joinDate: '2022-11-10',
+                        status: 'aktif'
+                    },
+                    {
+                        id: 'K004',
+                        name: 'Rafa Mahendra Putra',
+                        position: 'admin',
+                        shift: 'siang',
+                        phone: '081234567893',
+                        address: 'Jl. Kaliurang No. 89, Yogyakarta',
+                        joinDate: '2023-03-05',
+                        status: 'aktif'
+                    },
+                    {
+                        id: 'K005',
+                        name: 'Zara Amelia Salsabila',
+                        position: 'barista',
+                        shift: 'malam',
+                        phone: '081234567894',
+                        address: 'Jl. Gejayan No. 234, Yogyakarta',
+                        joinDate: '2023-04-12',
+                        status: 'nonaktif'
+                    },
+                    {
+                        id: 'K006',
+                        name: 'Arjuna Bayu Saputra',
+                        position: 'kasir',
+                        shift: 'malam',
+                        phone: '081234567895',
+                        address: 'Jl. Affandi No. 156, Yogyakarta',
+                        joinDate: '2023-05-18',
+                        status: 'aktif'
+                    },
+                    {
+                        id: 'K007',
+                        name: 'Kiara Aulia Ramadhani',
+                        position: 'manager',
+                        shift: 'siang',
+                        phone: '081234567896',
+                        address: 'Jl. Solo No. 78, Yogyakarta',
+                        joinDate: '2022-08-22',
+                        status: 'aktif'
+                    },
+                    {
+                        id: 'K008',
+                        name: 'Rayhan Fadhil Akbar',
+                        position: 'barista',
+                        shift: 'pagi',
+                        phone: '081234567897',
+                        address: 'Jl. Bantul No. 91, Yogyakarta',
+                        joinDate: '2023-06-10',
+                        status: 'aktif'
+                    },
+                    {
+                        id: 'K009',
+                        name: 'Aisyah Zahra Kamila',
+                        position: 'kasir',
+                        shift: 'siang',
+                        phone: '081234567898',
+                        address: 'Jl. Wates No. 45, Yogyakarta',
+                        joinDate: '2023-07-22',
+                        status: 'aktif'
+                    },
+                    {
+                        id: 'K010',
+                        name: 'Daffa Rizky Maulana',
+                        position: 'supervisor',
+                        shift: 'malam',
+                        phone: '081234567899',
+                        address: 'Jl. Imogiri No. 67, Yogyakarta',
+                        joinDate: '2023-08-15',
+                        status: 'aktif'
+                    }
+                ];
+
+                // Update data
+                employeesData = modernEmployeesData;
+                filteredEmployees = [...employeesData];
+                
+                // Save to localStorage
+                localStorage.setItem('employeesData', JSON.stringify(employeesData));
+                
+                // Update display
+                renderEmployeesTable();
+                updateStats();
+                
+                showNotification(`✅ Berhasil! ${employeesData.length} karyawan telah diupdate dengan nama modern!`, 'success');
+            }
+        }
+
+        // Close modals when clicking outside
+        document.getElementById('employee-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                hideModal();
+            }
+        });
+
+        document.getElementById('detail-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                hideDetailModal();
+            }
+        });
+    </script>
+</body>
+</html>

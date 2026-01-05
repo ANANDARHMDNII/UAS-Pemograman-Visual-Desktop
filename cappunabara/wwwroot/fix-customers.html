@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fix Customer Status - Cappunabara</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 16px;
+            margin: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            color: white;
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .status {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .customer-list {
+            text-align: left;
+            margin: 20px 0;
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .customer-item {
+            padding: 5px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .customer-item:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 Fix Customer Status</h1>
+        <p>Tool untuk mengaktifkan semua pelanggan yang tidak aktif</p>
+
+        <div id="status-info" class="status info">
+            Klik tombol di bawah untuk memeriksa dan memperbaiki status pelanggan
+        </div>
+
+        <div id="customer-list" class="customer-list" style="display: none;">
+            <!-- Customer list will be populated here -->
+        </div>
+
+        <button class="btn btn-primary" onclick="checkCustomers()">
+            📊 Periksa Status Pelanggan
+        </button>
+
+        <button class="btn btn-success" onclick="fixAllCustomers()" id="fix-btn" style="display: none;">
+            ✅ Aktifkan Semua Pelanggan
+        </button>
+
+        <div style="margin-top: 30px;">
+            <a href="customers.html" class="btn" style="background: #6c757d; color: white; text-decoration: none;">
+                ← Kembali ke Data Pelanggan
+            </a>
+        </div>
+    </div>
+
+    <script>
+        let customersData = [];
+
+        function checkCustomers() {
+            customersData = JSON.parse(localStorage.getItem('customersData') || '[]');
+            const statusDiv = document.getElementById('status-info');
+            const customerList = document.getElementById('customer-list');
+            const fixBtn = document.getElementById('fix-btn');
+
+            if (customersData.length === 0) {
+                statusDiv.className = 'status info';
+                statusDiv.innerHTML = '📝 Tidak ada data pelanggan ditemukan';
+                customerList.style.display = 'none';
+                fixBtn.style.display = 'none';
+                return;
+            }
+
+            const inactiveCustomers = customersData.filter(c => c.status === 'inactive' || !c.status);
+            const activeCustomers = customersData.filter(c => c.status === 'active');
+
+            if (inactiveCustomers.length === 0) {
+                statusDiv.className = 'status success';
+                statusDiv.innerHTML = `✅ Semua ${customersData.length} pelanggan sudah aktif!`;
+                customerList.style.display = 'none';
+                fixBtn.style.display = 'none';
+            } else {
+                statusDiv.className = 'status info';
+                statusDiv.innerHTML = `
+                    📊 Status Pelanggan:<br>
+                    • Aktif: ${activeCustomers.length}<br>
+                    • Tidak Aktif: ${inactiveCustomers.length}<br>
+                    • Total: ${customersData.length}
+                `;
+
+                customerList.innerHTML = `
+                    <h4>Pelanggan Tidak Aktif:</h4>
+                    ${inactiveCustomers.map(customer => `
+                        <div class="customer-item">
+                            <strong>${customer.name}</strong> - ${customer.phone}
+                            <br><small>Status: ${customer.status || 'undefined'}</small>
+                        </div>
+                    `).join('')}
+                `;
+                customerList.style.display = 'block';
+                fixBtn.style.display = 'inline-block';
+            }
+        }
+
+        function fixAllCustomers() {
+            if (customersData.length === 0) {
+                alert('Tidak ada data pelanggan untuk diperbaiki');
+                return;
+            }
+
+            let fixedCount = 0;
+            customersData.forEach(customer => {
+                if (customer.status === 'inactive' || !customer.status) {
+                    customer.status = 'active';
+                    fixedCount++;
+                }
+            });
+
+            if (fixedCount > 0) {
+                localStorage.setItem('customersData', JSON.stringify(customersData));
+                
+                const statusDiv = document.getElementById('status-info');
+                statusDiv.className = 'status success';
+                statusDiv.innerHTML = `✅ Berhasil mengaktifkan ${fixedCount} pelanggan!`;
+                
+                document.getElementById('customer-list').style.display = 'none';
+                document.getElementById('fix-btn').style.display = 'none';
+
+                // Show success message
+                setTimeout(() => {
+                    if (confirm('Status pelanggan berhasil diperbaiki!\n\nApakah Anda ingin kembali ke halaman Data Pelanggan?')) {
+                        window.location.href = 'customers.html';
+                    }
+                }, 1000);
+            } else {
+                alert('Tidak ada pelanggan yang perlu diperbaiki');
+            }
+        }
+
+        // Auto-check on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            checkCustomers();
+        });
+    </script>
+</body>
+</html>
