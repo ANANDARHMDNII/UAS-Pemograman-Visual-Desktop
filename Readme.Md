@@ -97,8 +97,7 @@ Dibuat untuk keperluan:
 ---
 
 ## 📄Link Youtube
-https://youtu.be/Pemograman-Visual-Desktop-cappunabara
-
+https://youtu.be/g271riEmCgc?si=LfDaUi01hv9wx_f7 
 ---
 
 ☕ *Ngopi santai, coding jadi lebih berarti bersama Cappunabara.*
